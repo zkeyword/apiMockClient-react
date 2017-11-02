@@ -1,0 +1,9 @@
+node_modules
+build
+.DS_Store
+npm-debug.log*
+.idea
+.history
+src/config.js
+dist
+*.log

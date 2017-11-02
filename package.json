@@ -1,0 +1,58 @@
+{
+  "private": true,
+  "scripts": {
+    "start": "cross-env SERVER_URL=http://api.dev.dynamax.io node scripts/init.js && roadhog server",
+    "build": "cross-env SERVER_URL=http://api.dev.dynamax.io node scripts/init.js && roadhog build",
+    "build:dll": "roadhog buildDll",
+    "build:new": "node version && roadhog build",
+    "lint": "eslint --ext .js src test",
+    "precommit": "npm run lint"
+  },
+  "engines": {
+    "install-node": "6.11.1"
+  },
+  "dependencies": {
+    "antd": "^2.13.1",
+    "axios": "^0.16.2",
+    "crypto-js": "^3.1.9-1",
+    "dva": "^2.0.0",
+    "dva-loading": "^0.2.0",
+    "lodash": "^4.16.1",
+    "react": "^15.4.0",
+    "react-dom": "^15.4.0",
+    "react-intl": "^2.4.0",
+    "sockjs-client": "^1.1.4",
+    "stompjs": "^2.3.3"
+  },
+  "devDependencies": {
+    "intl": "^1.2.5",
+    "babel-eslint": "^7.1.1",
+    "babel-plugin-dva-hmr": "^0.3.2",
+    "babel-plugin-import": "^1.4.0",
+    "babel-plugin-transform-runtime": "^6.9.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-runtime": "^6.9.2",
+    "cross-env": "^5.0.5",
+    "eslint": "3.19.0",
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-config-react-app": "^1.0.5",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-config-standard-react": "^5.0.0",
+    "eslint-loader": "1.7.1",
+    "eslint-plugin-babel": "^4.1.2",
+    "eslint-plugin-flowtype": "2.34.0",
+    "eslint-plugin-import": "2.2.0",
+    "eslint-plugin-jsx-a11y": "5.0.3",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-react": "7.1.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "expect": "^1.20.2",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "husky": "^0.12.0",
+    "redbox-react": "^1.4.3",
+    "roadhog": "^1.2.2",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1"
+  }
+}
