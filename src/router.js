@@ -32,26 +32,37 @@ function RouterConfig({ history, app }) {
             models: () => [import('./models/login')],
             component: () => import('./routes/login/resetting')
         },
-        /* 产品管理 */
+        /* 项目管理 */
         {
-            path: '/product',
-            models: () => [import('./models/product')],
-            component: () => import('./routes/product/')
+            path: '/project',
+            // models: () => [import('./models/project')],
+            component: () => import('./routes/project/')
         },
         {
-            path: '/product/detail',
-            models: () => [import('./models/product')],
-            component: () => import('./routes/product/detail')
+            path: '/project/detail',
+            // models: () => [import('./models/project')],
+            component: () => import('./routes/project/detail')
         },
         {
-            path: '/product/detail/:id',
-            models: () => [import('./models/product')],
-            component: () => import('./routes/product/detail')
+            path: '/product/project/:id',
+            // models: () => [import('./models/project')],
+            component: () => import('./routes/project/detail')
+        },
+        /* 接口管理 */
+        {
+            path: '/interface',
+            // models: () => [import('./models/interface')],
+            component: () => import('./routes/interface/')
         },
         {
-            path: '/product/detail/:id/:copy',
-            models: () => [import('./models/product')],
-            component: () => import('./routes/product/detail')
+            path: '/interface/detail',
+            // models: () => [import('./models/interface')],
+            component: () => import('./routes/interface/detail')
+        },
+        {
+            path: '/product/interface/:id',
+            // models: () => [import('./models/interface')],
+            component: () => import('./routes/interface/detail')
         }
     ]
 

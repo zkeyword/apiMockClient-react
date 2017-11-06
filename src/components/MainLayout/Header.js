@@ -5,7 +5,6 @@ import { Link } from 'dva/router'
 import language from '../../utils/language'
 import storage from '../../utils/storage'
 
-const SubMenu = Menu.SubMenu
 const Option = Select.Option
 
 class Header extends React.Component {
@@ -38,20 +37,18 @@ class Header extends React.Component {
         const { getFieldDecorator } = this.props.form
         return (
             <div className='lt-header' >
-                <Link className='logo' to='/product' title='BOSS系统' />
+                <Link className='logo' to='/project' title='apiMockClient' />
                 <Menu
                     className='nav'
                     selectedKeys={this.current(0)}
                     mode='horizontal'
                 >
-                    <SubMenu title={<span>{formatMessage({ id: 'nav.device' })}</span>}>
-                        <Menu.Item key='product'>
-                            <Link to='/product'>{formatMessage({ id: 'nav.product' })}</Link>
-                        </Menu.Item>
-                        <Menu.Item key='productCategory'>
-                            <Link to='/productCategory'>{formatMessage({ id: 'nav.productCategory' })}</Link>
-                        </Menu.Item>
-                    </SubMenu>
+                    <Menu.Item key='project'>
+                        <Link to='/project'>{formatMessage({ id: 'nav.project' })}</Link>
+                    </Menu.Item>
+                    <Menu.Item key='interface'>
+                        <Link to='/interface'>{formatMessage({ id: 'nav.interface' })}</Link>
+                    </Menu.Item>
                 </Menu>
                 <div className='operating'>
                     <span>
