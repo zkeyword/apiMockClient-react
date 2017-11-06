@@ -35,32 +35,32 @@ function RouterConfig({ history, app }) {
         /* 项目管理 */
         {
             path: '/project',
-            // models: () => [import('./models/project')],
+            models: () => [import('./models/project')],
             component: () => import('./routes/project/')
         },
         {
             path: '/project/detail',
-            // models: () => [import('./models/project')],
+            models: () => [import('./models/project')],
             component: () => import('./routes/project/detail')
         },
         {
-            path: '/product/project/:id',
-            // models: () => [import('./models/project')],
+            path: '/product/detail/:id',
+            models: () => [import('./models/project')],
             component: () => import('./routes/project/detail')
         },
         /* 接口管理 */
         {
-            path: '/interface',
+            path: '/interface/:id',
             // models: () => [import('./models/interface')],
             component: () => import('./routes/interface/')
         },
         {
-            path: '/interface/detail',
+            path: '/interface/:id/detail',
             // models: () => [import('./models/interface')],
             component: () => import('./routes/interface/detail')
         },
         {
-            path: '/product/interface/:id',
+            path: '/interface/:id/detail/:id',
             // models: () => [import('./models/interface')],
             component: () => import('./routes/interface/detail')
         }
