@@ -37,7 +37,7 @@ class Header extends React.Component {
         const { getFieldDecorator } = this.props.form
         return (
             <div className='lt-header' >
-                <Link className='logo' to='/product' title='BOSS系统' />
+                <Link className='logo' to='/project' title='apiMockClient' />
                 <Menu
                     className='nav'
                     selectedKeys={this.current(0)}
