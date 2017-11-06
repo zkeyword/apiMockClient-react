@@ -5,9 +5,9 @@ import { injectIntl } from 'react-intl'
 import { Link } from 'dva/router'
 import MainLayout from '../../components/MainLayout/MainLayout'
 // import ProductSearch from '../../components/Product/search'
-// import UsersList from '../../components/Product/list'
+import InterfaceList from '../../components/interface/list/index.js'
 
-class Product extends React.Component {
+class Interface extends React.Component {
     render() {
         let {
             location,
@@ -24,14 +24,14 @@ class Product extends React.Component {
                             <Breadcrumb.Item>{formatMessage({ id: 'nav.interface' })}</Breadcrumb.Item>
                         </Breadcrumb>
                     </div>
-                    {/* <ProductSearch />
-                    <UsersList /> */}
+                    {/* <ProductSearch /> */}
+                    <InterfaceList />
                 </div>
             </MainLayout>
         )
     }
 }
 
-export default injectIntl(connect()(Product), {
+export default injectIntl(connect()(Interface), {
     withRef: true
 })

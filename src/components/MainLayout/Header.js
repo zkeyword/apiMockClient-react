@@ -43,12 +43,12 @@ class Header extends React.Component {
                     selectedKeys={this.current(0)}
                     mode='horizontal'
                 >
-                    <Menu.Item key='project'>
+                    {/* <Menu.Item key='project'>
                         <Link to='/project'>{formatMessage({ id: 'nav.project' })}</Link>
-                    </Menu.Item>
-                    <Menu.Item key='interface'>
+                    </Menu.Item> */}
+                    {/* <Menu.Item key='interface'>
                         <Link to='/interface'>{formatMessage({ id: 'nav.interface' })}</Link>
-                    </Menu.Item>
+                    </Menu.Item> */}
                 </Menu>
                 <div className='operating'>
                     <span>

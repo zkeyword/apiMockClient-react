@@ -20,7 +20,8 @@ class ProductList extends React.Component {
     }
 
     render() {
-        let { list: dataSource,
+        let {
+            list: dataSource,
             loading,
             total,
             page: current,
