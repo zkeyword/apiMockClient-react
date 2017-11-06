@@ -17,6 +17,8 @@ export default {
         'nav.system.Jurisdiction': 'Jurisdiction',
         'nav.visitor': 'visitor',
         'nav.play': 'Regional plan',
+        'nav.project': 'project management',
+        'nav.interface': 'interface management',
         'operating.welcome': 'welcome',
         'operating.logout': 'logout',
         'button.edit': 'edit',

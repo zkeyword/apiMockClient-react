@@ -18,6 +18,8 @@ export default {
         'nav.system.Jurisdiction': '角色权限管理',
         'nav.visitor': '访客管理',
         'nav.play': '区域平面图管理',
+        'nav.project': '项目管理',
+        'nav.interface': '接口管理',
         'operating.welcome': '欢迎',
         'operating.logout': '退出',
         'button.edit': '编辑',
