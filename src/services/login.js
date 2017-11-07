@@ -31,7 +31,18 @@ export function reset(values) {
 }
 
 export function sendMsg(values) {
-    return request('/messages-service/v0.1/messages/sms/single', {
+    return request('/biz-message/v0.1/messages/sms/single', {
+        method: 'POST',
+        data: values
+    })
+}
+
+export function authInfo() {
+    return request('/v0.1/api/auth/')
+}
+
+export function checkMsg(values) {
+    return request('/biz-message/v0.1/messages/sms/verifies', {
         method: 'POST',
         data: values
     })

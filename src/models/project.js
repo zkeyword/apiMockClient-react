@@ -1,5 +1,8 @@
 import * as projectService from '../services/project'
 import { message } from 'antd'
+import { routerRedux } from 'dva/router'
+
+let formatMessage = window.formatMessage
 
 export default {
     namespace: 'project',
@@ -15,15 +18,62 @@ export default {
         }
     },
     effects: {
-        *remove({ patload: { id } }, { call, put }) {
-            yield call(projectService.remove, { id })
-            let promise = () => new Promise((resolve, reject) => {
-                message.success('提交成功', 1, () => {
-                    resolve()
+        *create({ payload: values }, { call, put }) {
+            const data = yield call(projectService.create, values)
+            if (data) {
+                let promise = () => new Promise((resolve, reject) => {
+                    message.success(formatMessage({ id: 'models.submission' }), 1, () => {
+                        resolve()
+                    })
                 })
-            })
-            yield call(promise)
-            yield put({ type: 'reload' })
+                yield call(promise)
+                yield put(routerRedux.push(`/project`))
+            } else {
+                message.success(formatMessage({ id: 'models.fails' }))
+            }
+        },
+        *modify({ payload: values }, { call, put }) {
+            let { data } = yield call(projectService.modify, values)
+            if (data) {
+                let promise = () => new Promise((resolve, reject) => {
+                    message.success(formatMessage({ id: 'models.submission' }), 1, () => {
+                        resolve()
+                    })
+                })
+                yield call(promise)
+                yield put(routerRedux.push(`/project`))
+            } else {
+                message.success(formatMessage({ id: 'models.fails' }))
+            }
+        },
+        *remove({ payload: { id, userId } }, { call, put }) {
+            let { data } = yield call(projectService.remove, { id, userId })
+            console.log(data)
+            if (data) {
+                let promise = () => new Promise((resolve, reject) => {
+                    message.success(formatMessage({ id: 'models.submission' }), 1, () => {
+                        resolve()
+                    })
+                })
+                yield call(promise)
+                yield put({ type: 'reload' })
+            } else {
+                message.success(formatMessage({ id: 'models.fails' }))
+            }
+        },
+        *fetch({ payload: id }, { call, put }) {
+            const { data } = yield call(projectService.fetch, { id })
+            console.log(data)
+            if (data) {
+                yield put({
+                    type: 'save',
+                    payload: {
+                        list: data
+                    }
+                })
+            } else {
+                yield put({ type: 'reset' })
+            }
         },
         *list({ payload: { page = 1, pageSize = 0, userId = 1 } }, { call, put }) {
             const { data } = yield call(projectService.list, { page, pageSize, userId })

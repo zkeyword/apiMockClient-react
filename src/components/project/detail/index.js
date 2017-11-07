@@ -3,8 +3,10 @@ import { connect } from 'dva'
 import { injectIntl } from 'react-intl'
 import { Form, Input, Button } from 'antd'
 import { Link } from 'dva/router'
+import './index.styl'
 
 const FormItem = Form.Item
+const TextArea = Input.TextArea
 
 class ProjectDetail extends React.Component {
     constructor(props) {
@@ -27,19 +29,16 @@ class ProjectDetail extends React.Component {
                 console.log('Received values of form: ', values)
             }
             // TODO
-            values.creator = {
-                name: 'admin',
-                id: 'admin'
-            }
+            values.userId = this.props.id ? this.props.id : 1
             if (!this.props.id) {
                 this.props.dispatch({
-                    type: 'modelsBoard/create',
+                    type: 'project/create',
                     payload: values
                 })
             } else {
                 values.id = this.props.id
                 this.props.dispatch({
-                    type: 'modelsBoard/modify',
+                    type: 'project/modify',
                     payload: values
                 })
             }
@@ -52,6 +51,9 @@ class ProjectDetail extends React.Component {
 
     render() {
         let {
+            project: {
+                list
+             },
             form: {
                 getFieldDecorator
             },
@@ -61,27 +63,38 @@ class ProjectDetail extends React.Component {
         } = this.props
         return (
             <div className='page-projectDetail'>
-                <Form onSubmit={this.handleSubmit}>
-                    <FormItem label={formatMessage({ id: 'userBoard.IDCard' })}>
-                        {getFieldDecorator('iDNumber', {
-                            // initialValue: list.iDNumber !== '' ? list.iDNumber : '',
-                            rules: [{
-                                required: true,
-                                message: formatMessage({ id: 'userBoard.enterID' })
-                            }]
-                        })(
-                            <Input placeholder={formatMessage({ id: 'userBoard.enterID' })} />
-                            )}
-                    </FormItem>
+                <Form onSubmit={this.handleSubmit} className='ui-formDetail'>
                     <FormItem label={formatMessage({ id: 'table.projectName' })}>
-                        {getFieldDecorator('projectName', {
-                            // initialValue: '',
+                        {getFieldDecorator('name', {
+                            initialValue: list.name !== '' ? list.name : '',
                             rules: [{
                                 required: true,
                                 message: formatMessage({ id: 'table.enterProjectName' })
                             }]
                         })(
                             <Input placeholder={formatMessage({ id: 'table.enterProjectName' })} />
+                            )}
+                    </FormItem>
+                    <FormItem label={formatMessage({ id: 'table.alias' })}>
+                        {getFieldDecorator('alias', {
+                            initialValue: list.alias !== '' ? list.alias : '',
+                            rules: [{
+                                required: true,
+                                message: formatMessage({ id: 'table.enterAlias' })
+                            }]
+                        })(
+                            <Input placeholder={formatMessage({ id: 'table.enterAlias' })} />
+                            )}
+                    </FormItem>
+                    <FormItem label={formatMessage({ id: 'table.description' })} className='textArea'>
+                        {getFieldDecorator('description', {
+                            initialValue: list.description !== '' ? list.description : '',
+                            rules: [{
+                                required: false,
+                                message: formatMessage({ id: 'table.enterDescription' })
+                            }]
+                        })(
+                            <TextArea autosize={{ minRows: 4, maxRows: 6 }} placeholder={formatMessage({ id: 'table.enterDescription' })} />
                             )}
                     </FormItem>
                     <FormItem className='ui-btnBar'>
@@ -103,6 +116,6 @@ class ProjectDetail extends React.Component {
     }
 }
 
-export default injectIntl(connect()(ProjectDetail), {
+export default injectIntl(connect(({ project }) => ({ project }))(Form.create()(ProjectDetail)), {
     withRef: true
 })
