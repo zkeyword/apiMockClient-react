@@ -8,9 +8,10 @@ import './index.styl'
 
 class projectList extends React.Component {
     deleteHandler = id => {
+        let userId = id
         this.props.dispatch({
             type: 'project/remove',
-            payload: id
+            payload: { id, userId }
         })
     }
 
@@ -33,7 +34,6 @@ class projectList extends React.Component {
                 formatMessage
             }
         } = this.props
-
         let columns = [
             {
                 title: formatMessage({ id: 'table.identifier' }),

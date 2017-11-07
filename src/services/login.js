@@ -37,6 +37,10 @@ export function sendMsg(values) {
     })
 }
 
+export function authInfo() {
+    return request('/v0.1/api/auth/')
+}
+
 export function checkMsg(values) {
     return request('/biz-message/v0.1/messages/sms/verifies', {
         method: 'POST',
