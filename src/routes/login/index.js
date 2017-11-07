@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'dva'
 import { Button, Form, Input } from 'antd'
 import { Link } from 'dva/router'
+import { passWord } from '../../utils/auth'
 import './index.styl'
 
 const FormItem = Form.Item
@@ -21,6 +22,7 @@ const Login = ({
             if (errors) {
                 return
             }
+            values.password = passWord(values.username, values.password)
             dispatch({ type: 'login/auth', payload: values })
         })
     }

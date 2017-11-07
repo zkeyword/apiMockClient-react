@@ -1,4 +1,5 @@
 var CryptoJS = require('crypto-js')
+let MD5 = require('md5.js')
 
 function randomCode() {
     let code = ''
@@ -39,4 +40,11 @@ export function getAuthorization(method, url, host, accessToken, macKey) {
 
     let strAuth = `MAC id="${accessToken}",nonce="${nonce}",mac="${mac}"`
     return strAuth
+}
+
+export function passWord(str1, str2) {
+    let handle = str => {
+        return new MD5().update(str).digest('hex')
+    }
+    return handle(`${str1.substring(0, 2)}${handle(str2)}${str1.substring((str1.length - 2))}123`) // md5(用户名前2位+md5(密码)+用户名后两位+123)
 }
