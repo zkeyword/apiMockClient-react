@@ -1,7 +1,6 @@
 import axios from 'axios'
 import storage from './storage'
-import { getAuthorization } from './auth'
-import { url, host } from '../config'
+import { url } from '../config'
 axios.defaults.withCredentials = true
 axios.defaults.baseURL = url
 axios.defaults.validateStatus = false
@@ -27,10 +26,10 @@ export default async function request(reqUrl, options = { method: 'GET' }) {
     delete axios.defaults.headers.common.Authorization
     if (!/\/api\/auth\/$/g.test(reqUrl)) {
         let accessToken = storage.get('accessToken')
-        let secret = storage.get('secret')
-        let fullUrl = url + reqUrl
-        console.log(1111, options.method, fullUrl, host, accessToken, secret)
-        axios.defaults.headers.common['Authorization'] = getAuthorization(options.method, fullUrl, host, accessToken, secret)
+        // let secret = storage.get('secret')
+        // let fullUrl = url + reqUrl
+        // console.log(1111, options.method, fullUrl, host, accessToken, secret)
+        axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
     }
     const response = await axios(reqUrl, options).then(checkStatus)
     return response
