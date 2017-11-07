@@ -2,12 +2,12 @@ import request from '../utils/request'
 import storage from '../utils/storage'
 
 export function login(values) {
-    return request('/uaa-service/v0.1/auth/tokens', {
+    return request('/v0.1/api/auth/', {
         method: 'POST',
         data: values
     }).then(res => {
         storage.set('accessToken', res.data.accessToken)
-        storage.set('secret', res.data.secret)
+        // storage.set('secret', res.data.secret)
         return res
     })
 }

@@ -53,38 +53,51 @@ class ProjectDetail extends React.Component {
     render() {
         let {
             form: {
-            getFieldDecorator
-        },
+                getFieldDecorator
+            },
             intl: {
                 formatMessage
             }
-    } = this.props
+        } = this.props
         return (
             <div className='page-projectDetail'>
-                <FormItem label={formatMessage({ id: 'table.projectName' })}>
-                    {getFieldDecorator('content', {
-                        initialValue: '',
-                        rules: [{
-                            required: true,
-                            message: formatMessage({ id: 'table.enterProjectName' })
-                        }]
-                    })(
-                        <Input />
-                        )}
-                </FormItem>
-                <FormItem className='ui-btnBar'>
-                    <Button type='primary' htmlType='submit'>
-                        {formatMessage({ id: 'button.submit' })}
-                    </Button>
-                    <Button type='primary' onClick={this.handleReset} className='reset-form'>
-                        {formatMessage({ id: 'button.reset' })}
-                    </Button>
-                    <Button type='primary' className='cancel-add'>
-                        <Link to='/modelsBoard'>
-                            {formatMessage({ id: 'button.cancel' })}
-                        </Link>
-                    </Button>
-                </FormItem>
+                <Form onSubmit={this.handleSubmit}>
+                    <FormItem label={formatMessage({ id: 'userBoard.IDCard' })}>
+                        {getFieldDecorator('iDNumber', {
+                            // initialValue: list.iDNumber !== '' ? list.iDNumber : '',
+                            rules: [{
+                                required: true,
+                                message: formatMessage({ id: 'userBoard.enterID' })
+                            }]
+                        })(
+                            <Input placeholder={formatMessage({ id: 'userBoard.enterID' })} />
+                            )}
+                    </FormItem>
+                    <FormItem label={formatMessage({ id: 'table.projectName' })}>
+                        {getFieldDecorator('projectName', {
+                            // initialValue: '',
+                            rules: [{
+                                required: true,
+                                message: formatMessage({ id: 'table.enterProjectName' })
+                            }]
+                        })(
+                            <Input placeholder={formatMessage({ id: 'table.enterProjectName' })} />
+                            )}
+                    </FormItem>
+                    <FormItem className='ui-btnBar'>
+                        <Button type='primary' htmlType='submit'>
+                            {formatMessage({ id: 'button.submit' })}
+                        </Button>
+                        <Button type='primary' onClick={this.handleReset} className='reset-form'>
+                            {formatMessage({ id: 'button.reset' })}
+                        </Button>
+                        <Button type='primary' className='cancel-add'>
+                            <Link to='/modelsBoard'>
+                                {formatMessage({ id: 'button.cancel' })}
+                            </Link>
+                        </Button>
+                    </FormItem>
+                </Form>
             </div>
         )
     }
