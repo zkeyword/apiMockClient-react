@@ -25,11 +25,10 @@ function checkStatus(response) {
  */
 export default async function request(reqUrl, options = { method: 'GET' }) {
     delete axios.defaults.headers.common.Authorization
-    if (!/\/api\/auth\/$/g.test(reqUrl)) {
+    if (!/\/auth\/tokens$|\/messages\/sms\/single$|\/users\/password$/g.test(reqUrl)) {
         let accessToken = storage.get('accessToken')
         let secret = storage.get('secret')
         let fullUrl = url + reqUrl
-        console.log(1111, options.method, fullUrl, host, accessToken, secret)
         axios.defaults.headers.common['Authorization'] = getAuthorization(options.method, fullUrl, host, accessToken, secret)
     }
     const response = await axios(reqUrl, options).then(checkStatus)
