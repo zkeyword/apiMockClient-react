@@ -39,7 +39,7 @@ export default {
                 type: 'save',
                 payload: data
             })
-            yield put(routerRedux.push(`/device`))
+            yield put(routerRedux.push(`/project`))
         },
         *logout({ payload }, { call, put }) {
             const { data } = yield call(loginService.logout)

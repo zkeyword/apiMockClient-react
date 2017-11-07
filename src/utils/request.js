@@ -25,7 +25,7 @@ function checkStatus(response) {
  */
 export default async function request(reqUrl, options = { method: 'GET' }) {
     delete axios.defaults.headers.common.Authorization
-    if (!/\/auth\/tokens$/g.test(reqUrl)) {
+    if (!/\/api\/auth\/$/g.test(reqUrl)) {
         let accessToken = storage.get('accessToken')
         let secret = storage.get('secret')
         let fullUrl = url + reqUrl

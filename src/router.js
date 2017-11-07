@@ -27,11 +27,6 @@ function RouterConfig({ history, app }) {
             models: () => [import('./models/login')],
             component: () => import('./routes/login/forget')
         },
-        {
-            path: '/login/resetting',
-            models: () => [import('./models/login')],
-            component: () => import('./routes/login/resetting')
-        },
         /* 项目管理 */
         {
             path: '/project',
