@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Switch, Route } from 'dva/router'
+import { Router, Switch, Route, Redirect } from 'dva/router'
 import dynamic from 'dva/dynamic'
 // import storage from './utils/storage'
 import FormatMessage from './components/MainLayout/formatMessage'
@@ -12,10 +12,6 @@ function RouterConfig({ history, app }) {
     // let accessToken = storage.get('Authorization')
 
     const routes = [
-        {
-            path: '/',
-            component: () => import('./routes/home/')
-        },
         /* 登录 */
         {
             path: '/login',
@@ -39,7 +35,7 @@ function RouterConfig({ history, app }) {
             component: () => import('./routes/project/detail')
         },
         {
-            path: '/product/detail/:id',
+            path: '/project/detail/:id',
             models: () => [import('./models/project')],
             component: () => import('./routes/project/detail')
         },
@@ -67,7 +63,7 @@ function RouterConfig({ history, app }) {
             <Router history={history}>
                 <Switch>
                     {/* <Route path='/modelsBoard/detail(/:id)' component={modelsBoardDetail} /> */}
-                    {/* <Route exact path='/' render={() => (<Redirect to='/home' />)} /> */}
+                    <Route exact path='/' render={() => (<Redirect to='/project' />)} />
                     {
                         routes.map(({ path, exact, ...dynamics }, key) => (
                             <Route key={key}
