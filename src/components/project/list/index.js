@@ -93,7 +93,7 @@ class projectList extends React.Component {
                                         <Popconfirm title={formatMessage({ id: 'table.confirmName' })} onConfirm={this.deleteHandler.bind(null, items.id)}>
                                             <Icon type='delete' />
                                         </Popconfirm>
-                                        <Link to={`/product/detail/${items.id}`}><Icon type='edit' /></Link>
+                                        <Link to={`/project/detail/${items.id}`}><Icon type='edit' /></Link>
                                     </div>
                                     <div className='item-name'>
                                         <p>项目名：</p>
