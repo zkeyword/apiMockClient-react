@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'dva'
 import { injectIntl } from 'react-intl'
 import './index.styl'
-import { Link } from 'dva/router'
 import { Button } from 'antd'
 import { ReactMde, ReactMdeCommands } from 'react-mde'
 import {
@@ -117,9 +116,7 @@ class InterfaceList extends React.Component {
         return (
             <div className='container'>
                 <div className='ui-btnBar'>
-                    <Link to='/modelsBoard/detail'>
-                        <Button type='primary'>{formatMessage({ id: 'button.add' })}</Button>
-                    </Link>
+                    <Button type='primary'>{formatMessage({ id: 'button.save' })}</Button>
                 </div>
                 <ReactMde
                     textareaId='ta1'
