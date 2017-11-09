@@ -42,18 +42,8 @@ function RouterConfig({ history, app }) {
         /* 接口管理 */
         {
             path: '/interfaces/:id',
-            // models: () => [import('./models/interfaces')],
+            models: () => [import('./models/interfaces')],
             component: () => import('./routes/interfaces/')
-        },
-        {
-            path: '/interfaces/:id/detail',
-            // models: () => [import('./models/interfaces')],
-            component: () => import('./routes/interfaces/detail')
-        },
-        {
-            path: '/interfaces/:id/detail/:id',
-            // models: () => [import('./models/interfaces')],
-            component: () => import('./routes/interfaces/detail')
         }
     ]
 

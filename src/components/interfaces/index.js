@@ -2,13 +2,13 @@ import React from 'react'
 import { connect } from 'dva'
 import { injectIntl } from 'react-intl'
 import './index.styl'
-import { Button } from 'antd'
+import { Form, Button } from 'antd'
 import { ReactMde, ReactMdeCommands } from 'react-mde'
 import {
     insertText
 } from './ReactMdeTextHelper'
 
-export function getSurroundingWord(text, position) {
+function getSurroundingWord(text, position) {
     if (!text) throw Error('Argument \'text\' should be truthy')
 
     const isWordDelimiter = c => c === ' ' || c.charCodeAt(0) === 10
@@ -41,21 +41,47 @@ export function getSurroundingWord(text, position) {
 }
 
 class InterfaceList extends React.Component {
+    constructor(props) {
+        super(props)
+        this.props.dispatch({
+            type: 'interfaces/list',
+            payload: {
+                projectId: this.props.id
+            }
+        })
+    }
+
     state = {
-        mdeValue: { text: '', selection: null }
+        isLoad: false,
+        mdeValue: {
+            text: '',
+            selection: null
+        }
     }
 
     handleValueChange(value) {
-        this.setState({ mdeValue: value })
+        this.setState({ isLoad: true, mdeValue: value })
+    }
+
+    componentDidUpdate() {
+        let list = this.props.interfaces.list
+        if (list.length && !this.state.isLoad) {
+            this.handleValueChange({
+                text: list[0].content
+            })
+        }
     }
 
     render() {
         let {
+            interfaces: {
+                list
+            },
             intl: {
                 formatMessage
             }
-            } = this.props
-        // get the default commands, you can pick individual commands if you like, or add your own
+        } = this.props
+
         let commands = ReactMdeCommands.getDefaultCommands()
         let arr = [
             {
@@ -128,25 +154,39 @@ class InterfaceList extends React.Component {
             }
         ]
 
+        // console.log(commands, arr)
         commands.splice(0, 3, arr)
-        console.log(commands)
 
         return (
             <div className='container'>
-                <div className='ui-btnBar'>
-                    <Button type='primary'>{formatMessage({ id: 'button.save' })}</Button>
+                <div className='lt-left'>
+                    {
+                        list.map((item, i) => {
+                            return (
+                                <div key={i}>
+                                    接口名：{item.name}
+                                </div>
+                            )
+                        })
+                    }
                 </div>
-                <ReactMde
-                    textareaId='ta1'
-                    textareaName='ta1'
-                    value={this.state.mdeValue}
-                    onChange={this.handleValueChange.bind(this)}
-                    commands={commands} />
+                <div className='lt-right'>
+                    <div className='ui-btnBar'>
+                        <Button type='primary'>{formatMessage({ id: 'button.save' })}</Button>
+                    </div>
+                    <ReactMde
+                        textareaId='ta1'
+                        textareaName='ta1'
+                        value={this.state.mdeValue}
+                        onChange={this.handleValueChange.bind(this)}
+                        commands={commands}
+                    />
+                </div>
             </div>
         )
     }
 }
 
-export default injectIntl(connect()(InterfaceList), {
+export default injectIntl(connect(({ interfaces }) => ({ interfaces }))(Form.create()(InterfaceList)), {
     withRef: true
 })

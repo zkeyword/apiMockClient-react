@@ -1,16 +1,10 @@
 import request from '../utils/request'
 
-export function list({ page, pageSize, projectId }) {
-    return request(`/v0.1/api/interfaces`, {
-        method: 'GET',
-        page,
-        pageSize,
-        projectId
-    })
+export function list({ projectId }) {
+    return request(`/v0.1/api/interfaces/${projectId}`)
 }
 
 export function create(values) {
-    console.log(values)
     return request(`/v0.1/api/interfaces`, {
         method: 'POST',
         data: values
@@ -26,7 +20,6 @@ export function modify(data) {
 }
 
 export function remove(values) {
-    console.log(values)
     return request(`/v0.1/api/interfaces/${values.id}`, {
         method: 'DELETE',
         data: values

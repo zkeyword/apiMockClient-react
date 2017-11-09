@@ -7,19 +7,12 @@ export function login(values) {
         data: values
     }).then(res => {
         storage.set('accessToken', res.data.accessToken)
-        // storage.set('secret', res.data.secret)
+        storage.set('userId', res.data.userId)
         return res
     })
 }
 
 export function logout() {
-    // let token = storage.get('accessToken')
     storage.remove('accessToken')
-    // return request(`/uaa-service/v0.1/auth/tokens/${token}`, {
-    //     method: 'DELETE'
-    // }).then(res => {
-    //     storage.remove('accessToken')
-    //     storage.remove('secret')
-    //     return res
-    // })
+    storage.remove('userId')
 }

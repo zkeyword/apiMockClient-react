@@ -4,13 +4,13 @@ import { Breadcrumb } from 'antd'
 import { injectIntl } from 'react-intl'
 import { Link } from 'dva/router'
 import MainLayout from '../../components/MainLayout/MainLayout'
-// import ProductSearch from '../../components/Product/search'
-import InterfacesList from '../../components/interfaces/list/index.js'
+import InterfacesList from '../../components/interfaces'
 
 class Interfaces extends React.Component {
     render() {
         let {
             location,
+            match: { params },
             intl: {
                 formatMessage
             }
@@ -24,8 +24,7 @@ class Interfaces extends React.Component {
                             <Breadcrumb.Item>{formatMessage({ id: 'nav.interface' })}</Breadcrumb.Item>
                         </Breadcrumb>
                     </div>
-                    {/* <ProductSearch /> */}
-                    <InterfacesList />
+                    <InterfacesList {...params} />
                 </div>
             </MainLayout>
         )

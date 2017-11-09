@@ -1,16 +1,13 @@
-import * as projectService from '../services/project'
+import * as interfacesService from '../services/interfaces'
 import { message } from 'antd'
 import { routerRedux } from 'dva/router'
 
 let formatMessage = window.formatMessage
 
 export default {
-    namespace: 'project',
+    namespace: 'interfaces',
     state: {
-        list: [],
-        page: 1,
-        total: 0,
-        data: {}
+        list: []
     },
     reducers: {
         save(state, { payload: date }) {
@@ -19,7 +16,7 @@ export default {
     },
     effects: {
         *create({ payload: values }, { call, put }) {
-            const data = yield call(projectService.create, values)
+            const data = yield call(interfacesService.create, values)
             if (data) {
                 let promise = () => new Promise((resolve, reject) => {
                     message.success(formatMessage({ id: 'models.submission' }), 1, () => {
@@ -27,13 +24,13 @@ export default {
                     })
                 })
                 yield call(promise)
-                yield put(routerRedux.push(`/project`))
+                yield put(routerRedux.push(`/interfaces`))
             } else {
                 message.success(formatMessage({ id: 'models.fails' }))
             }
         },
         *modify({ payload: values }, { call, put }) {
-            let { data } = yield call(projectService.modify, values)
+            let { data } = yield call(interfacesService.modify, values)
             if (data) {
                 let promise = () => new Promise((resolve, reject) => {
                     message.success(formatMessage({ id: 'models.submission' }), 1, () => {
@@ -41,13 +38,13 @@ export default {
                     })
                 })
                 yield call(promise)
-                yield put(routerRedux.push(`/project`))
+                yield put(routerRedux.push(`/interfaces`))
             } else {
                 message.success(formatMessage({ id: 'models.fails' }))
             }
         },
         *remove({ payload: { id, userId } }, { call, put }) {
-            let { data } = yield call(projectService.remove, { id, userId })
+            let { data } = yield call(interfacesService.remove, { id, userId })
             console.log(data)
             if (data) {
                 let promise = () => new Promise((resolve, reject) => {
@@ -62,7 +59,7 @@ export default {
             }
         },
         *fetch({ payload: id }, { call, put }) {
-            const { data } = yield call(projectService.fetch, { id })
+            const { data } = yield call(interfacesService.fetch, { id })
             console.log(data)
             if (data) {
                 yield put({
@@ -75,15 +72,13 @@ export default {
                 yield put({ type: 'reset' })
             }
         },
-        *list({ payload: { page = 1, pageSize = 0, userId = 1 } }, { call, put }) {
-            const { data } = yield call(projectService.list, { page, pageSize, userId })
+        *list({ payload }, { call, put }) {
+            const { data } = yield call(interfacesService.list, payload)
             if (data) {
                 yield put({
                     type: 'save',
                     payload: {
-                        list: data,
-                        total: 10,
-                        page: 1
+                        list: data
                     }
                 })
             } else {
@@ -102,19 +97,7 @@ export default {
             yield put({
                 type: 'save',
                 payload: {
-                    list: [],
-                    page: 1,
-                    total: 10,
-                    data: {}
-                }
-            })
-        }
-    },
-    subscriptions: {
-        setup({ dispatch, history }) {
-            return history.listen(({ pathname }) => {
-                if (pathname === '/project') {
-                    dispatch({ type: 'list', payload: {} })
+                    list: []
                 }
             })
         }

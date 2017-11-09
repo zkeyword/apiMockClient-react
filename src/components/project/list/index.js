@@ -25,11 +25,8 @@ class projectList extends React.Component {
     render() {
         let {
             project: {
-            list: dataSource
-            // loading,
-            // total,
-            // page: current
-        },
+                list: dataSource
+            },
             intl: {
                 formatMessage
             }
@@ -97,7 +94,7 @@ class projectList extends React.Component {
                                     </div>
                                     <div className='item-name'>
                                         <p>项目名：</p>
-                                        <Link to={`/interface/${items.id}`}><p className='item-interface'>{items.name}</p></Link>
+                                        <Link to={`/interfaces/${items.id}`}><p className='item-interface'>{items.name}</p></Link>
                                     </div>
                                     <div className='item-description'>
                                         <p>描述：</p>

@@ -1,6 +1,7 @@
 import * as projectService from '../services/project'
 import { message } from 'antd'
 import { routerRedux } from 'dva/router'
+import storage from '../utils/storage'
 
 let formatMessage = window.formatMessage
 
@@ -75,7 +76,8 @@ export default {
                 yield put({ type: 'reset' })
             }
         },
-        *list({ payload: { page = 1, pageSize = 0, userId = 1 } }, { call, put }) {
+        *list({ payload: { page = 1, pageSize = 0 } }, { call, put }) {
+            const userId = storage.get('userId')
             const { data } = yield call(projectService.list, { page, pageSize, userId })
             if (data) {
                 yield put({

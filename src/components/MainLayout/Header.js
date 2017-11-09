@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu, Form, Select } from 'antd'
+import { Form, Select } from 'antd'
 import { injectIntl } from 'react-intl'
 import { Link } from 'dva/router'
 import language from '../../utils/language'
@@ -38,18 +38,6 @@ class Header extends React.Component {
         return (
             <div className='lt-header' >
                 <Link className='logo' to='/project' title='apiMockClient' />
-                <Menu
-                    className='nav'
-                    selectedKeys={this.current(0)}
-                    mode='horizontal'
-                >
-                    {/* <Menu.Item key='project'>
-                        <Link to='/project'>{formatMessage({ id: 'nav.project' })}</Link>
-                    </Menu.Item> */}
-                    <Menu.Item key='interfaces'>
-                        <Link to='/interfaces/:id'>{formatMessage({ id: 'nav.interface' })}</Link>
-                    </Menu.Item>
-                </Menu>
                 <div className='operating'>
                     <span>
                         {formatMessage({ id: 'operating.welcome' })}，admin | <Link to='/login'>{formatMessage({ id: 'operating.logout' })}</Link>

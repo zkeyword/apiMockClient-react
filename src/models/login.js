@@ -49,6 +49,7 @@ export default {
                     if (storage.get('accessToken')) {
                         dispatch({ type: 'logout' })
                         storage.remove('accessToken')
+                        storage.remove('userId')
                     }
                 }
             })

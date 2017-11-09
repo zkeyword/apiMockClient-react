@@ -10,7 +10,6 @@ export default {
     effects: {
         *auth({ payload }, { call, put }) {
             let accessToken = storage.get('accessToken')
-            console.log(accessToken)
             if (!accessToken) {
                 yield put(routerRedux.push({ pathname: `/login` }))
             }
