@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'dva'
-import { Button, Icon, Table, Pagination, Popconfirm } from 'antd'
+import { Button, Icon, Popconfirm } from 'antd'
 import { Link } from 'dva/router'
 import { injectIntl } from 'react-intl'
 // import moment from 'moment'
