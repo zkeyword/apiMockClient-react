@@ -1,5 +1,58 @@
 .page-project
+    width: 100%
+    height: calc( 100% - 50px )
     padding: 20px 40px
+    box-sizing: border-box
 
     .addButton
         margin-bottom: 20px 
+
+    .ui-tableList
+        width: 100%
+        height: calc( 100% - 45px )
+        overflow-y: auto
+
+        .item
+            width: 180px
+            height: 200px
+            margin: 0 8px 8px 0px 
+            float: left
+            background: rgba(#000,.05)
+
+            .item-ico
+                width: 100%
+                height: 30px
+                padding-top: 8px
+                background: rgba(#108ff9,.08)
+
+                .anticon-edit,.anticon-delete
+                    margin: 0 10px
+                    font-size: 16px
+                    color: #000
+                    float: right
+                    cursor: pointer
+
+            .item-name,.item-description
+
+                .item-interface
+                    overflow: hidden
+                    text-overflow:ellipsis
+                    white-space: nowrap
+                    cursor: pointer
+
+                p
+                    font-size: 14px
+                    padding: 10px
+                    padding-bottom: 0px
+                    word-wrap:break-word
+
+                    &:last-child
+                        padding: 0
+                        text-align: center
+
+                    &.item-description-size
+                        padding: 0 10px
+                        text-indent:2em
+                        height:80px
+                        text-align: left
+                        overflow: hidden
