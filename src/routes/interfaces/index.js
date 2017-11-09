@@ -4,10 +4,10 @@ import { Breadcrumb } from 'antd'
 import { injectIntl } from 'react-intl'
 import { Link } from 'dva/router'
 import MainLayout from '../../components/MainLayout/MainLayout'
-import ProductSearch from '../../components/Product/search'
-import UsersList from '../../components/Product/list'
+// import ProductSearch from '../../components/Product/search'
+import InterfacesList from '../../components/interfaces/list/index.js'
 
-class Product extends React.Component {
+class Interfaces extends React.Component {
     render() {
         let {
             location,
@@ -21,18 +21,17 @@ class Product extends React.Component {
                     <div className='ui-breadcrumb'>
                         <Breadcrumb separator='&gt;'>
                             <Breadcrumb.Item><Link to='/'>{formatMessage({ id: 'nav.home' })}</Link></Breadcrumb.Item>
-                            <Breadcrumb.Item>{formatMessage({ id: 'nav.device' })}</Breadcrumb.Item>
-                            <Breadcrumb.Item>{formatMessage({ id: 'nav.product' })}</Breadcrumb.Item>
+                            <Breadcrumb.Item>{formatMessage({ id: 'nav.interface' })}</Breadcrumb.Item>
                         </Breadcrumb>
                     </div>
-                    <ProductSearch />
-                    <UsersList />
+                    {/* <ProductSearch /> */}
+                    <InterfacesList />
                 </div>
             </MainLayout>
         )
     }
 }
 
-export default injectIntl(connect()(Product), {
+export default injectIntl(connect()(Interfaces), {
     withRef: true
 })

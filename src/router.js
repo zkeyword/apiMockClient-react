@@ -41,19 +41,19 @@ function RouterConfig({ history, app }) {
         },
         /* 接口管理 */
         {
-            path: '/interface/:id',
-            // models: () => [import('./models/interface')],
-            component: () => import('./routes/interface/')
+            path: '/interfaces/:id',
+            // models: () => [import('./models/interfaces')],
+            component: () => import('./routes/interfaces/')
         },
         {
-            path: '/interface/:id/detail',
-            // models: () => [import('./models/interface')],
-            component: () => import('./routes/interface/detail')
+            path: '/interfaces/:id/detail',
+            // models: () => [import('./models/interfaces')],
+            component: () => import('./routes/interfaces/detail')
         },
         {
-            path: '/interface/:id/detail/:id',
-            // models: () => [import('./models/interface')],
-            component: () => import('./routes/interface/detail')
+            path: '/interfaces/:id/detail/:id',
+            // models: () => [import('./models/interfaces')],
+            component: () => import('./routes/interfaces/detail')
         }
     ]
 

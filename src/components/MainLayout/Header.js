@@ -46,8 +46,8 @@ class Header extends React.Component {
                     {/* <Menu.Item key='project'>
                         <Link to='/project'>{formatMessage({ id: 'nav.project' })}</Link>
                     </Menu.Item> */}
-                    <Menu.Item key='interface'>
-                        <Link to='/interface/:id'>{formatMessage({ id: 'nav.interface' })}</Link>
+                    <Menu.Item key='interfaces'>
+                        <Link to='/interfaces/:id'>{formatMessage({ id: 'nav.interface' })}</Link>
                     </Menu.Item>
                 </Menu>
                 <div className='operating'>

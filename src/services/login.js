@@ -13,37 +13,13 @@ export function login(values) {
 }
 
 export function logout() {
-    let token = storage.get('accessToken')
-    return request(`/uaa-service/v0.1/auth/tokens/${token}`, {
-        method: 'DELETE'
-    }).then(res => {
-        storage.remove('accessToken')
-        storage.remove('secret')
-        return res
-    })
-}
-
-export function reset(values) {
-    return request('/uaa-service/v0.1/users/password', {
-        method: 'PUT',
-        data: values
-    })
-}
-
-export function sendMsg(values) {
-    return request('/biz-message/v0.1/messages/sms/single', {
-        method: 'POST',
-        data: values
-    })
-}
-
-export function authInfo() {
-    return request('/v0.1/api/auth/')
-}
-
-export function checkMsg(values) {
-    return request('/biz-message/v0.1/messages/sms/verifies', {
-        method: 'POST',
-        data: values
-    })
+    // let token = storage.get('accessToken')
+    storage.remove('accessToken')
+    // return request(`/uaa-service/v0.1/auth/tokens/${token}`, {
+    //     method: 'DELETE'
+    // }).then(res => {
+    //     storage.remove('accessToken')
+    //     storage.remove('secret')
+    //     return res
+    // })
 }

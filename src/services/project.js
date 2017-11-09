@@ -10,7 +10,6 @@ export function list({ page, pageSize, userId }) {
 }
 
 export function create(values) {
-    console.log(values)
     return request(`/v0.1/api/project`, {
         method: 'POST',
         data: values
@@ -18,7 +17,6 @@ export function create(values) {
 }
 
 export function modify(data) {
-    console.log(data)
     return request(`/v0.1/api/project/${data.id}`, {
         method: 'PUT',
         data
@@ -26,7 +24,6 @@ export function modify(data) {
 }
 
 export function remove(values) {
-    console.log(values)
     return request(`/v0.1/api/project/${values.id}`, {
         method: 'DELETE',
         data: values
