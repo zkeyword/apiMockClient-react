@@ -9,7 +9,7 @@ import { message, LocaleProvider } from 'antd'
 import router from './router'
 import './assets/styles/index.styl'
 import enUS from 'antd/lib/locale-provider/en_US'
-import auth from './models/auth'
+// import auth from './models/auth'
 
 // 1. Initialize
 const app = dva({
@@ -29,7 +29,7 @@ const app = dva({
 app.use(createLoading())
 
 // 3. Model
-app.model(auth)
+// app.model(auth)
 
 // 4. Router
 app.router(router)
