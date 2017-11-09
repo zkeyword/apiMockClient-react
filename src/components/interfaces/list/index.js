@@ -113,12 +113,12 @@ class InterfaceList extends React.Component {
                 icon: 'bold',
                 tooltip: 'Add bold text',
                 execute: function (text, selection) {
-                    if (text && text.length && selection[0] == selection[1]) {
+                    if (text && text.length && selection[0] === selection[1]) {
                         // the user is pointing to a word
                         selection = getSurroundingWord(text, selection[0]).position
                     }
                     // the user is selecting a word section
-                    var { newText, insertionLength } = insertText(text, '**', selection[0]);
+                    var { newText, insertionLength } = insertText(text, '**', selection[0])
                     newText = insertText(newText, '**', selection[1] + insertionLength).newText
                     return {
                         text: newText,
