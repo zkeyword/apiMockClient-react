@@ -1,6 +1,6 @@
 import request from '../utils/request'
 
-export function list({ projectId }) {
+export function list(projectId) {
     return request(`/v0.1/api/interfaces/${projectId}`)
 }
 
@@ -12,7 +12,6 @@ export function create(values) {
 }
 
 export function modify(data) {
-    console.log(data)
     return request(`/v0.1/api/interfaces/${data.id}`, {
         method: 'PUT',
         data
@@ -28,4 +27,8 @@ export function remove(values) {
 
 export function fetch({ id }) {
     return request(`/v0.1/api/interfaces/${id}`)
+}
+
+export function preview(id) {
+    return request(`/v0.1/api/interfaces/preview/${id}`)
 }

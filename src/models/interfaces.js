@@ -7,7 +7,8 @@ let formatMessage = window.formatMessage
 export default {
     namespace: 'interfaces',
     state: {
-        list: []
+        list: [],
+        preview: ''
     },
     reducers: {
         save(state, { payload: date }) {
@@ -60,7 +61,6 @@ export default {
         },
         *fetch({ payload: id }, { call, put }) {
             const { data } = yield call(interfacesService.fetch, { id })
-            console.log(data)
             if (data) {
                 yield put({
                     type: 'save',
@@ -72,13 +72,17 @@ export default {
                 yield put({ type: 'reset' })
             }
         },
-        *list({ payload }, { call, put }) {
-            const { data } = yield call(interfacesService.list, payload)
+        *list({ payload: { id } }, { call, put }) {
+            const { data } = yield call(interfacesService.list, id)
+            // const { data: preview } = yield call(interfacesService.preview, id)
+            // console.log(preview)
             if (data) {
                 yield put({
                     type: 'save',
                     payload: {
                         list: data
+                        // ,
+                        // preview
                     }
                 })
             } else {

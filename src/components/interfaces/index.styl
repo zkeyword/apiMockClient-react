@@ -12,21 +12,29 @@
     .lt-right
         flex: 1
 
+        .ui-btnBar
+            display: inline-block
+
     .react-mde
         height: 100%
         margin: 0 auto
         text-align: center
 
         .mde-header
-            line-height: 50px
-            margin-top: 50px
             text-align: left
+            margin: 12px
             ul
-                display: inline-block
+                display: block
+                margin-bottom: 12px
 
             li
-                width: 50px
+                margin: 0 8px
                 position: relative 
+                display: inline-block
+
+                button 
+                    width: 100%
+                    margin: 0 5px
 
                 .fa-header
                     width: 30px
@@ -48,16 +56,56 @@
                 width: 100%
                 height: 100%
 
-        .mde-preview
-            border: 1px solid #c0c4c6 
-            width: 45%  
-            float: right
-            height: 70%  
-            text-align: left   
 
         .mde-preview
-            display: inline-block  
+            display: none
 
         .mde-help
-            display: none   
+            display: none  
 
+        .preview
+            float: left 
+
+
+        .fa-string
+            &:before
+                content: 'String'
+
+        .fa-number
+            &:before
+                content: 'Number'
+
+        .fa-object
+            &:before
+                content: 'Object'
+
+        .fa-array
+            &:before
+                content: 'Array'
+
+         .fa-boolean
+            &:before
+                content: 'Boolean'
+
+        .fa-image
+            &:before
+                content: 'Iamge'
+
+        .fa-date
+            &:before
+                content: 'Date'
+
+        .fa-post
+            &:before
+                content: 'POST'
+
+        .fa-get
+            &:before
+                content: 'GET'
+
+        .fa-clear
+            &:before
+                content: '清除'        
+
+    .tabContent
+        display: inline-block            
