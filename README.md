@@ -78,3 +78,7 @@ index.js => router => model => effect => reducers => state
 
         .lt-footer
             height: 212px
+
+## 相关文档
+https://github.com/JedWatson/react-codemirror
+https://codemirror.net/doc/manual.html#api
