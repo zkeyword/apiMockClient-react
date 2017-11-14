@@ -2,9 +2,12 @@ import React from 'react'
 import { connect } from 'dva'
 import { injectIntl } from 'react-intl'
 import './index2.styl'
-import { Form } from 'antd'
+import { Form, Button } from 'antd'
 import CodeMirror from 'react-codemirror'
+import { execCommand } from './mark.js'
 import 'codemirror/mode/markdown/markdown'
+// import { Link } from 'dva/router'
+const FormItem = Form.Item
 
 class InterfaceList extends React.Component {
     constructor(props) {
@@ -38,157 +41,6 @@ class InterfaceList extends React.Component {
             })
         }
     }
-
-    execCommand(data) {
-        let editor = this.refs.editor.getCodeMirror()
-        let obj = {
-            mock: {
-                'String': '"string|1-10": "★"',
-                'Number': '"number|1-100": 100',
-                'Boolean': '"boolean|1-2": true',
-                'Object': `
-"object|2": {
-    "310000": "上海市",
-    "320000": "江苏省",
-    "330000": "浙江省",
-    "340000": "安徽省"
-}
-                `,
-                'Array': `
-"array|1-10": [
-    {
-        "name|+1": [
-        "Hello",
-        "Mock.js",
-        "!"
-        ]
-    }
-]
-                `,
-                'Date': '@date("yyyy-MM-dd")',
-                'Image': '@image("200x100")'
-            },
-            api: {
-                'GET': `
-##  添加项目 [POST /v0.1/api/project]
-
-+ Request (application/json)
-
-        {
-            "name": "boss系统", // 项目名
-            "alias": "boss", // 项目别名
-            "description": "apiMock", // 描述
-            "userId": "0" // 用户id
-        }
-
-+ Response 200
-
-        {
-            "id": 3,
-            "name": "boss系统",
-            "alias": "boss",
-            "description": "apiMock",
-            "updatedAt": "2017-10-29T02:17:12.553Z",
-            "createdAt": "2017-10-29T02:17:12.553Z"
-        }                
-                `,
-                'POST': `
-##  添加项目 [POST /v0.1/api/project]
-
-+ Request (application/json)
-
-        {
-            "name": "boss系统", // 项目名
-            "alias": "boss", // 项目别名
-            "description": "apiMock", // 描述
-            "userId": "0" // 用户id
-        }
-
-+ Response 200
-
-        {
-            "id": 3,
-            "name": "boss系统",
-            "alias": "boss",
-            "description": "apiMock",
-            "updatedAt": "2017-10-29T02:17:12.553Z",
-            "createdAt": "2017-10-29T02:17:12.553Z"
-        }               
-                `,
-                'DELETE': `
-##  添加项目 [POST /v0.1/api/project]
-
-+ Request (application/json)
-
-        {
-            "name": "boss系统", // 项目名
-            "alias": "boss", // 项目别名
-            "description": "apiMock", // 描述
-            "userId": "0" // 用户id
-        }
-
-+ Response 200
-
-        {
-            "id": 3,
-            "name": "boss系统",
-            "alias": "boss",
-            "description": "apiMock",
-            "updatedAt": "2017-10-29T02:17:12.553Z",
-            "createdAt": "2017-10-29T02:17:12.553Z"
-        }               
-                `,
-                'PUT': `
-##  添加项目 [POST /v0.1/api/project]
-
-+ Request (application/json)
-
-        {
-            "name": "boss系统", // 项目名
-            "alias": "boss", // 项目别名
-            "description": "apiMock", // 描述
-            "userId": "0" // 用户id
-        }
-
-+ Response 200
-
-        {
-            "id": 3,
-            "name": "boss系统",
-            "alias": "boss",
-            "description": "apiMock",
-            "updatedAt": "2017-10-29T02:17:12.553Z",
-            "createdAt": "2017-10-29T02:17:12.553Z"
-        }               
-                `,
-                'PATCH': `
-##  添加项目 [POST /v0.1/api/project]
-
-+ Request (application/json)
-
-        {
-            "name": "boss系统", // 项目名
-            "alias": "boss", // 项目别名
-            "description": "apiMock", // 描述
-            "userId": "0" // 用户id
-        }
-
-+ Response 200
-
-        {
-            "id": 3,
-            "name": "boss系统",
-            "alias": "boss",
-            "description": "apiMock",
-            "updatedAt": "2017-10-29T02:17:12.553Z",
-            "createdAt": "2017-10-29T02:17:12.553Z"
-        } 
-                `
-            }
-        }
-        this.insertString(editor, obj[data.type][data.value])
-    }
-
     insertTextAtCursor(editor, data) {
         var doc = editor.getDoc()
         var cursor = doc.getCursor()
@@ -228,6 +80,7 @@ class InterfaceList extends React.Component {
                 formatMessage
             }
         } = this.props
+        console.log(list)
         let options = {
             indentUnit: 4,
             tabSize: 4,
@@ -236,35 +89,53 @@ class InterfaceList extends React.Component {
         }
         console.log(preview, formatMessage)
         return (
-            <div className='container'>
+            <div className='wrap'>
                 <div className='lt-left'>
-                    {
-                        list.map((item, i) => {
-                            return (
-                                <div key={i}>
-                                    接口名：{item.name}
-                                </div>
-                            )
-                        })
-                    }
+                    <div> 接口名：
+                {
+                            list.map((item, i) => {
+                                return (
+                                    <div key={i}>
+                                        {item.name}
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+
                 </div>
-                <div>
-                    <div onClick={this.execCommand.bind(this, { type: 'mock', value: 'String' })}>String</div>
-                    <div onClick={this.execCommand.bind(this, { type: 'mock', value: 'Number' })}>Number</div>
-                    <div onClick={this.execCommand.bind(this, { type: 'mock', value: 'Boolean' })}>Boolean</div>
-                    <div onClick={this.execCommand.bind(this, { type: 'mock', value: 'Array' })}>Array</div>
-                    <div onClick={this.execCommand.bind(this, { type: 'mock', value: 'Object' })}>Object</div>
-                    <div onClick={this.execCommand.bind(this, { type: 'mock', value: 'Image' })}>Image</div>
-                    <div onClick={this.execCommand.bind(this, { type: 'mock', value: 'Date' })}>Date</div>
+                <div className='container'>
+                    <Form>
+                        <FormItem className='ui-btnBar'>
+                            <Button type='primary' htmlType='submit'>
+                                添加
+                        </Button>
+                            <Button type='danger' onClick={this.handleReset} className='deleColor'>
+                                删除
+                        </Button>
+                            <Button type='primary' className='cancel-add'>
+                                保存
+                        </Button>
+                        </FormItem>
+                    </Form>
+                    <div className='data_style'>
+                        <div onClick={execCommand.bind(this, { type: 'mock', value: 'String' })}>String</div>
+                        <div onClick={execCommand.bind(this, { type: 'mock', value: 'Number' })}>Number</div>
+                        <div onClick={execCommand.bind(this, { type: 'mock', value: 'Boolean' })}>Boolean</div>
+                        <div onClick={execCommand.bind(this, { type: 'mock', value: 'Array' })}>Array</div>
+                        <div onClick={execCommand.bind(this, { type: 'mock', value: 'Object' })}>Object</div>
+                        <div onClick={execCommand.bind(this, { type: 'mock', value: 'Image' })}>Image</div>
+                        <div onClick={execCommand.bind(this, { type: 'mock', value: 'Date' })}>Date</div>
+                    </div>
+                    <div className='data_style'>
+                        <div onClick={execCommand.bind(this, { type: 'api', value: 'GET' })}>GET</div>
+                        <div onClick={execCommand.bind(this, { type: 'api', value: 'POST' })}>POST</div>
+                        <div onClick={execCommand.bind(this, { type: 'api', value: 'DELETE' })}>DELETE</div>
+                        <div onClick={execCommand.bind(this, { type: 'api', value: 'PUT' })}>PUT</div>
+                        <div onClick={execCommand.bind(this, { type: 'api', value: 'PATCH' })}>PATCH</div>
+                    </div>
+                    <CodeMirror ref='editor' value={this.state.code} onChange={this.updateCode} options={options} />
                 </div>
-                <div>
-                    <div onClick={this.execCommand.bind(this, { type: 'api', value: 'GET' })}>GET</div>
-                    <div onClick={this.execCommand.bind(this, { type: 'api', value: 'POST' })}>POST</div>
-                    <div onClick={this.execCommand.bind(this, { type: 'api', value: 'DELETE' })}>DELETE</div>
-                    <div onClick={this.execCommand.bind(this, { type: 'api', value: 'PUT' })}>PUT</div>
-                    <div onClick={this.execCommand.bind(this, { type: 'api', value: 'PATCH' })}>PATCH</div>
-                </div>
-                <CodeMirror ref='editor' value={this.state.code} onChange={this.updateCode} options={options} />
             </div>
         )
     }

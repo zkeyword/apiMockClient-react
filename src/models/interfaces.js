@@ -8,7 +8,8 @@ export default {
     namespace: 'interfaces',
     state: {
         list: [],
-        preview: ''
+        preview: '',
+        code: ''
     },
     reducers: {
         save(state, { payload: date }) {
