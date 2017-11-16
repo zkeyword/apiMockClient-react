@@ -1,3 +1,20 @@
+function insertString(editor, str) {
+    var selection = editor.getSelection()
+
+    if (selection.length > 0) {
+        editor.replaceSelection(str)
+    } else {
+        var doc = editor.getDoc()
+        var cursor = doc.getCursor()
+
+        var pos = {
+            line: cursor.line,
+            ch: cursor.ch
+        }
+
+        doc.replaceRange(str, pos)
+    }
+}
 
 function execCommand(data) {
     let editor = this.refs.editor.getCodeMirror()
@@ -146,6 +163,7 @@ function execCommand(data) {
                                         `
         }
     }
-    this.insertString(editor, obj[data.type][data.value])
+
+    insertString(editor, obj[data.type][data.value])
 }
 export default { execCommand }

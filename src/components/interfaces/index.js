@@ -21,73 +21,49 @@ class InterfaceList extends React.Component {
     }
 
     state = {
-        code: 'sssssssssssssssssssssssssssssssssss',
-        isLoad: false,
-        mdeValue: {
-            text: '',
-            selection: null
-        }
-    }
-
-    handleValueChange(value) {
-        this.setState({ isLoad: true, mdeValue: value })
+        code: '',
+        isLoad: false
     }
 
     componentDidUpdate() {
         let list = this.props.interfaces.list
         if (list.length && !this.state.isLoad) {
-            this.handleValueChange({
-                text: list[0].content
-            })
+            console.log(list[0].content)
+            this.updateCode(list[0].content)
         }
     }
-    insertTextAtCursor(editor, data) {
-        var doc = editor.getDoc()
-        var cursor = doc.getCursor()
-        var line = doc.getLine(cursor.line)
-        var pos = {
-            line: cursor.line,
-            ch: line.length
-        }
-        doc.replaceRange('\n' + data + '\n', pos)
+    // insertTextAtCursor(editor, data) {
+    //     var doc = editor.getDoc()
+    //     var cursor = doc.getCursor()
+    //     var line = doc.getLine(cursor.line)
+    //     var pos = {
+    //         line: cursor.line,
+    //         ch: line.length
+    //     }
+    //     doc.replaceRange('\n' + data + '\n', pos)
+    // }
+    updateCode(newCode) {
+        this.setState({
+            code: newCode,
+            isLoad: true
+        })
+        console.log(newCode)
+        console.log(this.state.code)
     }
-
-    insertString(editor, str) {
-        var selection = editor.getSelection()
-
-        if (selection.length > 0) {
-            editor.replaceSelection(str)
-        } else {
-            var doc = editor.getDoc()
-            var cursor = doc.getCursor()
-
-            var pos = {
-                line: cursor.line,
-                ch: cursor.ch
-            }
-
-            doc.replaceRange(str, pos)
-        }
-    }
-
     render() {
         let {
             interfaces: {
-                list,
-            preview
-            },
-            intl: {
-                formatMessage
-            }
+                list
+            // preview
+        }
         } = this.props
-        console.log(list)
+        // console.log(list)
         let options = {
             indentUnit: 4,
             tabSize: 4,
             lineNumbers: true,
             mode: 'markdown'
         }
-        console.log(preview, formatMessage)
         return (
             <div className='wrap'>
                 <div className='lt-left'>
@@ -134,7 +110,7 @@ class InterfaceList extends React.Component {
                         <div onClick={execCommand.bind(this, { type: 'api', value: 'PUT' })}>PUT</div>
                         <div onClick={execCommand.bind(this, { type: 'api', value: 'PATCH' })}>PATCH</div>
                     </div>
-                    <CodeMirror ref='editor' value={this.state.code} onChange={this.updateCode} options={options} />
+                    <CodeMirror ref='editor' value={this.state.code} onChange={this.updateCode.bind(this)} options={options} />
                 </div>
             </div>
         )
