@@ -3,7 +3,7 @@ import { connect } from 'dva'
 import { injectIntl } from 'react-intl'
 import './index2.styl'
 import { Form, Button } from 'antd'
-import CodeMirror from 'react-codemirror'
+import { UnControlled as CodeMirror } from 'react-codemirror2'
 import { execCommand } from './mark.js'
 import 'codemirror/mode/markdown/markdown'
 // import { Link } from 'dva/router'
@@ -21,35 +21,13 @@ class InterfaceList extends React.Component {
     }
 
     state = {
-        code: '',
-        isLoad: false
+        value: ''
     }
 
-    componentDidUpdate() {
-        let list = this.props.interfaces.list
-        if (list.length && !this.state.isLoad) {
-            console.log(list[0].content)
-            this.updateCode(list[0].content)
-        }
+    save = () => {
+        console.log(this.state.value)
     }
-    // insertTextAtCursor(editor, data) {
-    //     var doc = editor.getDoc()
-    //     var cursor = doc.getCursor()
-    //     var line = doc.getLine(cursor.line)
-    //     var pos = {
-    //         line: cursor.line,
-    //         ch: line.length
-    //     }
-    //     doc.replaceRange('\n' + data + '\n', pos)
-    // }
-    updateCode(newCode) {
-        this.setState({
-            code: newCode,
-            isLoad: true
-        })
-        console.log(newCode)
-        console.log(this.state.code)
-    }
+
     render() {
         let {
             interfaces: {
@@ -57,13 +35,16 @@ class InterfaceList extends React.Component {
             // preview
         }
         } = this.props
-        // console.log(list)
+
         let options = {
             indentUnit: 4,
             tabSize: 4,
             lineNumbers: true,
-            mode: 'markdown'
+            mode: 'markdown',
+            theme: 'material'
         }
+        let content = list.length ? list[0].content : ''
+
         return (
             <div className='wrap'>
                 <div className='lt-left'>
@@ -85,13 +66,13 @@ class InterfaceList extends React.Component {
                         <FormItem className='ui-btnBar'>
                             <Button type='primary' htmlType='submit'>
                                 添加
-                        </Button>
+                            </Button>
                             <Button type='danger' onClick={this.handleReset} className='deleColor'>
                                 删除
-                        </Button>
-                            <Button type='primary' className='cancel-add'>
+                            </Button>
+                            <Button type='primary' className='cancel-add' onClick={this.save}>
                                 保存
-                        </Button>
+                            </Button>
                         </FormItem>
                     </Form>
                     <div className='data_style'>
@@ -110,7 +91,15 @@ class InterfaceList extends React.Component {
                         <div onClick={execCommand.bind(this, { type: 'api', value: 'PUT' })}>PUT</div>
                         <div onClick={execCommand.bind(this, { type: 'api', value: 'PATCH' })}>PATCH</div>
                     </div>
-                    <CodeMirror ref='editor' value={this.state.code} onChange={this.updateCode.bind(this)} options={options} />
+                    <CodeMirror
+                        ref={(cm) => { this.codeMirror = cm }}
+                        value={content}
+                        options={options}
+                        onChange={(editor, data, value) => {
+                            this.setState({ value })
+                        }}
+                    />
+                    {/* <CodeMirror ref='editor' value={this.state.code} onChange={this.updateCode} options={options} /> */}
                 </div>
             </div>
         )

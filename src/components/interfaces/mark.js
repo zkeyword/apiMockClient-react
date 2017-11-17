@@ -17,7 +17,8 @@ function insertString(editor, str) {
 }
 
 function execCommand(data) {
-    let editor = this.refs.editor.getCodeMirror()
+    // let editor = this.refs.editor.getCodeMirror()
+    let editor = this.codeMirror.editor
     let obj = {
         mock: {
             'String': '"string|1-10": "★"',
@@ -164,6 +165,11 @@ function execCommand(data) {
         }
     }
 
-    insertString(editor, obj[data.type][data.value])
+    // react-codemirror 初始化不能更新值的bug
+    if (data.type === 'init') {
+        insertString(editor, data.value)
+    } else {
+        insertString(editor, obj[data.type][data.value])
+    }
 }
 export default { execCommand }
