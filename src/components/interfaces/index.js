@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'dva'
 import { injectIntl } from 'react-intl'
 import './index2.styl'
-import { Form, Button } from 'antd'
+import { Form, Button, Tag } from 'antd'
 import { UnControlled as CodeMirror } from 'react-codemirror2'
 import { execCommand } from './mark.js'
 import 'codemirror/mode/markdown/markdown'
@@ -28,6 +28,20 @@ class InterfaceList extends React.Component {
         console.log(this.state.value)
     }
 
+    addDate(values) {
+        console.log(11)
+        // this.props.dispatch({
+        //     type: 'interfaces/create',
+        //     payload: values
+        // })
+    }
+    remove = id => {
+        this.props.dispatch({
+            type: 'interfaces/remove',
+            payload: id
+        })
+    }
+
     render() {
         let {
             interfaces: {
@@ -35,7 +49,7 @@ class InterfaceList extends React.Component {
             // preview
         }
         } = this.props
-
+        console.log(list)
         let options = {
             indentUnit: 4,
             tabSize: 4,
@@ -53,7 +67,7 @@ class InterfaceList extends React.Component {
                             list.map((item, i) => {
                                 return (
                                     <div key={i}>
-                                        {item.name}
+                                        <Tag closable onClose={this.remove.bind(null, this.props.id)}> {item.name}</Tag>
                                     </div>
                                 )
                             })
@@ -64,14 +78,14 @@ class InterfaceList extends React.Component {
                 <div className='container'>
                     <Form>
                         <FormItem className='ui-btnBar'>
-                            <Button type='primary' htmlType='submit'>
+                            <Button type='primary' htmlType='submit' onClick={this.addDate.bind(this)}>
                                 添加
-                            </Button>
-                            <Button type='danger' onClick={this.handleReset} className='deleColor'>
-                                删除
                             </Button>
                             <Button type='primary' className='cancel-add' onClick={this.save}>
                                 保存
+                            </Button>
+                            <Button type='primary' htmlType='submit'>
+                                切换
                             </Button>
                         </FormItem>
                     </Form>

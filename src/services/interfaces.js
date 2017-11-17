@@ -18,10 +18,9 @@ export function modify(data) {
     })
 }
 
-export function remove(values) {
-    return request(`/v0.1/api/interfaces/${values.id}`, {
-        method: 'DELETE',
-        data: values
+export function remove(id) {
+    return request(`/v0.1/api/interfaces/${id}`, {
+        method: 'DELETE'
     })
 }
 

@@ -44,8 +44,8 @@ export default {
                 message.success(formatMessage({ id: 'models.fails' }))
             }
         },
-        *remove({ payload: { id, userId } }, { call, put }) {
-            let { data } = yield call(interfacesService.remove, { id, userId })
+        *remove({ payload: id }, { call, put }) {
+            let { data } = yield call(interfacesService.remove, id)
             console.log(data)
             if (data) {
                 let promise = () => new Promise((resolve, reject) => {
