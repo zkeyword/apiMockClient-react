@@ -1,6 +1,5 @@
 import * as interfacesService from '../services/interfaces'
 import { message } from 'antd'
-import { routerRedux } from 'dva/router'
 
 let formatMessage = window.formatMessage
 
@@ -17,7 +16,9 @@ export default {
     },
     effects: {
         *create({ payload: values }, { call, put }) {
+            console.log(values)
             const data = yield call(interfacesService.create, values)
+            console.log(data)
             if (data) {
                 let promise = () => new Promise((resolve, reject) => {
                     message.success(formatMessage({ id: 'models.submission' }), 1, () => {
@@ -25,7 +26,7 @@ export default {
                     })
                 })
                 yield call(promise)
-                yield put(routerRedux.push(`/interfaces`))
+                // yield put({ type: 'reload' })
             } else {
                 message.success(formatMessage({ id: 'models.fails' }))
             }
@@ -39,22 +40,21 @@ export default {
                     })
                 })
                 yield call(promise)
-                yield put(routerRedux.push(`/interfaces`))
             } else {
                 message.success(formatMessage({ id: 'models.fails' }))
             }
         },
-        *remove({ payload: id }, { call, put }) {
-            let { data } = yield call(interfacesService.remove, id)
+        *remove({ payload: values }, { call, put }) {
+            console.log(values)
+            let { data } = yield call(interfacesService.remove, values)
             console.log(data)
             if (data) {
                 let promise = () => new Promise((resolve, reject) => {
-                    message.success(formatMessage({ id: 'models.submission' }), 1, () => {
+                    message.success('删除成功', 1, () => {
                         resolve()
                     })
                 })
                 yield call(promise)
-                yield put({ type: 'reload' })
             } else {
                 message.success(formatMessage({ id: 'models.fails' }))
             }

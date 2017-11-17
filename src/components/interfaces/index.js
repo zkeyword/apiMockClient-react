@@ -2,12 +2,13 @@ import React from 'react'
 import { connect } from 'dva'
 import { injectIntl } from 'react-intl'
 import './index2.styl'
-import { Form, Button, Tag } from 'antd'
+import { Form, Button, Tag, Modal, Input } from 'antd'
 import { UnControlled as CodeMirror } from 'react-codemirror2'
 import { execCommand } from './mark.js'
 import 'codemirror/mode/markdown/markdown'
 // import { Link } from 'dva/router'
 const FormItem = Form.Item
+const { TextArea } = Input
 
 class InterfaceList extends React.Component {
     constructor(props) {
@@ -21,27 +22,70 @@ class InterfaceList extends React.Component {
     }
 
     state = {
-        value: ''
+        value: '',
+        visible: false,
+        projectId: '',
+        i: 0
     }
 
-    save = () => {
-        console.log(this.state.value)
-    }
-
-    addDate(values) {
-        console.log(11)
-        // this.props.dispatch({
-        //     type: 'interfaces/create',
-        //     payload: values
-        // })
-    }
-    remove = id => {
-        this.props.dispatch({
-            type: 'interfaces/remove',
-            payload: id
+    showModal = () => {
+        this.setState({
+            visible: true,
+            id: this.props.id
         })
     }
 
+    handleOk = (e) => {
+        let name = document.getElementById('name').value
+        let content = document.getElementById('content').value
+        let values = {
+            'projectId': this.props.id,
+            'name': name,
+            'content': content
+        }
+        this.props.dispatch({
+            type: 'interfaces/create',
+            payload: values
+        })
+        this.setState({
+            visible: false
+        })
+        this.props.dispatch({
+            type: 'interfaces/list',
+            payload: {
+                id: this.props.id
+            }
+        })
+    }
+
+    handleCancel = (e) => {
+        this.setState({
+            visible: false
+        })
+    }
+
+    remove = id => {
+        let values = {
+            'id': id,
+            'projectId': { 'projectId': this.props.id }
+        }
+        this.props.dispatch({
+            type: 'interfaces/remove',
+            payload: values
+        })
+    }
+
+    change = i => {
+        this.setState({
+            i: i
+        })
+    }
+
+    save = i => {
+        this.setState({
+            i: i
+        })
+    }
     render() {
         let {
             interfaces: {
@@ -49,7 +93,6 @@ class InterfaceList extends React.Component {
             // preview
         }
         } = this.props
-        console.log(list)
         let options = {
             indentUnit: 4,
             tabSize: 4,
@@ -57,8 +100,9 @@ class InterfaceList extends React.Component {
             mode: 'markdown',
             theme: 'material'
         }
-        let content = list.length ? list[0].content : ''
-
+        let content = list.length ? list[this.state.i].content : ''
+        // console.log(content)
+        // console.log(list)
         return (
             <div className='wrap'>
                 <div className='lt-left'>
@@ -66,8 +110,8 @@ class InterfaceList extends React.Component {
                 {
                             list.map((item, i) => {
                                 return (
-                                    <div key={i}>
-                                        <Tag closable onClose={this.remove.bind(null, this.props.id)}> {item.name}</Tag>
+                                    <div key={i} className='list'>
+                                        <Tag closable onClose={this.remove.bind(null, item.id)} onClick={this.change.bind(null, i)}>{item.name}</Tag>
                                     </div>
                                 )
                             })
@@ -78,14 +122,11 @@ class InterfaceList extends React.Component {
                 <div className='container'>
                     <Form>
                         <FormItem className='ui-btnBar'>
-                            <Button type='primary' htmlType='submit' onClick={this.addDate.bind(this)}>
+                            <Button type='primary' htmlType='submit' onClick={this.showModal}>
                                 添加
                             </Button>
-                            <Button type='primary' className='cancel-add' onClick={this.save}>
+                            <Button type='primary' className='submit' onClick={this.save}>
                                 保存
-                            </Button>
-                            <Button type='primary' htmlType='submit'>
-                                切换
                             </Button>
                         </FormItem>
                     </Form>
@@ -113,9 +154,19 @@ class InterfaceList extends React.Component {
                             this.setState({ value })
                         }}
                     />
+                    <Modal
+                        title='Basic Modal'
+                        visible={this.state.visible}
+                        onOk={this.handleOk.bind(null, this)}
+                        onCancel={this.handleCancel}
+                    >
+                        <Input size='large' placeholder='接口名称' id='name' />
+                        <TextArea placeholder='接口内容' id='content' autosize={{ minRows: 2, maxRows: 6 }} style={{ display: 'none' }} />
+
+                    </Modal>
                     {/* <CodeMirror ref='editor' value={this.state.code} onChange={this.updateCode} options={options} /> */}
                 </div>
-            </div>
+            </div >
         )
     }
 }
