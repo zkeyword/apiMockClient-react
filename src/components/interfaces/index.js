@@ -1,13 +1,13 @@
 import React from 'react'
 import { connect } from 'dva'
 import { injectIntl } from 'react-intl'
+import './index.styl'
 import './index2.styl'
-import { Form, Button, Tag, Modal, Input } from 'antd'
+import { Form, Button, Modal, Input } from 'antd'
 import { UnControlled as CodeMirror } from 'react-codemirror2'
 import { execCommand } from './mark.js'
 import 'codemirror/mode/markdown/markdown'
 // import { Link } from 'dva/router'
-const FormItem = Form.Item
 const { TextArea } = Input
 
 class InterfaceList extends React.Component {
@@ -77,6 +77,7 @@ class InterfaceList extends React.Component {
     }
 
     change = (i, item) => {
+        console.log(i)
         this.setState({
             i: i,
             saveid: item.id
@@ -113,47 +114,52 @@ class InterfaceList extends React.Component {
         // console.log(content)
         // console.log(list)
         return (
-            <div className='wrap'>
+            <div className='page-device'>
                 <div className='lt-left'>
-                    <div> 接口名：
-                {
-                            list.map((item, i) => {
-                                return (
-                                    <div key={i} className='list'>
-                                        <Tag closable onClose={this.remove.bind(null, item.id)} onClick={this.change.bind(null, i, item)}>{item.name}</Tag>
-                                    </div>
-                                )
-                            })
-                        }
+                    <div className='header'>
+                        <span className='name'>接口类型名</span>
+                        <span className='btn' onClick={this.showModal}>+</span>
                     </div>
-
+                    {/* <div className={this.state.i === 0 ? 'list currer' : 'list'} onClick={this.change.bind(null, 0)}>
+                        <span className='name'>jjhj</span>
+                        <span className='btn' >x</span>
+                    </div>
+                    <div className={this.state.i === 1 ? 'list currer' : 'list'} onClick={this.change.bind(null, 1)}>
+                        <span className='name'>jjhj</span>
+                        <span className='btn' >x</span>
+                    </div> */}
+                    {
+                        list.map((item, i) => {
+                            return (
+                                <div key={i} className={this.state.i === i ? 'list currer' : 'list'} onClick={this.change.bind(null, i, item)}>
+                                    <span className='name'>{item.name}</span>
+                                    <span className='btn' onClick={this.remove.bind(null, item.id)} >x</span>
+                                </div>
+                            )
+                        })
+                    }
                 </div>
                 <div className='container'>
-                    <Form>
-                        <FormItem className='ui-btnBar'>
-                            <Button type='primary' htmlType='submit' onClick={this.showModal}>
-                                添加
-                            </Button>
-                            <Button type='primary' className='submit' onClick={this.save.bind(null, list.id)}>
-                                保存
-                            </Button>
-                        </FormItem>
-                    </Form>
-                    <div className='data_style'>
-                        <div onClick={execCommand.bind(this, { type: 'mock', value: 'String' })}>String</div>
-                        <div onClick={execCommand.bind(this, { type: 'mock', value: 'Number' })}>Number</div>
-                        <div onClick={execCommand.bind(this, { type: 'mock', value: 'Boolean' })}>Boolean</div>
-                        <div onClick={execCommand.bind(this, { type: 'mock', value: 'Array' })}>Array</div>
-                        <div onClick={execCommand.bind(this, { type: 'mock', value: 'Object' })}>Object</div>
-                        <div onClick={execCommand.bind(this, { type: 'mock', value: 'Image' })}>Image</div>
-                        <div onClick={execCommand.bind(this, { type: 'mock', value: 'Date' })}>Date</div>
-                    </div>
-                    <div className='data_style'>
-                        <div onClick={execCommand.bind(this, { type: 'api', value: 'GET' })}>GET</div>
-                        <div onClick={execCommand.bind(this, { type: 'api', value: 'POST' })}>POST</div>
-                        <div onClick={execCommand.bind(this, { type: 'api', value: 'DELETE' })}>DELETE</div>
-                        <div onClick={execCommand.bind(this, { type: 'api', value: 'PUT' })}>PUT</div>
-                        <div onClick={execCommand.bind(this, { type: 'api', value: 'PATCH' })}>PATCH</div>
+                    <div className='bottonWrap'>
+                        <Button type='primary' className='submit' onClick={this.save.bind(null, list.id)}>
+                            保存
+                        </Button>
+                        <div className='box mockjs'>
+                            <div onClick={execCommand.bind(this, { type: 'mock', value: 'String' })}>String</div>
+                            <div onClick={execCommand.bind(this, { type: 'mock', value: 'Number' })}>Number</div>
+                            <div onClick={execCommand.bind(this, { type: 'mock', value: 'Boolean' })}>Boolean</div>
+                            <div onClick={execCommand.bind(this, { type: 'mock', value: 'Array' })}>Array</div>
+                            <div onClick={execCommand.bind(this, { type: 'mock', value: 'Object' })}>Object</div>
+                            <div onClick={execCommand.bind(this, { type: 'mock', value: 'Image' })}>Image</div>
+                            <div onClick={execCommand.bind(this, { type: 'mock', value: 'Date' })}>Date</div>
+                        </div>
+                        <div className='box apiblueprint'>
+                            <div onClick={execCommand.bind(this, { type: 'api', value: 'GET' })}>GET</div>
+                            <div onClick={execCommand.bind(this, { type: 'api', value: 'POST' })}>POST</div>
+                            <div onClick={execCommand.bind(this, { type: 'api', value: 'DELETE' })}>DELETE</div>
+                            <div onClick={execCommand.bind(this, { type: 'api', value: 'PUT' })}>PUT</div>
+                            <div onClick={execCommand.bind(this, { type: 'api', value: 'PATCH' })}>PATCH</div>
+                        </div>
                     </div>
                     <CodeMirror
                         ref={(cm) => { this.codeMirror = cm }}
@@ -164,20 +170,19 @@ class InterfaceList extends React.Component {
                         }}
                     />
                     <Modal
-                        title='Basic Modal'
+                        title='添加接口'
                         visible={this.state.visible}
                         onOk={this.handleOk.bind(null, this)}
                         onCancel={this.handleCancel}
                     >
                         <Input size='large' placeholder='接口名称' id='name' />
                         <TextArea placeholder='接口内容' id='content' autosize={{ minRows: 2, maxRows: 6 }} style={{ display: 'none' }} />
-
                     </Modal>
                     {/* <CodeMirror ref='editor' value={this.state.code} onChange={this.updateCode} options={options} /> */}
                 </div>
-                <div className='preview'>
-                    {preview}
-                </div>
+                <div dangerouslySetInnerHTML={{
+                    __html: preview
+                }} className='preview' />
             </div >
         )
     }

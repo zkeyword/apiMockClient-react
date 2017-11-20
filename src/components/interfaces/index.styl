@@ -1,112 +1,106 @@
+@import '../../assets/styles/lib/mixin.styl'
 
-.container
-    width: 100%
-    height: 100%
+.page-device
     display: flex
 
-    .lt-left    
-        width: 200px
-        margin: 0 10px 0 0
-        border-right: 1px solid #ddd
-        display: inline-block
+    ::-webkit-scrollbar
+        width: 10px;
+        height: 2px;
+        background-color: #f5f5f5;
 
-    .lt-right
+    ::-webkit-scrollbar-track
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.1);
+        border-radius: 10px;
+        background-color: #f5f5f5;
+
+    ::-webkit-scrollbar-thumb
+        height: 20px;
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.1);
+        background-color: rgba(0,0,0,.3);
+
+    .lt-left
+        width: 250px
+
+        .header
+            padding: 15px 10px
+            border-bottom: 1px solid #ddd
+            clear: both
+
+            .name
+                float: left
+                font-weight: bold
+            
+            .btn 
+                float: right
+
+        .list
+            padding: 10px
+            border-bottom: 1px solid #ddd
+            clear: both
+
+            &.currer
+                background: rgba(#000, 0.1)
+            
+            &:hover
+                background: rgba(#000, 0.05)
+
+            .name
+                float: left
+                width: 200px
+                one-line()
+
+            .btn
+                float: right
+
+
+    .container 
         flex: 1
+        border-right:1px solid #ddd
+        border-left:1px solid #ddd
+        position: relative
+        display: flex
+        padding: 130px 0 0
 
-        .ui-btnBar
-            display: inline-block
-
-    .react-mde
-        height: 100%
-        margin: 0 auto
-        text-align: center
-
-        .mde-header
-            text-align: left
-            margin: 12px
-            ul
-                display: block
-                margin-bottom: 12px
-
-            li
-                margin: 0 8px
-                position: relative 
-                display: inline-block
-
-                button 
-                    width: 100%
-                    margin: 0 5px
-
-                .fa-header
-                    width: 30px
-                    height: 30px   
-                    display: inline-block
-
-            .react-mde-dropdown
-                position: absolute 
-                top: 0
-                left: 0       
+        .react-codemirror2
+            position: relative
+            overflow-y: auto
+            flex: 1
         
-        .mde-text
-            display: inline-block
-            width: 45%
-            height: 70%
-            float: left
+        .bottonWrap
+            position: absolute
+            z-index: 9999
+            width: 100%
+            background: #fff
+            border-bottom: 1px solid #ddd
+            padding: 10px
+            top: 0
+            left: 0
 
-            textarea
-                width: 100%
-                height: 100%
+            .box
 
+                div
+                    display: inline-block
+                    margin: 10px 10px 0 0 
+                    cursor: pointer
+                    color: #108ee9
+                    border-radius:5px
+                    padding 4px 7px
+                    border: 1px solid #999
+                    margin-bottom: 0
 
-        .mde-preview
-            display: none
+                    &:hover
+                        border: 1px solid rgba(#999, 0.5)
+                        border-radius:5px
+                        padding 4px 7px
+                        color: rgba(#108ee9, 0.5)
 
-        .mde-help
-            display: none  
-
-        .preview
-            float: left 
-
-
-        .fa-string
-            &:before
-                content: 'String'
-
-        .fa-number
-            &:before
-                content: 'Number'
-
-        .fa-object
-            &:before
-                content: 'Object'
-
-        .fa-array
-            &:before
-                content: 'Array'
-
-         .fa-boolean
-            &:before
-                content: 'Boolean'
-
-        .fa-image
-            &:before
-                content: 'Iamge'
-
-        .fa-date
-            &:before
-                content: 'Date'
-
-        .fa-post
-            &:before
-                content: 'POST'
-
-        .fa-get
-            &:before
-                content: 'GET'
-
-        .fa-clear
-            &:before
-                content: '清除'        
-
-    .tabContent
-        display: inline-block            
+        .add
+            position: absolute
+            top:21px 
+            left: 184px
+        
+    .preview
+        width: 600px
+        padding: 10px
+        overflow-y: auto
