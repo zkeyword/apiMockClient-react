@@ -25,7 +25,8 @@ class InterfaceList extends React.Component {
         value: '',
         visible: false,
         projectId: '',
-        i: 0
+        i: 0,
+        saveid: ''
     }
 
     showModal = () => {
@@ -75,22 +76,29 @@ class InterfaceList extends React.Component {
         })
     }
 
-    change = i => {
+    change = (i, item) => {
         this.setState({
-            i: i
+            i: i,
+            saveid: item.id
         })
     }
 
-    save = i => {
-        this.setState({
-            i: i
+    save = () => {
+        let values = {
+            id: this.state.saveid,
+            projectId: this.props.id,
+            content: this.state.value
+        }
+        this.props.dispatch({
+            type: 'interfaces/modify',
+            payload: values
         })
     }
     render() {
         let {
             interfaces: {
-                list
-            // preview
+                list,
+            preview
         }
         } = this.props
         let options = {
@@ -101,6 +109,7 @@ class InterfaceList extends React.Component {
             theme: 'material'
         }
         let content = list.length ? list[this.state.i].content : ''
+        console.log(preview)
         // console.log(content)
         // console.log(list)
         return (
@@ -111,7 +120,7 @@ class InterfaceList extends React.Component {
                             list.map((item, i) => {
                                 return (
                                     <div key={i} className='list'>
-                                        <Tag closable onClose={this.remove.bind(null, item.id)} onClick={this.change.bind(null, i)}>{item.name}</Tag>
+                                        <Tag closable onClose={this.remove.bind(null, item.id)} onClick={this.change.bind(null, i, item)}>{item.name}</Tag>
                                     </div>
                                 )
                             })
@@ -125,7 +134,7 @@ class InterfaceList extends React.Component {
                             <Button type='primary' htmlType='submit' onClick={this.showModal}>
                                 添加
                             </Button>
-                            <Button type='primary' className='submit' onClick={this.save}>
+                            <Button type='primary' className='submit' onClick={this.save.bind(null, list.id)}>
                                 保存
                             </Button>
                         </FormItem>
@@ -165,6 +174,9 @@ class InterfaceList extends React.Component {
 
                     </Modal>
                     {/* <CodeMirror ref='editor' value={this.state.code} onChange={this.updateCode} options={options} /> */}
+                </div>
+                <div className='preview'>
+                    {preview}
                 </div>
             </div >
         )

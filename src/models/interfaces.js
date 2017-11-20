@@ -16,9 +16,7 @@ export default {
     },
     effects: {
         *create({ payload: values }, { call, put }) {
-            console.log(values)
             const data = yield call(interfacesService.create, values)
-            console.log(data)
             if (data) {
                 let promise = () => new Promise((resolve, reject) => {
                     message.success(formatMessage({ id: 'models.submission' }), 1, () => {
@@ -45,9 +43,7 @@ export default {
             }
         },
         *remove({ payload: values }, { call, put }) {
-            console.log(values)
             let { data } = yield call(interfacesService.remove, values)
-            console.log(data)
             if (data) {
                 let promise = () => new Promise((resolve, reject) => {
                     message.success('删除成功', 1, () => {
@@ -74,15 +70,14 @@ export default {
         },
         *list({ payload: { id } }, { call, put }) {
             const { data } = yield call(interfacesService.list, id)
-            // const { data: preview } = yield call(interfacesService.preview, id)
+            const { data: preview } = yield call(interfacesService.preview, id)
             // console.log(preview)
             if (data) {
                 yield put({
                     type: 'save',
                     payload: {
-                        list: data
-                        // ,
-                        // preview
+                        list: data,
+                        preview
                     }
                 })
             } else {

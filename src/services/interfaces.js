@@ -12,10 +12,10 @@ export function create(values) {
     })
 }
 
-export function modify(data) {
-    return request(`/v0.1/api/interfaces/${data.id}`, {
+export function modify(values) {
+    return request(`/v0.1/api/interfaces/${values.id}`, {
         method: 'PUT',
-        data
+        data: values
     })
 }
 
