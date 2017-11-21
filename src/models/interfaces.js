@@ -69,35 +69,40 @@ export default {
             }
         },
         *list({ payload: { id } }, { call, put }) {
-            console.log(id)
             const { data } = yield call(interfacesService.list, id)
-            const { data: preview } = yield call(interfacesService.preview, id)
+            console.log(data[0].id)
+            // const { data: preview } = yield call(interfacesService.preview, id)
+            yield put({
+                type: 'listPreview',
+                payload: {
+                    id: data[0].id
+                }
+            })
             if (data) {
                 yield put({
                     type: 'save',
                     payload: {
-                        list: data,
-                        preview
+                        list: data
                     }
                 })
             } else {
                 yield put({ type: 'reset' })
             }
         },
-        *listPreview({ payload: id }, { call, put }) {
+        *listPreview({ payload: { id } }, { call, put }) {
             console.log(id)
             const { data } = yield call(interfacesService.preview, id)
             console.log(data)
-            // if (data) {
-            //     yield put({
-            //         type: 'save',
-            //         payload: {
-            //             preview: data
-            //         }
-            //     })
-            // } else {
-            //     // yield put({ type: 'reset' })
-            // }
+            if (data) {
+                yield put({
+                    type: 'save',
+                    payload: {
+                        preview: data
+                    }
+                })
+            } else {
+                yield put({ type: 'reset' })
+            }
         },
         *reload({ payload }, { put, select }) {
             const state = yield select(state => state.product)

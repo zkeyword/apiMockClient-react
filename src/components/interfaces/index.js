@@ -84,7 +84,9 @@ class InterfaceList extends React.Component {
         console.log(item.id, i)
         this.props.dispatch({
             type: 'interfaces/listPreview',
-            payload: item.id
+            payload: {
+                id: item.id
+            }
         })
     }
 
