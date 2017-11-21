@@ -31,5 +31,6 @@ export function fetch({ id }) {
 }
 
 export function preview(id) {
+    console.log(id)
     return request(`/v0.1/api/interfaces/preview/${id}`)
 }

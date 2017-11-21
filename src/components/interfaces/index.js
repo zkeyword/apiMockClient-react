@@ -3,7 +3,7 @@ import { connect } from 'dva'
 import { injectIntl } from 'react-intl'
 import './index.styl'
 import './index2.styl'
-import { Form, Button, Modal, Input } from 'antd'
+import { Form, Button, Modal, Input, Icon } from 'antd'
 import { UnControlled as CodeMirror } from 'react-codemirror2'
 import { execCommand } from './mark.js'
 import 'codemirror/mode/markdown/markdown'
@@ -81,6 +81,11 @@ class InterfaceList extends React.Component {
             i: i,
             saveid: item.id
         })
+        console.log(item.id, i)
+        this.props.dispatch({
+            type: 'interfaces/listPreview',
+            payload: item.id
+        })
     }
 
     save = () => {
@@ -102,6 +107,7 @@ class InterfaceList extends React.Component {
         },
             form: { getFieldDecorator }
         } = this.props
+        // console.log(preview)
         let options = {
             indentUnit: 4,
             tabSize: 4,
@@ -115,14 +121,16 @@ class InterfaceList extends React.Component {
                 <div className='lt-left'>
                     <div className='header'>
                         <span className='name'>接口类型名</span>
-                        <span className='btn' onClick={this.showModal}>+</span>
+                        {/* <span className='btn' onClick={this.showModal}>+</span> */}
+                        <Icon className='btn add' onClick={this.showModal} type='plus' />
                     </div>
                     {
                         list.map((item, i) => {
                             return (
                                 <div key={i} className={this.state.i === i ? 'list currer' : 'list'} onClick={this.change.bind(null, i, item)}>
                                     <span className='name'>{item.name}</span>
-                                    <span className='btn' onClick={this.remove.bind(null, item.id)} >x</span>
+                                    {/* <span className='btn' onClick={this.remove.bind(null, item.id)} >x</span> */}
+                                    <Icon type='delete' className='btn' onClick={this.remove.bind(null, item.id)} />
                                 </div>
                             )
                         })

@@ -48,120 +48,120 @@ function execCommand(data) {
         },
         api: {
             'GET': `
-                    ##  添加项目 [POST /v0.1/api/project]
+##  添加项目 [POST /v0.1/api/project]
 
-                    + Request (application/json)
++ Request (application/json)
 
-                            {
-                                "name": "boss系统", // 项目名
-                                "alias": "boss", // 项目别名
-                                "description": "apiMock", // 描述
-                                "userId": "0" // 用户id
-                            }
+        {
+            "name": "boss系统", // 项目名
+            "alias": "boss", // 项目别名
+            "description": "apiMock", // 描述
+            "userId": "0" // 用户id
+        }
 
-                    + Response 200
++ Response 200
 
-                            {
-                                "id": 3,
-                                "name": "boss系统",
-                                "alias": "boss",
-                                "description": "apiMock",
-                                "updatedAt": "2017-10-29T02:17:12.553Z",
-                                "createdAt": "2017-10-29T02:17:12.553Z"
-                            }                
-                                    `,
+        {
+            "id": 3,
+            "name": "boss系统",
+            "alias": "boss",
+            "description": "apiMock",
+            "updatedAt": "2017-10-29T02:17:12.553Z",
+            "createdAt": "2017-10-29T02:17:12.553Z"
+        }                
+                `,
             'POST': `
-                        ##  添加项目 [POST /v0.1/api/project]
+##  添加项目 [POST /v0.1/api/project]
 
-                        + Request (application/json)
++ Request (application/json)
 
-                                {
-                                    "name": "boss系统", // 项目名
-                                    "alias": "boss", // 项目别名
-                                    "description": "apiMock", // 描述
-                                    "userId": "0" // 用户id
-                                }
+        {
+            "name": "boss系统", // 项目名
+            "alias": "boss", // 项目别名
+            "description": "apiMock", // 描述
+            "userId": "0" // 用户id
+        }
 
-                        + Response 200
++ Response 200
 
-                                {
-                                    "id": 3,
-                                    "name": "boss系统",
-                                    "alias": "boss",
-                                    "description": "apiMock",
-                                    "updatedAt": "2017-10-29T02:17:12.553Z",
-                                    "createdAt": "2017-10-29T02:17:12.553Z"
-                                }               
-                                        `,
+        {
+            "id": 3,
+            "name": "boss系统",
+            "alias": "boss",
+            "description": "apiMock",
+            "updatedAt": "2017-10-29T02:17:12.553Z",
+            "createdAt": "2017-10-29T02:17:12.553Z"
+        }               
+                `,
             'DELETE': `
-                        ##  添加项目 [POST /v0.1/api/project]
+##  添加项目 [POST /v0.1/api/project]
 
-                        + Request (application/json)
++ Request (application/json)
 
-                                {
-                                    "name": "boss系统", // 项目名
-                                    "alias": "boss", // 项目别名
-                                    "description": "apiMock", // 描述
-                                    "userId": "0" // 用户id
-                                }
+        {
+            "name": "boss系统", // 项目名
+            "alias": "boss", // 项目别名
+            "description": "apiMock", // 描述
+            "userId": "0" // 用户id
+        }
 
-                        + Response 200
++ Response 200
 
-                                {
-                                    "id": 3,
-                                    "name": "boss系统",
-                                    "alias": "boss",
-                                    "description": "apiMock",
-                                    "updatedAt": "2017-10-29T02:17:12.553Z",
-                                    "createdAt": "2017-10-29T02:17:12.553Z"
-                                }               
-                                        `,
+        {
+            "id": 3,
+            "name": "boss系统",
+            "alias": "boss",
+            "description": "apiMock",
+            "updatedAt": "2017-10-29T02:17:12.553Z",
+            "createdAt": "2017-10-29T02:17:12.553Z"
+        }               
+                `,
             'PUT': `
-                    ##  添加项目 [POST /v0.1/api/project]
+##  添加项目 [POST /v0.1/api/project]
 
-                    + Request (application/json)
++ Request (application/json)
 
-                            {
-                                "name": "boss系统", // 项目名
-                                "alias": "boss", // 项目别名
-                                "description": "apiMock", // 描述
-                                "userId": "0" // 用户id
-                            }
+        {
+            "name": "boss系统", // 项目名
+            "alias": "boss", // 项目别名
+            "description": "apiMock", // 描述
+            "userId": "0" // 用户id
+        }
 
-                    + Response 200
++ Response 200
 
-                            {
-                                "id": 3,
-                                "name": "boss系统",
-                                "alias": "boss",
-                                "description": "apiMock",
-                                "updatedAt": "2017-10-29T02:17:12.553Z",
-                                "createdAt": "2017-10-29T02:17:12.553Z"
-                            }               
-                                    `,
+        {
+            "id": 3,
+            "name": "boss系统",
+            "alias": "boss",
+            "description": "apiMock",
+            "updatedAt": "2017-10-29T02:17:12.553Z",
+            "createdAt": "2017-10-29T02:17:12.553Z"
+        }               
+                `,
             'PATCH': `
-                        ##  添加项目 [POST /v0.1/api/project]
+##  添加项目 [POST /v0.1/api/project]
 
-                        + Request (application/json)
++ Request (application/json)
 
-                                {
-                                    "name": "boss系统", // 项目名
-                                    "alias": "boss", // 项目别名
-                                    "description": "apiMock", // 描述
-                                    "userId": "0" // 用户id
-                                }
+        {
+            "name": "boss系统", // 项目名
+            "alias": "boss", // 项目别名
+            "description": "apiMock", // 描述
+            "userId": "0" // 用户id
+        }
 
-                        + Response 200
++ Response 200
 
-                                {
-                                    "id": 3,
-                                    "name": "boss系统",
-                                    "alias": "boss",
-                                    "description": "apiMock",
-                                    "updatedAt": "2017-10-29T02:17:12.553Z",
-                                    "createdAt": "2017-10-29T02:17:12.553Z"
-                                } 
-                                        `
+        {
+            "id": 3,
+            "name": "boss系统",
+            "alias": "boss",
+            "description": "apiMock",
+            "updatedAt": "2017-10-29T02:17:12.553Z",
+            "createdAt": "2017-10-29T02:17:12.553Z"
+        } 
+                `
         }
     }
 
