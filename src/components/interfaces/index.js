@@ -7,8 +7,7 @@ import { Form, Button, Modal, Input } from 'antd'
 import { UnControlled as CodeMirror } from 'react-codemirror2'
 import { execCommand } from './mark.js'
 import 'codemirror/mode/markdown/markdown'
-// import { Link } from 'dva/router'
-const { TextArea } = Input
+const FormItem = Form.Item
 
 class InterfaceList extends React.Component {
     constructor(props) {
@@ -36,25 +35,26 @@ class InterfaceList extends React.Component {
         })
     }
 
-    handleOk = (e) => {
-        let name = document.getElementById('name').value
-        let content = document.getElementById('content').value
-        let values = {
-            'projectId': this.props.id,
-            'name': name,
-            'content': content
-        }
-        this.props.dispatch({
-            type: 'interfaces/create',
-            payload: values
-        })
-        this.setState({
-            visible: false
-        })
-        this.props.dispatch({
-            type: 'interfaces/list',
-            payload: {
-                id: this.props.id
+    handleSubmit = (e) => {
+        e.preventDefault()
+        const { validateFields } = this.props.form
+        validateFields((err, values) => {
+            if (err) {
+                console.log('Received values of form: ', values)
+            } if (values.name) {
+                let value = {
+                    'projectId': this.props.id,
+                    'name': values.name,
+                    'content': ''
+                }
+                this.props.dispatch({
+                    type: 'interfaces/create',
+                    payload: value
+                })
+
+                this.setState({
+                    visible: false
+                })
             }
         })
     }
@@ -77,7 +77,6 @@ class InterfaceList extends React.Component {
     }
 
     change = (i, item) => {
-        console.log(i)
         this.setState({
             i: i,
             saveid: item.id
@@ -100,7 +99,8 @@ class InterfaceList extends React.Component {
             interfaces: {
                 list,
             preview
-        }
+        },
+            form: { getFieldDecorator }
         } = this.props
         let options = {
             indentUnit: 4,
@@ -110,9 +110,6 @@ class InterfaceList extends React.Component {
             theme: 'material'
         }
         let content = list.length ? list[this.state.i].content : ''
-        console.log(preview)
-        // console.log(content)
-        // console.log(list)
         return (
             <div className='page-device'>
                 <div className='lt-left'>
@@ -120,14 +117,6 @@ class InterfaceList extends React.Component {
                         <span className='name'>接口类型名</span>
                         <span className='btn' onClick={this.showModal}>+</span>
                     </div>
-                    {/* <div className={this.state.i === 0 ? 'list currer' : 'list'} onClick={this.change.bind(null, 0)}>
-                        <span className='name'>jjhj</span>
-                        <span className='btn' >x</span>
-                    </div>
-                    <div className={this.state.i === 1 ? 'list currer' : 'list'} onClick={this.change.bind(null, 1)}>
-                        <span className='name'>jjhj</span>
-                        <span className='btn' >x</span>
-                    </div> */}
                     {
                         list.map((item, i) => {
                             return (
@@ -172,13 +161,23 @@ class InterfaceList extends React.Component {
                     <Modal
                         title='添加接口'
                         visible={this.state.visible}
-                        onOk={this.handleOk.bind(null, this)}
+                        onOk={this.handleSubmit}
                         onCancel={this.handleCancel}
                     >
-                        <Input size='large' placeholder='接口名称' id='name' />
-                        <TextArea placeholder='接口内容' id='content' autosize={{ minRows: 2, maxRows: 6 }} style={{ display: 'none' }} />
+                        <Form onSubmit={this.handleSubmit}>
+                            <FormItem>
+                                {
+                                    getFieldDecorator('name', {
+                                        initialValue: '',
+                                        rules: [{
+                                            required: true,
+                                            message: '必填项'
+                                        }]
+                                    })(<Input size='large' placeholder='接口名称' />)
+                                }
+                            </FormItem>
+                        </Form>
                     </Modal>
-                    {/* <CodeMirror ref='editor' value={this.state.code} onChange={this.updateCode} options={options} /> */}
                 </div>
                 <div dangerouslySetInnerHTML={{
                     __html: preview
