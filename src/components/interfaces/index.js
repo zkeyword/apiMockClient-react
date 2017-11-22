@@ -13,19 +13,23 @@ class InterfaceList extends React.Component {
     constructor(props) {
         super(props)
         this.props.dispatch({
-            type: 'interfaces/list',
-            payload: {
-                id: this.props.id
-            }
+            type: 'interfaces/reset'
         })
+        if (this.props.id) {
+            this.props.dispatch({
+                type: 'interfaces/list',
+                payload: {
+                    id: this.props.id
+                }
+            })
+        }
     }
 
     state = {
         value: '',
         visible: false,
         projectId: '',
-        i: 0,
-        saveid: ''
+        saveid: 0
     }
 
     showModal = () => {
@@ -39,9 +43,11 @@ class InterfaceList extends React.Component {
         e.preventDefault()
         const { validateFields } = this.props.form
         validateFields((err, values) => {
+            console.log(values)
             if (err) {
                 console.log('Received values of form: ', values)
-            } if (values.name) {
+            }
+            if (values.name) {
                 let value = {
                     'projectId': this.props.id,
                     'name': values.name,
@@ -65,51 +71,65 @@ class InterfaceList extends React.Component {
         })
     }
 
-    remove = id => {
+    remove = (item, i) => {
+        console.log(item, i)
         let values = {
-            'id': id,
-            'projectId': { 'projectId': this.props.id }
+            'index': i,
+            'id': item.id,
+            'projectId': this.props.id
         }
         this.props.dispatch({
             type: 'interfaces/remove',
             payload: values
         })
-    }
-
-    change = (i, item) => {
-        this.setState({
-            i: i,
-            saveid: item.id
-        })
-        console.log(item.id, i)
         this.props.dispatch({
             type: 'interfaces/listPreview',
             payload: {
-                id: item.id
+                id: item.id,
+                index: i - 1,
+                content: item.content
             }
         })
     }
 
-    save = () => {
+    change = (i, item) => {
+        this.props.dispatch({
+            type: 'interfaces/listPreview',
+            payload: {
+                id: item.id,
+                index: i,
+                content: item.content
+            }
+        })
+        this.setState({
+            saveid: item.id
+        })
+    }
+
+    save = (index) => {
         let values = {
             id: this.state.saveid,
             projectId: this.props.id,
-            content: this.state.value
+            content: this.state.value,
+            index
         }
         this.props.dispatch({
             type: 'interfaces/modify',
             payload: values
         })
     }
+
     render() {
         let {
             interfaces: {
                 list,
-            preview
-        },
+            preview,
+            initStatus,
+            content,
+            index
+            },
             form: { getFieldDecorator }
         } = this.props
-        // console.log(preview)
         let options = {
             indentUnit: 4,
             tabSize: 4,
@@ -117,7 +137,7 @@ class InterfaceList extends React.Component {
             mode: 'markdown',
             theme: 'material'
         }
-        let content = list.length ? list[this.state.i].content : ''
+
         return (
             <div className='page-device'>
                 <div className='lt-left'>
@@ -129,10 +149,10 @@ class InterfaceList extends React.Component {
                     {
                         list.map((item, i) => {
                             return (
-                                <div key={i} className={this.state.i === i ? 'list currer' : 'list'} onClick={this.change.bind(null, i, item)}>
+                                <div key={i} className={index === i ? 'list currer' : 'list'} onClick={this.change.bind(null, i, item)}>
                                     <span className='name'>{item.name}</span>
                                     {/* <span className='btn' onClick={this.remove.bind(null, item.id)} >x</span> */}
-                                    <Icon type='delete' className='btn' onClick={this.remove.bind(null, item.id)} />
+                                    <Icon type='delete' className='btn' onClick={this.remove.bind(null, item, i)} />
                                 </div>
                             )
                         })
@@ -140,7 +160,7 @@ class InterfaceList extends React.Component {
                 </div>
                 <div className='container'>
                     <div className='bottonWrap'>
-                        <Button type='primary' className='submit' onClick={this.save.bind(null, list.id)}>
+                        <Button type='primary' className='submit' onClick={this.save.bind(null, index)}>
                             保存
                         </Button>
                         <div className='box mockjs'>
@@ -170,7 +190,7 @@ class InterfaceList extends React.Component {
                     />
                     <Modal
                         title='添加接口'
-                        visible={this.state.visible}
+                        visible={this.state.visible || initStatus === 'kong'}
                         onOk={this.handleSubmit}
                         onCancel={this.handleCancel}
                     >

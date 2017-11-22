@@ -7,6 +7,13 @@ import { injectIntl } from 'react-intl'
 import './index.styl'
 
 class projectList extends React.Component {
+    constructor(props) {
+        super(props)
+        this.props.dispatch({
+            type: 'interfaces/reset'
+        })
+    }
+
     deleteHandler = id => {
         let userId = id
         this.props.dispatch({

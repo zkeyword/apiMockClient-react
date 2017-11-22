@@ -5,7 +5,6 @@ export function list(projectId) {
 }
 
 export function create(values) {
-    console.log(values)
     return request(`/v0.1/api/interfaces`, {
         method: 'POST',
         data: values
@@ -22,7 +21,7 @@ export function modify(values) {
 export function remove(values) {
     return request(`/v0.1/api/interfaces/${values.id}`, {
         method: 'DELETE',
-        data: values.projectId
+        data: values
     })
 }
 
@@ -31,6 +30,5 @@ export function fetch({ id }) {
 }
 
 export function preview(id) {
-    console.log(id)
     return request(`/v0.1/api/interfaces/preview/${id}`)
 }

@@ -7,7 +7,10 @@ export default {
     namespace: 'interfaces',
     state: {
         list: [],
-        preview: ''
+        preview: '',
+        index: '',
+        content: '',
+        initStatus: 'init'
     },
     reducers: {
         save(state, { payload: date }) {
@@ -24,37 +27,17 @@ export default {
                     })
                 })
                 yield call(promise)
-                // yield put({ type: 'reload' })
             } else {
                 message.success(formatMessage({ id: 'models.fails' }))
             }
+            yield put({
+                type: 'list',
+                payload: {
+                    id: values.projectId
+                }
+            })
         },
-        *modify({ payload: values }, { call, put }) {
-            let { data } = yield call(interfacesService.modify, values)
-            if (data) {
-                let promise = () => new Promise((resolve, reject) => {
-                    message.success(formatMessage({ id: 'models.submission' }), 1, () => {
-                        resolve()
-                    })
-                })
-                yield call(promise)
-            } else {
-                message.success(formatMessage({ id: 'models.fails' }))
-            }
-        },
-        *remove({ payload: values }, { call, put }) {
-            let { data } = yield call(interfacesService.remove, values)
-            if (data) {
-                let promise = () => new Promise((resolve, reject) => {
-                    message.success('删除成功', 1, () => {
-                        resolve()
-                    })
-                })
-                yield call(promise)
-            } else {
-                message.success(formatMessage({ id: 'models.fails' }))
-            }
-        },
+
         *fetch({ payload: id }, { call, put }) {
             const { data } = yield call(interfacesService.fetch, { id })
             if (data) {
@@ -70,42 +53,114 @@ export default {
         },
         *list({ payload: { id } }, { call, put }) {
             const { data } = yield call(interfacesService.list, id)
-            console.log(data[0].id)
-            // const { data: preview } = yield call(interfacesService.preview, id)
-            yield put({
-                type: 'listPreview',
-                payload: {
-                    id: data[0].id
-                }
-            })
-            if (data) {
+            if (data && data.length !== 0) {
                 yield put({
                     type: 'save',
                     payload: {
+                        initStatus: 'you',
                         list: data
                     }
                 })
-            } else {
-                yield put({ type: 'reset' })
-            }
-        },
-        *listPreview({ payload: { id } }, { call, put }) {
-            console.log(id)
-            const { data } = yield call(interfacesService.preview, id)
-            console.log(data)
-            if (data) {
                 yield put({
                     type: 'save',
                     payload: {
-                        preview: data
+                        id: data[0].id,
+                        content: data[0].content,
+                        index: 0
                     }
                 })
             } else {
-                yield put({ type: 'reset' })
+                yield put({
+                    type: 'save',
+                    payload: {
+                        initStatus: 'kong',
+                        list: data
+                    }
+                })
             }
         },
+        *modify({ payload: values }, { call, put }) {
+            let { data } = yield call(interfacesService.modify, values)
+            if (data) {
+                let promise = () => new Promise((resolve, reject) => {
+                    message.success(formatMessage({ id: 'models.submission' }), 1, () => {
+                        resolve()
+                    })
+                })
+                yield call(promise)
+            } else {
+                message.success(formatMessage({ id: 'models.fails' }))
+            }
+            yield put({
+                type: 'list',
+                payload: {
+                    id: values.projectId
+                }
+            })
+            yield put({
+                type: 'listPreview',
+                payload: {
+                    id: values.id,
+                    content: values.content,
+                    index: values.index
+                }
+            })
+        },
+        *remove({ payload: values }, { call, put }) {
+            let { data } = yield call(interfacesService.remove, values)
+            console.log(values)
+            yield put({
+                type: 'save',
+                payload: {
+                    index: values.index
+                }
+            })
+            yield put({
+                type: 'list',
+                payload: {
+                    id: values.projectId
+                }
+            })
+
+            // yield put({
+            //     type: 'listPreview',
+            //     payload: {
+            //         id: values.id,
+            //         // content: values.content,
+
+            //     }
+            // })
+            // yield put({
+            //     type: 'listPreview',
+            //     payload: {
+            //         id: values.projectId
+            //     }
+            // })
+            if (data) {
+                let promise = () => new Promise((resolve, reject) => {
+                    message.success('删除成功', 1, () => {
+                        resolve()
+                    })
+                })
+                yield call(promise)
+            } else {
+                message.success(formatMessage({ id: 'models.fails' }))
+            }
+        },
+        *listPreview({ payload: { id, index, content } }, { call, put }) {
+            const { data } = yield call(interfacesService.preview, id)
+            console.log(data)
+            yield put({
+                type: 'save',
+                payload: {
+                    preview: data,
+                    index,
+                    content
+                }
+            })
+        },
         *reload({ payload }, { put, select }) {
-            const state = yield select(state => state.product)
+            const state = yield select(state => state.interfaces)
             yield put({
                 type: 'save',
                 payload
@@ -116,7 +171,11 @@ export default {
             yield put({
                 type: 'save',
                 payload: {
-                    list: []
+                    list: [],
+                    preview: '',
+                    initStatus: 'init',
+                    content: '',
+                    index: ''
                 }
             })
         }
