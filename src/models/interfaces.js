@@ -80,7 +80,9 @@ export default {
             }
         },
         *modify({ payload: values }, { call, put }) {
+            console.log(values)
             let { data } = yield call(interfacesService.modify, values)
+            console.log(data)
             if (data) {
                 let promise = () => new Promise((resolve, reject) => {
                     message.success(formatMessage({ id: 'models.submission' }), 1, () => {
@@ -149,7 +151,7 @@ export default {
         },
         *listPreview({ payload: { id, index, content } }, { call, put }) {
             const { data } = yield call(interfacesService.preview, id)
-            console.log(data)
+            // console.log(data)
             yield put({
                 type: 'save',
                 payload: {

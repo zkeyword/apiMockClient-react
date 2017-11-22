@@ -29,7 +29,10 @@ class InterfaceList extends React.Component {
         value: '',
         visible: false,
         projectId: '',
-        saveid: 0
+        saveid: 0,
+        i: 0,
+        status: true,
+        timer: ''
     }
 
     showModal = () => {
@@ -72,7 +75,6 @@ class InterfaceList extends React.Component {
     }
 
     remove = (item, i) => {
-        console.log(item, i)
         let values = {
             'index': i,
             'id': item.id,
@@ -102,8 +104,13 @@ class InterfaceList extends React.Component {
             }
         })
         this.setState({
-            saveid: item.id
+            saveid: item.id,
+            i: i
         })
+        // if (this.status) {
+        //     console.log(this.state.timer)
+        //     clearInterval(this.state.timer)
+        // }
     }
 
     save = (index) => {
@@ -111,13 +118,35 @@ class InterfaceList extends React.Component {
             id: this.state.saveid,
             projectId: this.props.id,
             content: this.state.value,
-            index
+            index: this.state.i
         }
         this.props.dispatch({
             type: 'interfaces/modify',
             payload: values
         })
     }
+    // onblur = () => {
+    //     console.log(this.status)
+
+    // }
+    // onfocus = () => {
+    //     console.log(this)
+    //     console.log(this.state.value)
+    //     // let values = {
+    //     //     id: this.state.saveid,
+    //     //     content: this.state.value,
+    //     //     projectId: this.props.id,
+    //     //     index: this.state.i
+    //     // }
+
+    //     this.state.timer = setInterval(() => {
+    //         this.save()
+    //         // this.props.dispatch({ type: 'interfaces/modify', payload: values })
+    //         this.setState({
+    //             status: false
+    //         })
+    //     }, 5000)
+    // }
 
     render() {
         let {
@@ -181,6 +210,8 @@ class InterfaceList extends React.Component {
                         </div>
                     </div>
                     <CodeMirror
+                        // onFocus={this.onfocus.bind(null, this)}
+                        // onBlur={this.onblur.bind(null, this)}
                         ref={(cm) => { this.codeMirror = cm }}
                         value={content}
                         options={options}
