@@ -96,7 +96,8 @@ export default {
             yield put({
                 type: 'list',
                 payload: {
-                    id: values.projectId
+                    id: values.projectId,
+                    index: data.index
                 }
             })
             yield put({
