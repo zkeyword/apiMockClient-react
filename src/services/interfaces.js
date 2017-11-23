@@ -25,8 +25,8 @@ export function remove(values) {
     })
 }
 
-export function fetch({ id }) {
-    return request(`/v0.1/api/interfaces/${id}`)
+export function fetch(id) {
+    return request(`/v0.1/api/interfaces/content/${id}`)
 }
 
 export function preview(id) {

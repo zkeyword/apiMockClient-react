@@ -3,7 +3,7 @@ import { connect } from 'dva'
 import { injectIntl } from 'react-intl'
 import './index.styl'
 import './index2.styl'
-import { Form, Button, Modal, Input, Icon } from 'antd'
+import { Form, Button, Modal, Input, Icon, Popconfirm } from 'antd'
 import { UnControlled as CodeMirror } from 'react-codemirror2'
 import { execCommand } from './mark.js'
 import 'codemirror/mode/markdown/markdown'
@@ -28,39 +28,35 @@ class InterfaceList extends React.Component {
     state = {
         value: '',
         visible: false,
-        projectId: '',
+        projectId: this.props.id,
         saveid: 0,
         i: 0,
-        status: true,
-        timer: ''
+        status: true
     }
 
     showModal = () => {
+        console.log(this)
         this.setState({
             visible: true,
             id: this.props.id
         })
+        this.props.form.resetFields()
     }
 
     handleSubmit = (e) => {
         e.preventDefault()
         const { validateFields } = this.props.form
         validateFields((err, values) => {
-            console.log(values)
-            if (err) {
-                console.log('Received values of form: ', values)
-            }
+            if (err) return console.log('Received values of form: ', values)
             if (values.name) {
-                let value = {
-                    'projectId': this.props.id,
-                    'name': values.name,
-                    'content': ''
-                }
                 this.props.dispatch({
                     type: 'interfaces/create',
-                    payload: value
+                    payload: {
+                        projectId: this.props.id,
+                        name: values.name,
+                        content: ''
+                    }
                 })
-
                 this.setState({
                     visible: false
                 })
@@ -69,32 +65,30 @@ class InterfaceList extends React.Component {
     }
 
     handleCancel = (e) => {
+        if (this.props.interfaces.initStatus === 'kong') {
+            return this.props.dispatch({
+                type: 'interfaces/back'
+            })
+        }
         this.setState({
             visible: false
         })
     }
 
     remove = (item, i) => {
-        let values = {
-            'index': i,
-            'id': item.id,
-            'projectId': this.props.id
-        }
         this.props.dispatch({
             type: 'interfaces/remove',
-            payload: values
-        })
-        this.props.dispatch({
-            type: 'interfaces/listPreview',
             payload: {
+                index: i,
                 id: item.id,
-                index: i - 1,
-                content: item.content
+                projectId: this.props.id
             }
         })
     }
 
     change = (i, item) => {
+        console.log(item.content)
+
         this.props.dispatch({
             type: 'interfaces/listPreview',
             payload: {
@@ -105,24 +99,25 @@ class InterfaceList extends React.Component {
         })
         this.setState({
             saveid: item.id,
-            i: i
+            i: i,
+            status: false
         })
-        // if (this.status) {
-        //     console.log(this.state.timer)
-        //     clearInterval(this.state.timer)
-        // }
+        console.log(item)
     }
 
-    save = (index) => {
-        let values = {
-            id: this.state.saveid,
-            projectId: this.props.id,
-            content: this.state.value,
-            index: this.state.i
-        }
+    save = () => {
         this.props.dispatch({
             type: 'interfaces/modify',
-            payload: values
+            payload: {
+                id: this.state.status ? this.props.interfaces.list[0].id : this.state.saveid,
+                projectId: this.props.id,
+                content: this.state.value,
+                index: this.state.i
+            }
+        })
+
+        this.setState({
+            i: this.state.i
         })
     }
     // onblur = () => {
@@ -148,6 +143,15 @@ class InterfaceList extends React.Component {
     //     }, 5000)
     // }
 
+    onKeyDown = (editor, event) => {
+        if (event.ctrlKey === true && event.keyCode === 83) {
+            // event.preventDefault()
+            event.returnValue = false
+            this.save()
+        }
+        return false
+    }
+
     render() {
         let {
             interfaces: {
@@ -166,13 +170,11 @@ class InterfaceList extends React.Component {
             mode: 'markdown',
             theme: 'material'
         }
-
         return (
             <div className='page-device'>
                 <div className='lt-left'>
                     <div className='header'>
                         <span className='name'>接口类型名</span>
-                        {/* <span className='btn' onClick={this.showModal}>+</span> */}
                         <Icon className='btn add' onClick={this.showModal} type='plus' />
                     </div>
                     {
@@ -180,8 +182,9 @@ class InterfaceList extends React.Component {
                             return (
                                 <div key={i} className={index === i ? 'list currer' : 'list'} onClick={this.change.bind(null, i, item)}>
                                     <span className='name'>{item.name}</span>
-                                    {/* <span className='btn' onClick={this.remove.bind(null, item.id)} >x</span> */}
-                                    <Icon type='delete' className='btn' onClick={this.remove.bind(null, item, i)} />
+                                    <Popconfirm title='Are you sure？' okText='Yes' cancelText='No' onConfirm={this.remove.bind(null, item, i)}>
+                                        <Icon type='delete' className='btn' />
+                                    </Popconfirm>
                                 </div>
                             )
                         })
@@ -189,7 +192,7 @@ class InterfaceList extends React.Component {
                 </div>
                 <div className='container'>
                     <div className='bottonWrap'>
-                        <Button type='primary' className='submit' onClick={this.save.bind(null, index)}>
+                        <Button type='primary' className='submit' onClick={this.save.bind(null, this)}>
                             保存
                         </Button>
                         <div className='box mockjs'>
@@ -210,13 +213,14 @@ class InterfaceList extends React.Component {
                         </div>
                     </div>
                     <CodeMirror
-                        // onFocus={this.onfocus.bind(null, this)}
-                        // onBlur={this.onblur.bind(null, this)}
                         ref={(cm) => { this.codeMirror = cm }}
                         value={content}
                         options={options}
                         onChange={(editor, data, value) => {
                             this.setState({ value })
+                        }}
+                        onKeyDown={(editor, event) => {
+                            this.onKeyDown(editor, event)
                         }}
                     />
                     <Modal
@@ -229,7 +233,6 @@ class InterfaceList extends React.Component {
                             <FormItem>
                                 {
                                     getFieldDecorator('name', {
-                                        initialValue: '',
                                         rules: [{
                                             required: true,
                                             message: '必填项'

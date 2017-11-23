@@ -1,11 +1,7 @@
 import React from 'react'
-import { Form, Select } from 'antd'
+import { Form } from 'antd'
 import { injectIntl } from 'react-intl'
 import { Link } from 'dva/router'
-import language from '../../utils/language'
-import storage from '../../utils/storage'
-
-const Option = Select.Option
 
 class Header extends React.Component {
     current() {
@@ -27,31 +23,17 @@ class Header extends React.Component {
         return [cur]
     }
 
-    handleSelectChange = language => {
-        storage.set('language', language, 10 * 365 * 24 * 60 * 60)
-        window.location.reload()
-    }
-
     render() {
         let { formatMessage } = this.props.intl
-        const { getFieldDecorator } = this.props.form
         return (
             <div className='lt-header' >
-                <Link className='logo' to='/project' title='apiMockClient' />
+                <Link className='logo' to='/project' title='apiMockClient' >
+                    API MOCK
+                </Link>
                 <div className='operating'>
                     <span>
                         {formatMessage({ id: 'operating.welcome' })}，admin | <Link to='/login'>{formatMessage({ id: 'operating.logout' })}</Link>
                     </span>
-                    {getFieldDecorator('language', {
-                        initialValue: language
-                    })(
-                        <Select
-                            onChange={this.handleSelectChange}
-                        >
-                            <Option value='zh-CN'>中文</Option>
-                            <Option value='en-US'>English</Option>
-                        </Select>
-                        )}
                 </div>
             </div >
         )

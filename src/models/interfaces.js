@@ -1,5 +1,8 @@
 import * as interfacesService from '../services/interfaces'
 import { message } from 'antd'
+import { routerRedux } from 'dva/router'
+// import { fetch } from '../services/interfaces';
+// import key from 'keymaster'
 
 let formatMessage = window.formatMessage
 
@@ -10,7 +13,8 @@ export default {
         preview: '',
         index: '',
         content: '',
-        initStatus: 'init'
+        initStatus: 'init',
+        saveid: ''
     },
     reducers: {
         save(state, { payload: date }) {
@@ -37,20 +41,6 @@ export default {
                 }
             })
         },
-
-        *fetch({ payload: id }, { call, put }) {
-            const { data } = yield call(interfacesService.fetch, { id })
-            if (data) {
-                yield put({
-                    type: 'save',
-                    payload: {
-                        list: data
-                    }
-                })
-            } else {
-                yield put({ type: 'reset' })
-            }
-        },
         *list({ payload: { id } }, { call, put }) {
             const { data } = yield call(interfacesService.list, id)
             if (data && data.length !== 0) {
@@ -58,15 +48,16 @@ export default {
                     type: 'save',
                     payload: {
                         initStatus: 'you',
-                        list: data
+                        list: data,
+                        saveid: data[0].id
                     }
                 })
                 yield put({
-                    type: 'save',
+                    type: 'listPreview',
                     payload: {
                         id: data[0].id,
-                        content: data[0].content,
-                        index: 0
+                        index: 0,
+                        content: data[0].content
                     }
                 })
             } else {
@@ -82,7 +73,6 @@ export default {
         *modify({ payload: values }, { call, put }) {
             console.log(values)
             let { data } = yield call(interfacesService.modify, values)
-            console.log(data)
             if (data) {
                 let promise = () => new Promise((resolve, reject) => {
                     message.success(formatMessage({ id: 'models.submission' }), 1, () => {
@@ -94,13 +84,6 @@ export default {
                 message.success(formatMessage({ id: 'models.fails' }))
             }
             yield put({
-                type: 'list',
-                payload: {
-                    id: values.projectId,
-                    index: data.index
-                }
-            })
-            yield put({
                 type: 'listPreview',
                 payload: {
                     id: values.id,
@@ -108,10 +91,15 @@ export default {
                     index: values.index
                 }
             })
+            // yield put({
+            //     type: 'save',
+            //     payload: {
+            //         content: values.content
+            //     }
+            // })
         },
         *remove({ payload: values }, { call, put }) {
             let { data } = yield call(interfacesService.remove, values)
-            console.log(values)
             yield put({
                 type: 'save',
                 payload: {
@@ -124,19 +112,10 @@ export default {
                     id: values.projectId
                 }
             })
-
             // yield put({
             //     type: 'listPreview',
             //     payload: {
-            //         id: values.id,
-            //         // content: values.content,
-
-            //     }
-            // })
-            // yield put({
-            //     type: 'listPreview',
-            //     payload: {
-            //         id: values.projectId
+            //         id: values.id
             //     }
             // })
             if (data) {
@@ -150,25 +129,22 @@ export default {
                 message.success(formatMessage({ id: 'models.fails' }))
             }
         },
-        *listPreview({ payload: { id, index, content } }, { call, put }) {
+        *listPreview({ payload: { id, content, index } }, { call, put }) {
             const { data } = yield call(interfacesService.preview, id)
+            if (!content) {
+                const data2 = yield call(interfacesService.fetch, id)
+                content = data2.data.content
+            }
             // console.log(data)
             yield put({
                 type: 'save',
                 payload: {
                     preview: data,
-                    index,
-                    content
+                    content,
+                    index
                 }
             })
-        },
-        *reload({ payload }, { put, select }) {
-            const state = yield select(state => state.interfaces)
-            yield put({
-                type: 'save',
-                payload
-            })
-            yield put({ type: 'list', payload: { ...state, ...payload } })
+            // console.log(this.state.content)
         },
         *reset({ action }, { put }) {
             yield put({
@@ -181,6 +157,25 @@ export default {
                     index: ''
                 }
             })
+        },
+        *back({ payload }, { put, select }) {
+            yield put(routerRedux.push(`/project`))
+        },
+        *key({ payload }, { put, select }) {
+            console.log(121212)
+            // yield put({
+            //     type: 'modify',
+            //     payload: {}
+            // })
         }
+    },
+    subscriptions: {
+        // keyEvent(dispatch) {
+        //     console.log(dispatch)
+        //     key('ctrl+s', (e) => {
+        //         dispatch({ type: 'key', payload: {} })
+        //         return false
+        //     })
+        // }
     }
 }
