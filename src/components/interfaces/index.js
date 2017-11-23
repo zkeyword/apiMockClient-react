@@ -35,7 +35,6 @@ class InterfaceList extends React.Component {
     }
 
     showModal = () => {
-        console.log(this)
         this.setState({
             visible: true,
             id: this.props.id
@@ -84,25 +83,29 @@ class InterfaceList extends React.Component {
                 projectId: this.props.id
             }
         })
+        this.props.form.resetFields()
     }
 
     change = (i, item) => {
-        console.log(item.content)
-
-        this.props.dispatch({
-            type: 'interfaces/listPreview',
-            payload: {
-                id: item.id,
-                index: i,
-                content: item.content
-            }
-        })
         this.setState({
             saveid: item.id,
             i: i,
             status: false
         })
-        console.log(item)
+        this.props.dispatch({
+            type: 'interfaces/listPreview',
+            payload: {
+                id: item.id,
+                index: i
+            }
+        })
+        this.props.dispatch({
+            type: 'interfaces/content',
+            payload: {
+                id: item.id,
+                index: i
+            }
+        })
     }
 
     save = () => {
