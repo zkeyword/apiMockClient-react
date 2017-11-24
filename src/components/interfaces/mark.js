@@ -1,10 +1,10 @@
 function insertString(editor, str) {
     var selection = editor.getSelection()
-
+    var doc = editor.getDoc()
+    console.log(doc)
     if (selection.length > 0) {
         editor.replaceSelection(str)
     } else {
-        var doc = editor.getDoc()
         var cursor = doc.getCursor()
 
         var pos = {
