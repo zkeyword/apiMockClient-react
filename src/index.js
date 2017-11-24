@@ -15,6 +15,7 @@ import enUS from 'antd/lib/locale-provider/en_US'
 const app = dva({
     history: hashHistory,
     onError(e) {
+        console.log(e.message)
         let msg = ''
         if (e.response.data) {
             msg = e.response.data.message ? e.response.data.message : e.message

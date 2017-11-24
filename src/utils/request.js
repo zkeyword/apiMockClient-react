@@ -30,6 +30,8 @@ export default async function request(reqUrl, options = { method: 'GET' }) {
         // let fullUrl = url + reqUrl
         axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
     }
-    const response = await axios(reqUrl, options).then(checkStatus)
+    const response = await axios(reqUrl, options).then(checkStatus).catch(() => {
+        throw new Error('请求失败')
+    })
     return response
 }

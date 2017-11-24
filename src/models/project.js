@@ -77,19 +77,23 @@ export default {
             }
         },
         *list({ payload: { page = 1, pageSize = 0 } }, { call, put }) {
-            const userId = storage.get('userId')
-            const { data } = yield call(projectService.list, { page, pageSize, userId })
-            if (data) {
-                yield put({
-                    type: 'save',
-                    payload: {
-                        list: data,
-                        total: 10,
-                        page: 1
-                    }
-                })
-            } else {
-                yield put({ type: 'reset' })
+            try {
+                const userId = storage.get('userId')
+                const { data } = yield call(projectService.list, { page, pageSize, userId })
+                if (data) {
+                    yield put({
+                        type: 'save',
+                        payload: {
+                            list: data,
+                            total: 10,
+                            page: 1
+                        }
+                    })
+                } else {
+                    yield put({ type: 'reset' })
+                }
+            } catch (error) {
+                yield put(routerRedux.push(`/login`))
             }
         },
         *reload({ payload }, { put, select }) {
