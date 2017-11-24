@@ -92,18 +92,21 @@ export default {
             }
         },
         *listPreview({ payload: { id, content, index } }, { call, put }) {
+            let preview
             try {
                 const { data } = yield call(interfacesService.preview, id)
-                yield put({
-                    type: 'save',
-                    payload: {
-                        preview: data,
-                        index
-                    }
-                })
+                preview = data
             } catch (error) {
-                console.log(error)
+                preview = '<div style="color:red;font-size: 20px;font-weight:bold">警告：API文档的语法有错</div>'
             }
+
+            yield put({
+                type: 'save',
+                payload: {
+                    preview,
+                    index
+                }
+            })
         },
         *content({ payload: { id, content, index } }, { call, put }) {
             const { data } = yield call(interfacesService.fetch, id)
