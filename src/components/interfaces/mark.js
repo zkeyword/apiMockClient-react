@@ -48,18 +48,19 @@ function execCommand(data) {
         },
         api: {
             'GET': `
-##  添加项目 [POST /v0.1/api/project]
+##  添加项目 [ GET/v0.1/api/project/{id}]
 
-+ Request (application/json)
+- Parameters
 
-        {
-            "name": "boss系统", // 项目名
-            "alias": "boss", // 项目别名
-            "description": "apiMock", // 描述
-            "userId": "0" // 用户id
-        }
+  +id (string) - 平面图的ID
 
-+ Response 200
++ Request
+
+  + Headers
+
+    Authorization: MAC id="",nonce="",mac=""
+
++ Response 200 (application/json)
 
         {
             "id": 3,
@@ -74,6 +75,12 @@ function execCommand(data) {
 ##  添加项目 [POST /v0.1/api/project]
 
 + Request (application/json)
+
+  + Headers
+
+    Authorization: MAC id="",nonce="",mac=""
+
+  + Body
 
         {
             "name": "boss系统", // 项目名
@@ -94,32 +101,35 @@ function execCommand(data) {
         }               
                 `,
             'DELETE': `
-##  添加项目 [POST /v0.1/api/project]
+##  添加项目 [DELETE /v0.1/api/project/{id}]
 
++ Parameters
+
+  + id (string) - 建筑的ID
+  
 + Request (application/json)
 
-        {
-            "name": "boss系统", // 项目名
-            "alias": "boss", // 项目别名
-            "description": "apiMock", // 描述
-            "userId": "0" // 用户id
-        }
+  + Headers
 
-+ Response 200
+    Authorization: MAC id="",nonce="",mac=""
 
-        {
-            "id": 3,
-            "name": "boss系统",
-            "alias": "boss",
-            "description": "apiMock",
-            "updatedAt": "2017-10-29T02:17:12.553Z",
-            "createdAt": "2017-10-29T02:17:12.553Z"
-        }               
+ + Response 200 (application/json)      
                 `,
             'PUT': `
-##  添加项目 [POST /v0.1/api/project]
+##  添加项目 [PUT /v0.1/api/project/{id}]
 
-+ Request (application/json)
++ Parameters
+
+  + id (string) - 设备位置的ID
+
++ Request 
+
+  + Headers
+    
+    Authorization: MAC id="",nonce="",mac=""
+
+  + Body
+
 
         {
             "name": "boss系统", // 项目名
@@ -128,7 +138,7 @@ function execCommand(data) {
             "userId": "0" // 用户id
         }
 
-+ Response 200
++ Response 200 (application/json)
 
         {
             "id": 3,
@@ -140,16 +150,40 @@ function execCommand(data) {
         }               
                 `,
             'PATCH': `
-##  添加项目 [POST /v0.1/api/project]
+##  添加项目 [PATCH /v0.1/api/project]
 
 + Request (application/json)
 
-        {
-            "name": "boss系统", // 项目名
-            "alias": "boss", // 项目别名
-            "description": "apiMock", // 描述
-            "userId": "0" // 用户id
-        }
+    + Body
+
+            {
+                "title": "This is another note",
+                "tags": [
+                    "todo",
+                    "work"
+                ]
+            }
+
+    + Schema
+
+            {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "content": {
+                        "type": "string"
+                    },
+                    "tags": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "additionalProperties": false
+            }
 
 + Response 200
 
@@ -164,7 +198,6 @@ function execCommand(data) {
                 `
         }
     }
-
     // react-codemirror 初始化不能更新值的bug
     if (data.type === 'init') {
         insertString(editor, data.value)
