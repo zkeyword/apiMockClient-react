@@ -1,7 +1,6 @@
 function insertString(editor, str) {
     var selection = editor.getSelection()
     var doc = editor.getDoc()
-    console.log(doc)
     if (selection.length > 0) {
         editor.replaceSelection(str)
     } else {
@@ -14,10 +13,10 @@ function insertString(editor, str) {
 
         doc.replaceRange(str, pos)
     }
+    doc.cm.focus()
 }
 
 function execCommand(data) {
-    // let editor = this.refs.editor.getCodeMirror()
     let editor = this.codeMirror.editor
     let obj = {
         mock: {
@@ -48,39 +47,49 @@ function execCommand(data) {
         },
         api: {
             'GET': `
-##  添加项目 [ GET/v0.1/api/project/{id}]
+## 获得平面图列表 [GET /iot/v0.1/ichnography{?page}{?size}{?org_id}{?app_id}]
 
-- Parameters
+获得平面图列表（列表结构）
 
-  +id (string) - 平面图的ID
++ Parameters
+
+    + page (number, optional) - 当前页数
+        + Default: 0
+    + size (number,optional) - 每页大小
+        + Default: 20
+    + org_id (string,optional) - 组织ID
+    + app_id (string,optional) - 应用ID
 
 + Request
 
-  + Headers
+    + Headers
 
-    Authorization: MAC id="",nonce="",mac=""
+        Authorization: MAC id="",nonce="",mac=""
 
 + Response 200 (application/json)
 
-        {
-            "id": 3,
-            "name": "boss系统",
-            "alias": "boss",
-            "description": "apiMock",
-            "updatedAt": "2017-10-29T02:17:12.553Z",
-            "createdAt": "2017-10-29T02:17:12.553Z"
-        }                
-                `,
+        [
+            {
+                "id": "5a01695724810c0c8b153770",
+                "picUrl": "http://ichnography.oss-cn-shenzhen.aliyuncs.com/dev/微信图片_20171027101455.png",
+                "name": "测试图片1",
+                "description": "测试图片1",
+                "orgId":"",
+                "appId":""
+            }
+        ]
+
+`,
             'POST': `
 ##  添加项目 [POST /v0.1/api/project]
 
 + Request (application/json)
 
-  + Headers
+    + Headers
 
-    Authorization: MAC id="",nonce="",mac=""
+        Authorization: MAC id="",nonce="",mac=""
 
-  + Body
+    + Body
 
         {
             "name": "boss系统", // 项目名
@@ -91,30 +100,30 @@ function execCommand(data) {
 
 + Response 200
 
-        {
-            "id": 3,
-            "name": "boss系统",
-            "alias": "boss",
-            "description": "apiMock",
-            "updatedAt": "2017-10-29T02:17:12.553Z",
-            "createdAt": "2017-10-29T02:17:12.553Z"
-        }               
-                `,
+    {
+        "id": 3,
+        "name": "boss系统",
+        "alias": "boss",
+        "description": "apiMock",
+        "updatedAt": "2017-10-29T02:17:12.553Z",
+        "createdAt": "2017-10-29T02:17:12.553Z"
+    }               
+`,
             'DELETE': `
 ##  添加项目 [DELETE /v0.1/api/project/{id}]
 
 + Parameters
 
-  + id (string) - 建筑的ID
+    + id (string) - 建筑的ID
   
 + Request (application/json)
 
-  + Headers
+    + Headers
 
-    Authorization: MAC id="",nonce="",mac=""
+        Authorization: MAC id="",nonce="",mac=""
 
  + Response 200 (application/json)      
-                `,
+`,
             'PUT': `
 ##  添加项目 [PUT /v0.1/api/project/{id}]
 
@@ -124,12 +133,11 @@ function execCommand(data) {
 
 + Request 
 
-  + Headers
+    + Headers
     
-    Authorization: MAC id="",nonce="",mac=""
+        Authorization: MAC id="",nonce="",mac=""
 
-  + Body
-
+    + Body
 
         {
             "name": "boss系统", // 项目名
@@ -140,62 +148,45 @@ function execCommand(data) {
 
 + Response 200 (application/json)
 
-        {
-            "id": 3,
-            "name": "boss系统",
-            "alias": "boss",
-            "description": "apiMock",
-            "updatedAt": "2017-10-29T02:17:12.553Z",
-            "createdAt": "2017-10-29T02:17:12.553Z"
-        }               
-                `,
+    {
+        "id": 3,
+        "name": "boss系统",
+        "alias": "boss",
+        "description": "apiMock",
+        "updatedAt": "2017-10-29T02:17:12.553Z",
+        "createdAt": "2017-10-29T02:17:12.553Z"
+    }               
+`,
             'PATCH': `
 ##  添加项目 [PATCH /v0.1/api/project]
 
 + Request (application/json)
 
+    + Headers
+
+        Authorization: MAC id="",nonce="",mac=""
+
     + Body
 
-            {
-                "title": "This is another note",
-                "tags": [
-                    "todo",
-                    "work"
-                ]
-            }
-
-    + Schema
-
-            {
-                "type": "object",
-                "properties": {
-                    "title": {
-                        "type": "string"
-                    },
-                    "content": {
-                        "type": "string"
-                    },
-                    "tags": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    }
-                },
-                "additionalProperties": false
-            }
+        {
+            "title": "This is another note",
+            "tags": [
+                "todo",
+                "work"
+            ]
+        }
 
 + Response 200
 
-        {
-            "id": 3,
-            "name": "boss系统",
-            "alias": "boss",
-            "description": "apiMock",
-            "updatedAt": "2017-10-29T02:17:12.553Z",
-            "createdAt": "2017-10-29T02:17:12.553Z"
-        } 
-                `
+    {
+        "id": 3,
+        "name": "boss系统",
+        "alias": "boss",
+        "description": "apiMock",
+        "updatedAt": "2017-10-29T02:17:12.553Z",
+        "createdAt": "2017-10-29T02:17:12.553Z"
+    } 
+`
         }
     }
     // react-codemirror 初始化不能更新值的bug

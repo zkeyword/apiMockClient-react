@@ -92,14 +92,18 @@ export default {
             }
         },
         *listPreview({ payload: { id, content, index } }, { call, put }) {
-            const { data } = yield call(interfacesService.preview, id)
-            yield put({
-                type: 'save',
-                payload: {
-                    preview: data,
-                    index
-                }
-            })
+            try {
+                const { data } = yield call(interfacesService.preview, id)
+                yield put({
+                    type: 'save',
+                    payload: {
+                        preview: data,
+                        index
+                    }
+                })
+            } catch (error) {
+                console.log(error)
+            }
         },
         *content({ payload: { id, content, index } }, { call, put }) {
             const { data } = yield call(interfacesService.fetch, id)

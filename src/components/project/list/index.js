@@ -92,7 +92,7 @@ class projectList extends React.Component {
                     {
                         dataSource.map((items, i) => {
                             return (
-                                <div key={i} className='item' >
+                                <div key={i} className='item' title={items.name}>
                                     <div className='item-ico'>
                                         <Popconfirm title={formatMessage({ id: 'table.confirmName' })} onConfirm={this.deleteHandler.bind(null, items.id)}>
                                             <Icon type='delete' />
@@ -100,11 +100,9 @@ class projectList extends React.Component {
                                         <Link to={`/project/detail/${items.id}`}><Icon type='edit' /></Link>
                                     </div>
                                     <div className='item-name'>
-                                        <p>项目名：</p>
                                         <Link to={`/interfaces/${items.id}`}><p className='item-interface'>{items.name}</p></Link>
                                     </div>
                                     <div className='item-description'>
-                                        <p>描述：</p>
                                         <p className='item-description-size'>{items.description}</p>
                                     </div>
                                 </div>

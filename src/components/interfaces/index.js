@@ -3,6 +3,7 @@ import { connect } from 'dva'
 import { injectIntl } from 'react-intl'
 import './index.styl'
 import './index2.styl'
+import './preview.styl'
 import { Form, Button, Modal, Input, Icon, Popconfirm } from 'antd'
 import { UnControlled as CodeMirror } from 'react-codemirror2'
 import { execCommand } from './mark.js'
@@ -196,7 +197,7 @@ class InterfaceList extends React.Component {
                 <div className='container'>
                     <div className='bottonWrap'>
                         <Button type='primary' className='submit' onClick={this.save.bind(null, this)}>
-                            保存
+                            保存(CTRL+S)
                         </Button>
                         <div className='box mockjs'>
                             <div onClick={execCommand.bind(this, { type: 'mock', value: 'String' })}>String</div>
