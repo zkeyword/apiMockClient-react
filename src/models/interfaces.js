@@ -13,6 +13,7 @@ export default {
         preview: '',
         index: '',
         content: '',
+        template: {},
         initStatus: 'init',
         saveid: ''
     },
@@ -54,31 +55,47 @@ export default {
                 message.success(formatMessage({ id: 'models.fails' }))
             }
             yield put({
-                type: 'listPreview',
+                type: 'list',
                 payload: {
-                    id: values.id,
-                    content: values.content,
+                    id: values.projectId,
                     index: values.index
                 }
             })
+            // yield put({
+            //     type: 'listPreview',
+            //     payload: {
+            //         id: values.id,
+            //         content: values.content,
+            //         template: {
+            //             request: values.request,
+            //             response: values.response
+            //         },
+            //         index: values.index
+            //     }
+            // })
         },
-        *list({ payload: { id } }, { call, put }) {
+        *list({ payload: { id, index = 0 } }, { call, put }) {
             const { data } = yield call(interfacesService.list, id)
             if (data && data.length !== 0) {
+                let item = data[index]
                 yield put({
                     type: 'save',
                     payload: {
                         initStatus: 'you',
                         list: data,
-                        saveid: data[0].id,
-                        content: data[0].content
+                        saveid: item.id,
+                        content: item.content,
+                        template: {
+                            request: item.request,
+                            response: item.response
+                        }
                     }
                 })
                 yield put({
                     type: 'listPreview',
                     payload: {
-                        id: data[0].id,
-                        index: 0
+                        id: item.id,
+                        index
                     }
                 })
             } else {
@@ -91,7 +108,7 @@ export default {
                 })
             }
         },
-        *listPreview({ payload: { id, content, index } }, { call, put }) {
+        *listPreview({ payload: { id, index } }, { call, put }) {
             let preview
             try {
                 const { data } = yield call(interfacesService.preview, id)
@@ -113,7 +130,11 @@ export default {
             yield put({
                 type: 'save',
                 payload: {
-                    content: data.content
+                    content: data.content,
+                    template: {
+                        request: data.request,
+                        response: data.response
+                    }
                 }
             })
         },
@@ -157,6 +178,7 @@ export default {
                     preview: '',
                     initStatus: 'init',
                     content: '',
+                    template: {},
                     index: ''
                 }
             })

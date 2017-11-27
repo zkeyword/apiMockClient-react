@@ -16,7 +16,8 @@ function insertString(editor, str) {
     doc.cm.focus()
 }
 
-function execCommand(data) {
+function execCommand(data, template) {
+    console.log(template)
     let editor = this.codeMirror.editor
     let obj = {
         mock: {
@@ -36,8 +37,7 @@ function execCommand(data) {
                 {
                     "name|+1": [
                     "Hello",
-                    "Mock.js",
-                    "!"
+                    "Mock.js"
                     ]
                 }
             ]
@@ -68,17 +68,14 @@ function execCommand(data) {
 
 + Response 200 (application/json)
 
-        [
-            {
-                "id": "5a01695724810c0c8b153770",
-                "picUrl": "http://ichnography.oss-cn-shenzhen.aliyuncs.com/dev/微信图片_20171027101455.png",
-                "name": "测试图片1",
-                "description": "测试图片1",
-                "orgId":"",
-                "appId":""
-            }
-        ]
-
+    ${template.response ? template.response : `
+    {
+        "name": "boss系统", // 项目名
+        "alias": "boss", // 项目别名
+        "description": "apiMock", // 描述
+        "userId": "0" // 用户id
+    }
+    `}
 `,
             'POST': `
 ##  添加项目 [POST /v0.1/api/project]
@@ -91,23 +88,25 @@ function execCommand(data) {
 
     + Body
 
+        ${template.request ? template.request : `
         {
             "name": "boss系统", // 项目名
             "alias": "boss", // 项目别名
             "description": "apiMock", // 描述
             "userId": "0" // 用户id
         }
+        `}
 
 + Response 200
 
+    ${template.response ? template.response : `
     {
-        "id": 3,
-        "name": "boss系统",
-        "alias": "boss",
-        "description": "apiMock",
-        "updatedAt": "2017-10-29T02:17:12.553Z",
-        "createdAt": "2017-10-29T02:17:12.553Z"
-    }               
+        "name": "boss系统", // 项目名
+        "alias": "boss", // 项目别名
+        "description": "apiMock", // 描述
+        "userId": "0" // 用户id
+    }
+    `}              
 `,
             'DELETE': `
 ##  添加项目 [DELETE /v0.1/api/project/{id}]
@@ -139,23 +138,25 @@ function execCommand(data) {
 
     + Body
 
+        ${template.request ? template.request : `
         {
             "name": "boss系统", // 项目名
             "alias": "boss", // 项目别名
             "description": "apiMock", // 描述
             "userId": "0" // 用户id
         }
+        `}
 
 + Response 200 (application/json)
 
+    ${template.response ? template.response : `
     {
-        "id": 3,
-        "name": "boss系统",
-        "alias": "boss",
-        "description": "apiMock",
-        "updatedAt": "2017-10-29T02:17:12.553Z",
-        "createdAt": "2017-10-29T02:17:12.553Z"
-    }               
+        "name": "boss系统", // 项目名
+        "alias": "boss", // 项目别名
+        "description": "apiMock", // 描述
+        "userId": "0" // 用户id
+    }
+    `}              
 `,
             'PATCH': `
 ##  添加项目 [PATCH /v0.1/api/project]
@@ -168,24 +169,25 @@ function execCommand(data) {
 
     + Body
 
+        ${template.request ? template.request : `
         {
-            "title": "This is another note",
-            "tags": [
-                "todo",
-                "work"
-            ]
+            "name": "boss系统", // 项目名
+            "alias": "boss", // 项目别名
+            "description": "apiMock", // 描述
+            "userId": "0" // 用户id
         }
+        `}
 
 + Response 200
 
+    ${template.response ? template.response : `
     {
-        "id": 3,
-        "name": "boss系统",
-        "alias": "boss",
-        "description": "apiMock",
-        "updatedAt": "2017-10-29T02:17:12.553Z",
-        "createdAt": "2017-10-29T02:17:12.553Z"
-    } 
+        "name": "boss系统", // 项目名
+        "alias": "boss", // 项目别名
+        "description": "apiMock", // 描述
+        "userId": "0" // 用户id
+    }
+    `}
 `
         }
     }

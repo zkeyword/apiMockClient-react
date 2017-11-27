@@ -4,11 +4,13 @@ import { injectIntl } from 'react-intl'
 import './index.styl'
 import './index2.styl'
 import './preview.styl'
-import { Form, Button, Modal, Input, Icon, Popconfirm } from 'antd'
+import { Form, Button, Modal, Input, Icon, Popconfirm, Radio } from 'antd'
 import { UnControlled as CodeMirror } from 'react-codemirror2'
 import { execCommand } from './mark.js'
 import 'codemirror/mode/markdown/markdown'
 const FormItem = Form.Item
+const RadioGroup = Radio.Group
+const { TextArea } = Input
 
 class InterfaceList extends React.Component {
     constructor(props) {
@@ -32,15 +34,52 @@ class InterfaceList extends React.Component {
         projectId: this.props.id,
         saveid: 0,
         i: 0,
-        status: true
+        status: true,
+        radio: 0,
+        item: {}
     }
 
-    showModal = () => {
+    showModal = (item) => {
+        if (item.name) {
+            this.setState({
+                visible: true,
+                id: this.props.id,
+                radio: (item.request || item.response) ? 1 : 0,
+                item
+            }, () => {
+                if (this.state.radio) {
+                    this.props.form.setFieldsValue({
+                        name: item.name,
+                        request: item.request,
+                        response: item.response
+                    })
+                } else {
+                    this.props.form.setFieldsValue({
+                        name: item.name
+                    })
+                }
+            })
+        } else {
+            this.setState({
+                visible: true,
+                id: this.props.id,
+                radio: (item.request || item.response) ? 1 : 0
+            })
+            this.props.form.resetFields()
+        }
+    }
+
+    radioChange = (e) => {
         this.setState({
-            visible: true,
-            id: this.props.id
+            radio: e.target.value
+        }, () => {
+            if (e.target.value) {
+                this.props.form.setFieldsValue({
+                    request: this.state.item.request,
+                    response: this.state.item.response
+                })
+            }
         })
-        this.props.form.resetFields()
     }
 
     handleSubmit = (e) => {
@@ -49,17 +88,35 @@ class InterfaceList extends React.Component {
         validateFields((err, values) => {
             if (err) return console.log('Received values of form: ', values)
             if (values.name) {
-                this.props.dispatch({
-                    type: 'interfaces/create',
-                    payload: {
-                        projectId: this.props.id,
-                        name: values.name,
-                        content: ''
-                    }
-                })
-                this.setState({
-                    visible: false
-                })
+                if (!this.state.item.name) {
+                    this.props.dispatch({
+                        type: 'interfaces/create',
+                        payload: {
+                            projectId: this.props.id,
+                            name: values.name,
+                            content: '',
+                            request: values.request,
+                            response: values.response
+                        }
+                    })
+                    this.setState({
+                        visible: false
+                    })
+                } else {
+                    this.props.dispatch({
+                        type: 'interfaces/modify',
+                        payload: {
+                            id: this.state.item.id,
+                            projectId: this.props.id,
+                            name: values.name,
+                            request: values.request ? values.request : '',
+                            response: values.response ? values.response : ''
+                        }
+                    })
+                    this.setState({
+                        visible: false
+                    })
+                }
             }
         })
     }
@@ -163,6 +220,7 @@ class InterfaceList extends React.Component {
             preview,
             initStatus,
             content,
+            template,
             index
             },
             form: { getFieldDecorator }
@@ -186,6 +244,7 @@ class InterfaceList extends React.Component {
                             return (
                                 <div key={i} className={index === i ? 'list currer' : 'list'} onClick={this.change.bind(null, i, item)}>
                                     <span className='name'>{item.name}</span>
+                                    <Icon type='setting' className='btn' onClick={() => this.showModal(item)} />
                                     <Popconfirm title='Are you sure？' okText='Yes' cancelText='No' onConfirm={this.remove.bind(null, item, i)}>
                                         <Icon type='delete' className='btn' />
                                     </Popconfirm>
@@ -200,20 +259,20 @@ class InterfaceList extends React.Component {
                             保存(CTRL+S)
                         </Button>
                         <div className='box mockjs'>
-                            <div onClick={execCommand.bind(this, { type: 'mock', value: 'String' })}>String</div>
-                            <div onClick={execCommand.bind(this, { type: 'mock', value: 'Number' })}>Number</div>
-                            <div onClick={execCommand.bind(this, { type: 'mock', value: 'Boolean' })}>Boolean</div>
-                            <div onClick={execCommand.bind(this, { type: 'mock', value: 'Array' })}>Array</div>
-                            <div onClick={execCommand.bind(this, { type: 'mock', value: 'Object' })}>Object</div>
-                            <div onClick={execCommand.bind(this, { type: 'mock', value: 'Image' })}>Image</div>
-                            <div onClick={execCommand.bind(this, { type: 'mock', value: 'Date' })}>Date</div>
+                            <div onClick={execCommand.bind(this, { type: 'mock', value: 'String' }, template)}>String</div>
+                            <div onClick={execCommand.bind(this, { type: 'mock', value: 'Number' }, template)}>Number</div>
+                            <div onClick={execCommand.bind(this, { type: 'mock', value: 'Boolean' }, template)}>Boolean</div>
+                            <div onClick={execCommand.bind(this, { type: 'mock', value: 'Array' }, template)}>Array</div>
+                            <div onClick={execCommand.bind(this, { type: 'mock', value: 'Object' }, template)}>Object</div>
+                            <div onClick={execCommand.bind(this, { type: 'mock', value: 'Image' }, template)}>Image</div>
+                            <div onClick={execCommand.bind(this, { type: 'mock', value: 'Date' }, template)}>Date</div>
                         </div>
                         <div className='box apiblueprint'>
-                            <div onClick={execCommand.bind(this, { type: 'api', value: 'GET' })}>GET</div>
-                            <div onClick={execCommand.bind(this, { type: 'api', value: 'POST' })}>POST</div>
-                            <div onClick={execCommand.bind(this, { type: 'api', value: 'DELETE' })}>DELETE</div>
-                            <div onClick={execCommand.bind(this, { type: 'api', value: 'PUT' })}>PUT</div>
-                            <div onClick={execCommand.bind(this, { type: 'api', value: 'PATCH' })}>PATCH</div>
+                            <div onClick={execCommand.bind(this, { type: 'api', value: 'GET' }, template)}>GET</div>
+                            <div onClick={execCommand.bind(this, { type: 'api', value: 'POST' }, template)}>POST</div>
+                            <div onClick={execCommand.bind(this, { type: 'api', value: 'DELETE' }, template)}>DELETE</div>
+                            <div onClick={execCommand.bind(this, { type: 'api', value: 'PUT' }, template)}>PUT</div>
+                            <div onClick={execCommand.bind(this, { type: 'api', value: 'PATCH' }, template)}>PATCH</div>
                         </div>
                     </div>
                     <CodeMirror
@@ -228,22 +287,65 @@ class InterfaceList extends React.Component {
                         }}
                     />
                     <Modal
-                        title='添加接口'
+                        title='添加分类'
                         visible={this.state.visible || initStatus === 'kong'}
                         onOk={this.handleSubmit}
                         onCancel={this.handleCancel}
                     >
                         <Form onSubmit={this.handleSubmit}>
-                            <FormItem>
+                            <FormItem
+                                label='接口分类名'
+                            >
                                 {
                                     getFieldDecorator('name', {
                                         rules: [{
                                             required: true,
                                             message: '必填项'
                                         }]
-                                    })(<Input size='large' placeholder='接口名称' />)
+                                    })(<Input size='large' placeholder='接口分类名称' />)
                                 }
                             </FormItem>
+                            <FormItem
+                                label='快捷模板'
+                            >
+                                {getFieldDecorator('radio', {
+                                    initialValue: this.state.radio
+                                })(
+                                    <RadioGroup onChange={this.radioChange}>
+                                        <Radio value={0}>默认</Radio>
+                                        <Radio value={1}>自定义</Radio>
+                                    </RadioGroup>
+                                    )}
+                            </FormItem>
+                            {
+                                this.state.radio === 1 &&
+                                <div>
+                                    <FormItem
+                                        label='request模板'
+                                    >
+                                        {
+                                            getFieldDecorator('request', {
+                                                rules: [{
+                                                    required: true,
+                                                    message: '必填项'
+                                                }]
+                                            })(<TextArea rows={10} placeholder='request模板' />)
+                                        }
+                                    </FormItem>
+                                    <FormItem
+                                        label='response模板'
+                                    >
+                                        {
+                                            getFieldDecorator('response', {
+                                                rules: [{
+                                                    required: true,
+                                                    message: '必填项'
+                                                }]
+                                            })(<TextArea rows={10} placeholder='response模板' />)
+                                        }
+                                    </FormItem>
+                                </div>
+                            }
                         </Form>
                     </Modal>
                 </div>
