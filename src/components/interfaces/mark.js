@@ -47,7 +47,7 @@ function execCommand(data, template) {
         },
         api: {
             'GET': `
-## 获得平面图列表 [GET /iot/v0.1/ichnography{?page}{?size}{?org_id}{?app_id}]
+## 获得平面图列表 [GET /xx/xxx/xxx{?page}{?size}{?org_id}{?app_id}]
 
 获得平面图列表（列表结构）
 
@@ -70,10 +70,6 @@ function execCommand(data, template) {
 
     ${template.response ? template.response : `
     {
-        "name": "boss系统", // 项目名
-        "alias": "boss", // 项目别名
-        "description": "apiMock", // 描述
-        "userId": "0" // 用户id
     }
     `}
 `,
@@ -90,10 +86,6 @@ function execCommand(data, template) {
 
         ${template.request ? template.request : `
         {
-            "name": "boss系统", // 项目名
-            "alias": "boss", // 项目别名
-            "description": "apiMock", // 描述
-            "userId": "0" // 用户id
         }
         `}
 
@@ -101,15 +93,11 @@ function execCommand(data, template) {
 
     ${template.response ? template.response : `
     {
-        "name": "boss系统", // 项目名
-        "alias": "boss", // 项目别名
-        "description": "apiMock", // 描述
-        "userId": "0" // 用户id
     }
     `}              
 `,
             'DELETE': `
-##  添加项目 [DELETE /v0.1/api/project/{id}]
+##  添加项目 [DELETE /xx/xx/{id}]
 
 + Parameters
 
@@ -124,7 +112,7 @@ function execCommand(data, template) {
  + Response 200 (application/json)      
 `,
             'PUT': `
-##  添加项目 [PUT /v0.1/api/project/{id}]
+##  添加项目 [PUT /xx/xx/{id}]
 
 + Parameters
 
@@ -140,10 +128,6 @@ function execCommand(data, template) {
 
         ${template.request ? template.request : `
         {
-            "name": "boss系统", // 项目名
-            "alias": "boss", // 项目别名
-            "description": "apiMock", // 描述
-            "userId": "0" // 用户id
         }
         `}
 
@@ -151,15 +135,11 @@ function execCommand(data, template) {
 
     ${template.response ? template.response : `
     {
-        "name": "boss系统", // 项目名
-        "alias": "boss", // 项目别名
-        "description": "apiMock", // 描述
-        "userId": "0" // 用户id
     }
     `}              
 `,
             'PATCH': `
-##  添加项目 [PATCH /v0.1/api/project]
+##  添加项目 [PATCH /xx/xx]
 
 + Request (application/json)
 
@@ -171,10 +151,6 @@ function execCommand(data, template) {
 
         ${template.request ? template.request : `
         {
-            "name": "boss系统", // 项目名
-            "alias": "boss", // 项目别名
-            "description": "apiMock", // 描述
-            "userId": "0" // 用户id
         }
         `}
 
@@ -182,10 +158,6 @@ function execCommand(data, template) {
 
     ${template.response ? template.response : `
     {
-        "name": "boss系统", // 项目名
-        "alias": "boss", // 项目别名
-        "description": "apiMock", // 描述
-        "userId": "0" // 用户id
     }
     `}
 `
