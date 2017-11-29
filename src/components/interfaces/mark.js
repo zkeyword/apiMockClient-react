@@ -70,6 +70,7 @@ function execCommand(data, template) {
 
     ${template.response ? template.response : `
     {
+
     }
     `}
 `,
@@ -86,6 +87,7 @@ function execCommand(data, template) {
 
         ${template.request ? template.request : `
         {
+
         }
         `}
 
@@ -93,6 +95,7 @@ function execCommand(data, template) {
 
     ${template.response ? template.response : `
     {
+
     }
     `}              
 `,
@@ -128,6 +131,7 @@ function execCommand(data, template) {
 
         ${template.request ? template.request : `
         {
+
         }
         `}
 
@@ -135,6 +139,7 @@ function execCommand(data, template) {
 
     ${template.response ? template.response : `
     {
+
     }
     `}              
 `,
@@ -151,6 +156,7 @@ function execCommand(data, template) {
 
         ${template.request ? template.request : `
         {
+
         }
         `}
 
@@ -158,6 +164,7 @@ function execCommand(data, template) {
 
     ${template.response ? template.response : `
     {
+        
     }
     `}
 `
