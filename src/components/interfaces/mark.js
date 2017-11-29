@@ -74,7 +74,7 @@ function execCommand(data, template) {
     `}
 `,
             'POST': `
-##  添加项目 [POST /v0.1/api/project]
+##  添加项目 [POST /xx/xxx]
 
 + Request (application/json)
 
