@@ -36,7 +36,8 @@ class InterfaceList extends React.Component {
         i: 0,
         status: true,
         radio: 0,
-        item: {}
+        item: {},
+        timer: null
     }
 
     showModal = (item) => {
@@ -181,28 +182,16 @@ class InterfaceList extends React.Component {
             i: this.state.i
         })
     }
-    // onblur = () => {
-    //     console.log(this.status)
 
-    // }
-    // onfocus = () => {
-    //     console.log(this)
-    //     console.log(this.state.value)
-    //     // let values = {
-    //     //     id: this.state.saveid,
-    //     //     content: this.state.value,
-    //     //     projectId: this.props.id,
-    //     //     index: this.state.i
-    //     // }
+    autoSave = () => {
+        this.timer = setInterval(() => {
+            this.save()
+        }, 50000)
+    }
 
-    //     this.state.timer = setInterval(() => {
-    //         this.save()
-    //         // this.props.dispatch({ type: 'interfaces/modify', payload: values })
-    //         this.setState({
-    //             status: false
-    //         })
-    //     }, 5000)
-    // }
+    componentWillUnmount() {
+        clearInterval(this.timer)
+    }
 
     onKeyDown = (editor, event) => {
         if (event.ctrlKey === true && event.keyCode === 83) {
