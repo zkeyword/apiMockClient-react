@@ -268,6 +268,7 @@ class InterfaceList extends React.Component {
                         ref={(cm) => { this.codeMirror = cm }}
                         value={content}
                         options={options}
+                        autoCursor={false}
                         onChange={(editor, data, value) => {
                             this.setState({ value })
                         }}
