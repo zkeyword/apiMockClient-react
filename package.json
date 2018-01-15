@@ -3,6 +3,7 @@
   "scripts": {
     "start": "cross-env SERVER_URL=http://127.0.0.1:3000/ node scripts/init.js && roadhog server",
     "build": "cross-env SERVER_URL=http://mock.dynamax.io/ node scripts/init.js && roadhog build",
+    "dev": "npm run build",
     "build:dll": "roadhog buildDll",
     "build:new": "node version && roadhog build",
     "lint": "eslint --ext .js src test",
