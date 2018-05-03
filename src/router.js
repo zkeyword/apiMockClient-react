@@ -44,6 +44,11 @@ function RouterConfig({ history, app }) {
             path: '/interfaces/:id',
             models: () => [import('./models/interfaces')],
             component: () => import('./routes/interfaces/')
+        },
+        {
+            path: '/interfaces/detail/:id/:i',
+            models: () => [import('./models/interfaces')],
+            component: () => import('./routes/interfaces/detail')
         }
     ]
 

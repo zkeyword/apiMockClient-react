@@ -15,7 +15,9 @@ export default {
         content: '',
         template: {},
         initStatus: 'init',
-        saveid: ''
+        saveid: '',
+        currer: 0,
+        itemid: 0
     },
     reducers: {
         save(state, { payload: date }) {
@@ -74,15 +76,17 @@ export default {
             //     }
             // })
         },
-        *list({ payload: { id, index = 0 } }, { call, put }) {
-            const { data } = yield call(interfacesService.list, id)
-            if (data && data.length !== 0) {
-                let item = data[index]
+        *list({ payload: { id } }, { call, put, select }) {
+            const data = yield call(interfacesService.list, id)
+            const state = yield select(state => state.interfaces)
+            let index = state.currer
+            if (data && data.data.length !== 0) {
+                let item = data.data[index]
                 yield put({
                     type: 'save',
                     payload: {
                         initStatus: 'you',
-                        list: data,
+                        list: data.data,
                         saveid: item.id,
                         content: item.content,
                         template: {
@@ -125,6 +129,19 @@ export default {
                 }
             })
         },
+        // *content({ payload: { id, content, index } }, { call, put }) {
+        //     const { data } = yield call(interfacesService.fetch, id)
+        //     yield put({
+        //         type: 'save',
+        //         payload: {
+        //             content: data.content,
+        //             template: {
+        //                 request: data.request,
+        //                 response: data.response
+        //             }
+        //         }
+        //     })
+        // },
         *content({ payload: { id, content, index } }, { call, put }) {
             const { data } = yield call(interfacesService.fetch, id)
             yield put({
@@ -135,6 +152,17 @@ export default {
                         request: data.request,
                         response: data.response
                     }
+                }
+            })
+        },
+        *curstate({ payload: { i, itemid } }, { select, put }) {
+            // const state = yield select(state => state.interfaces)
+            // state.currer = i
+            yield put({
+                type: 'save',
+                payload: {
+                    currer: i,
+                    itemid
                 }
             })
         },

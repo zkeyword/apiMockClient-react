@@ -8,6 +8,7 @@ import { Form, Button, Modal, Input, Icon, Popconfirm, Radio } from 'antd'
 import { UnControlled as CodeMirror } from 'react-codemirror2'
 import { execCommand } from './mark.js'
 import 'codemirror/mode/markdown/markdown'
+import { Link } from 'dva/router'
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
 const { TextArea } = Input
@@ -25,6 +26,12 @@ class InterfaceList extends React.Component {
                     id: this.props.id
                 }
             })
+            this.props.dispatch({
+                type: 'interfaces/curstate',
+                payload: {
+                    i: Number(this.props.i)
+                }
+            })
         }
     }
 
@@ -32,8 +39,8 @@ class InterfaceList extends React.Component {
         value: '',
         visible: false,
         projectId: this.props.id,
-        saveid: 0,
-        i: 0,
+        // saveid: 0,
+        // i: 0,
         status: true,
         radio: 0,
         item: {},
@@ -145,11 +152,18 @@ class InterfaceList extends React.Component {
         this.props.form.resetFields()
     }
 
-    change = (i, item) => {
+    change = (i, index, item) => {
+        console.log(999, i, index, item)
         this.setState({
             saveid: item.id,
-            i: i,
             status: false
+        })
+        this.props.dispatch({
+            type: 'interfaces/curstate',
+            payload: {
+                i: index,
+                itemid: item.id
+            }
         })
         this.props.dispatch({
             type: 'interfaces/listPreview',
@@ -195,7 +209,6 @@ class InterfaceList extends React.Component {
 
     onKeyDown = (editor, event) => {
         if (event.ctrlKey === true && event.keyCode === 83) {
-            // event.preventDefault()
             event.returnValue = false
             this.save()
         }
@@ -206,11 +219,11 @@ class InterfaceList extends React.Component {
         let {
             interfaces: {
                 list,
-            preview,
-            initStatus,
-            content,
-            template,
-            index
+                preview,
+                initStatus,
+                content,
+                template
+                // index
             },
             form: { getFieldDecorator }
         } = this.props
@@ -229,15 +242,17 @@ class InterfaceList extends React.Component {
                         <Icon className='btn add' onClick={this.showModal} type='plus' />
                     </div>
                     {
-                        list.map((item, i) => {
+                        list && list.map((item, i) => {
+                            let url = `/interfaces/detail/${this.props.id}/${i}`
                             return (
-                                <div key={i} className={index === i ? 'list currer' : 'list'} onClick={this.change.bind(null, i, item)}>
+                                <Link to={url} key={i}><div className={i === this.props.interfaces.currer ? 'list currer' : 'list'} onClick={this.change.bind(null, this.props.interfaces.currer, i, item)}>
                                     <span className='name'>{item.name}</span>
                                     <Icon type='setting' className='btn' onClick={() => this.showModal(item)} />
                                     <Popconfirm title='Are you sure？' okText='Yes' cancelText='No' onConfirm={this.remove.bind(null, item, i)}>
                                         <Icon type='delete' className='btn' />
                                     </Popconfirm>
                                 </div>
+                                </Link>
                             )
                         })
                     }
@@ -305,7 +320,7 @@ class InterfaceList extends React.Component {
                                         <Radio value={0}>默认</Radio>
                                         <Radio value={1}>自定义</Radio>
                                     </RadioGroup>
-                                    )}
+                                )}
                             </FormItem>
                             {
                                 this.state.radio === 1 &&
