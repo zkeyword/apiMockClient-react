@@ -16,6 +16,7 @@ const { TextArea } = Input
 class InterfaceList extends React.Component {
     constructor(props) {
         super(props)
+        console.log(this.props)
         this.props.dispatch({
             type: 'interfaces/reset'
         })
@@ -26,13 +27,13 @@ class InterfaceList extends React.Component {
                     id: this.props.id
                 }
             })
-            this.props.dispatch({
-                type: 'interfaces/curstate',
-                payload: {
-                    i: Number(this.props.i)
-                }
-            })
         }
+        this.props.dispatch({
+            type: 'interfaces/curstate',
+            payload: {
+                i: Number(this.props.i)
+            }
+        })
     }
 
     state = {
