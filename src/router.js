@@ -46,7 +46,7 @@ function RouterConfig({ history, app }) {
             component: () => import('./routes/interfaces/')
         },
         {
-            path: '/interfaces/detail/:id/:i',
+            path: '/interfaces/detail/:id/:i/:projectid',
             models: () => [import('./models/interfaces')],
             component: () => import('./routes/interfaces/detail')
         }

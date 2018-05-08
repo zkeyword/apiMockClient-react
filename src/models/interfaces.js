@@ -1,4 +1,5 @@
 import * as interfacesService from '../services/interfaces'
+import * as historyService from '../services/history'
 import { message } from 'antd'
 import { routerRedux } from 'dva/router'
 // import { fetch } from '../services/interfaces';
@@ -17,7 +18,9 @@ export default {
         initStatus: 'init',
         saveid: '',
         currer: 0,
-        itemid: 0
+        itemid: 0,
+        historyList: [],
+        historyListShow: false
     },
     reducers: {
         save(state, { payload: date }) {
@@ -63,18 +66,6 @@ export default {
                     index: values.index
                 }
             })
-            // yield put({
-            //     type: 'listPreview',
-            //     payload: {
-            //         id: values.id,
-            //         content: values.content,
-            //         template: {
-            //             request: values.request,
-            //             response: values.response
-            //         },
-            //         index: values.index
-            //     }
-            // })
         },
         *list({ payload: { id } }, { call, put, select }) {
             const data = yield call(interfacesService.list, id)
@@ -112,6 +103,42 @@ export default {
                 })
             }
         },
+        *historyList({ payload: { id } }, { call, put }) {
+            const data = yield call(historyService.list, id)
+            if (data) {
+                yield put({
+                    type: 'save',
+                    payload: {
+                        historyList: data.data
+                    }
+                })
+            }
+        },
+        *historyListShow(_, { call, put }) {
+            yield put({
+                type: 'save',
+                payload: {
+                    historyListShow: true
+                }
+            })
+        },
+        *historyPost({ payload: values }, { call, put }) {
+            yield call(historyService.add, values)
+        },
+        *historyDetail({ payload: { interfaceId, id } }, { call, put }) {
+            console.log(interfaceId, id)
+            const data = yield call(historyService.detail, interfaceId, id)
+            if (data) {
+                yield put({
+                    type: 'save',
+                    payload: {
+                        preview: data.data.content,
+                        content: data.data.content
+                    }
+                })
+            }
+            console.log(333333, data)
+        },
         *listPreview({ payload: { id, index } }, { call, put }) {
             let preview
             try {
@@ -129,19 +156,6 @@ export default {
                 }
             })
         },
-        // *content({ payload: { id, content, index } }, { call, put }) {
-        //     const { data } = yield call(interfacesService.fetch, id)
-        //     yield put({
-        //         type: 'save',
-        //         payload: {
-        //             content: data.content,
-        //             template: {
-        //                 request: data.request,
-        //                 response: data.response
-        //             }
-        //         }
-        //     })
-        // },
         *content({ payload: { id, content, index } }, { call, put }) {
             const { data } = yield call(interfacesService.fetch, id)
             yield put({
@@ -156,8 +170,6 @@ export default {
             })
         },
         *curstate({ payload: { i, itemid } }, { select, put }) {
-            // const state = yield select(state => state.interfaces)
-            // state.currer = i
             yield put({
                 type: 'save',
                 payload: {

@@ -9,6 +9,7 @@ import { UnControlled as CodeMirror } from 'react-codemirror2'
 import { execCommand } from './mark.js'
 import 'codemirror/mode/markdown/markdown'
 import { Link } from 'dva/router'
+import storage from '../../utils/storage'
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
 const { TextArea } = Input
@@ -49,6 +50,20 @@ class InterfaceList extends React.Component {
         timer: null
     }
 
+    componentWillReceiveProps = (nextProps) => {
+        console.log(111, nextProps.i)
+        console.log(222, this.props)
+        if (nextProps.i !== this.props.i) {
+            console.log(8888)
+            this.props.dispatch({
+                type: 'interfaces/historyList',
+                payload: {
+                    id: nextProps.projectid
+                }
+            })
+        }
+    }
+
     showModal = (item) => {
         if (item.name) {
             this.setState({
@@ -77,6 +92,14 @@ class InterfaceList extends React.Component {
             })
             this.props.form.resetFields()
         }
+    }
+
+    history = (item, i) => {
+        console.log(item)
+        console.log(999, this.props)
+        this.props.dispatch({
+            type: 'interfaces/historyListShow'
+        })
     }
 
     radioChange = (e) => {
@@ -155,7 +178,6 @@ class InterfaceList extends React.Component {
     }
 
     change = (i, index, item) => {
-        console.log(999, i, index, item)
         this.setState({
             saveid: item.id,
             status: false
@@ -183,6 +205,17 @@ class InterfaceList extends React.Component {
         })
     }
 
+    historyDetail = (item) => {
+        console.log(item)
+        this.props.dispatch({
+            type: 'interfaces/historyDetail',
+            payload: {
+                id: item.id,
+                interfaceId: this.props.projectid
+            }
+        })
+    }
+
     save = () => {
         this.props.dispatch({
             type: 'interfaces/modify',
@@ -193,7 +226,14 @@ class InterfaceList extends React.Component {
                 index: this.state.i
             }
         })
-
+        this.props.dispatch({
+            type: 'interfaces/historyPost',
+            payload: {
+                interfaceId: this.props.projectid,
+                userId: storage.get('userId'),
+                content: this.state.value
+            }
+        })
         this.setState({
             i: this.state.i
         })
@@ -224,11 +264,14 @@ class InterfaceList extends React.Component {
                 preview,
                 initStatus,
                 content,
-                template
+                template,
+                historyList,
+                historyListShow
                 // index
             },
             form: { getFieldDecorator }
         } = this.props
+        console.log(777, historyList)
         let options = {
             indentUnit: 4,
             tabSize: 4,
@@ -245,19 +288,42 @@ class InterfaceList extends React.Component {
                     </div>
                     {
                         list && list.map((item, i) => {
-                            let url = `/interfaces/detail/${this.props.id}/${i}`
+                            let url = `/interfaces/detail/${this.props.id}/${i}/${item.id}`
                             return (
-                                <Link to={url} key={i}><div className={i === this.props.interfaces.currer ? 'list currer' : 'list'} onClick={this.change.bind(null, this.props.interfaces.currer, i, item)}>
-                                    <span className='name'>{item.name}</span>
-                                    <Icon type='setting' className='btn' onClick={() => this.showModal(item)} />
-                                    <Popconfirm title='Are you sure？' okText='Yes' cancelText='No' onConfirm={this.remove.bind(null, item, i)}>
-                                        <Icon type='delete' className='btn' />
-                                    </Popconfirm>
-                                </div>
+                                <Link to={url} key={i}>
+                                    <div className={i === this.props.interfaces.currer ? 'list currer' : 'list'} onClick={this.change.bind(null, this.props.interfaces.currer, i, item)}>
+                                        <span className='name'>{item.name}</span>
+                                        <div className='btn_wrap'>
+                                            <Icon type='setting' className='btn' onClick={() => this.showModal(item)} />
+                                            <Popconfirm title='Are you sure？' okText='Yes' cancelText='No' onConfirm={this.remove.bind(null, item, i)}>
+                                                <Icon type='delete' className='btn' />
+                                            </Popconfirm>
+                                            <Icon type='exception' className='btn' onClick={() => this.history(item, i)} />
+                                        </div>
+                                    </div>
+                                    <div className='twolevel'>
+                                        {
+                                            historyListShow && historyList && historyList.map((item, index) => {
+                                                return (
+                                                    <p key={item.id + Math.random()} onClick={() => this.historyDetail(item)} >{item.content}</p>
+                                                )
+                                            })
+                                        }
+                                    </div>
                                 </Link>
+
                             )
                         })
                     }
+                    {/* <div className='twolevel'>
+                        {
+                            historyList && historyList.map((item, index) => {
+                                return (
+                                    <p key={index}>{item.content}</p>
+                                )
+                            })
+                        }
+                    </div> */}
                 </div>
                 <div className='container'>
                     <div className='bottonWrap'>

@@ -76,10 +76,8 @@ Storage.prototype = {
      */
     get: function (key) {
         var data = this.driver.getItem(this._key(key))
-
         if (data) {
             data = JSON.parse(data)
-
             if (data.expire) {
                 if (data.expire < Date.now()) {
                     this.remove(key)
