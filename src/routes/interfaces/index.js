@@ -10,7 +10,6 @@ class Interfaces extends React.Component {
             location,
             match: { params }
         } = this.props
-        console.log(this.props.match)
         return (
             <MainLayout location={location}>
                 <InterfacesList {...params} />

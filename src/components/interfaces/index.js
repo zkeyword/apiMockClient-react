@@ -51,10 +51,7 @@ class InterfaceList extends React.Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        console.log(111, nextProps.i)
-        console.log(222, this.props)
         if (nextProps.i !== this.props.i) {
-            console.log(8888)
             this.props.dispatch({
                 type: 'interfaces/historyList',
                 payload: {

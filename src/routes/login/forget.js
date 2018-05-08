@@ -157,7 +157,6 @@ class Forget extends React.Component {
                                         validator: (rules, value, callback) => {
                                             let newP = getFieldValue('password')
                                             let checkP = getFieldValue('checkP')
-                                            console.log(newP, checkP)
                                             if (newP !== checkP && value.length > 5) {
                                                 callback(formatMessage({ id: 'login.consistency' }))
                                             } else {

@@ -17,7 +17,6 @@ function insertString(editor, str) {
 }
 
 function execCommand(data, template) {
-    console.log(template)
     let editor = this.codeMirror.editor
     let obj = {
         mock: {

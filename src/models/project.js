@@ -49,7 +49,6 @@ export default {
         },
         *remove({ payload: { id, userId } }, { call, put }) {
             let { data } = yield call(projectService.remove, { id, userId })
-            console.log(data)
             if (data) {
                 let promise = () => new Promise((resolve, reject) => {
                     message.success(formatMessage({ id: 'models.submission' }), 1, () => {
@@ -64,7 +63,6 @@ export default {
         },
         *fetch({ payload: id }, { call, put }) {
             const { data } = yield call(projectService.fetch, { id })
-            console.log(data)
             if (data) {
                 yield put({
                     type: 'save',

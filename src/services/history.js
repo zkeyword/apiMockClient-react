@@ -12,6 +12,5 @@ export function add(data) {
 }
 
 export function detail(interfaceId, id) {
-    console.log(444, interfaceId, id)
     return request(`/v0.1/api/history/${interfaceId}/${id}`)
 }
