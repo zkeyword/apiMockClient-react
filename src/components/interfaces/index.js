@@ -299,7 +299,7 @@ class InterfaceList extends React.Component {
                             let url = `/interfaces/detail/${this.props.id}/${i}/${item.id}`
                             return (
                                 <Link to={url} key={i}>
-                                    <div className={i === this.props.interfaces.currer ? 'list currer' : 'list'} onClick={this.change.bind(null, this.props.interfaces.currer, i, item)}>
+                                    <div className={i === this.props.interfaces.currer && historyListShow ? 'list currer show' : 'list'} onClick={this.change.bind(null, this.props.interfaces.currer, i, item)}>
                                         <span className='name'>{item.name}</span>
                                         <div className='btn_wrap'>
                                             <Icon type='setting' className='btn' onClick={() => this.showModal(item)} />
