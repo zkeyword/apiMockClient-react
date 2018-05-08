@@ -43,7 +43,7 @@ class projectList extends React.Component {
                 <Link to='/project/detail'><Button type='primary' className='addButton' >{formatMessage({ id: 'button.add' })}</Button></Link>
                 <div className='ui-tableList'>
                     {
-                        dataSource.map((items, i) => {
+                        dataSource.length >= 1 && dataSource.map((items, i) => {
                             return (
                                 <div key={i} className='item' title={items.name}>
                                     <div className='item-ico'>

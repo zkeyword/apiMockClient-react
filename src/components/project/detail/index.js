@@ -53,7 +53,7 @@ class ProjectDetail extends React.Component {
         let {
             project: {
                 list
-             },
+            },
             form: {
                 getFieldDecorator
             },
@@ -73,7 +73,7 @@ class ProjectDetail extends React.Component {
                             }]
                         })(
                             <Input placeholder={formatMessage({ id: 'table.enterProjectName' })} />
-                            )}
+                        )}
                     </FormItem>
                     <FormItem label={formatMessage({ id: 'table.alias' })}>
                         {getFieldDecorator('alias', {
@@ -84,7 +84,7 @@ class ProjectDetail extends React.Component {
                             }]
                         })(
                             <Input placeholder={formatMessage({ id: 'table.enterAlias' })} />
-                            )}
+                        )}
                     </FormItem>
                     <FormItem label={formatMessage({ id: 'table.description' })} className='textArea'>
                         {getFieldDecorator('description', {
@@ -95,7 +95,7 @@ class ProjectDetail extends React.Component {
                             }]
                         })(
                             <TextArea autosize={{ minRows: 4, maxRows: 6 }} placeholder={formatMessage({ id: 'table.enterDescription' })} />
-                            )}
+                        )}
                     </FormItem>
                     <FormItem className='ui-btnBar'>
                         <Button type='primary' htmlType='submit'>
