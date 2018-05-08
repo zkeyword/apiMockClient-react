@@ -122,11 +122,18 @@ export default {
                 }
             })
         },
+        *historyListShowhide(_, { call, put }) {
+            yield put({
+                type: 'save',
+                payload: {
+                    historyListShow: false
+                }
+            })
+        },
         *historyPost({ payload: values }, { call, put }) {
             yield call(historyService.add, values)
         },
         *historyDetail({ payload: { interfaceId, id } }, { call, put }) {
-            console.log(interfaceId, id)
             const data = yield call(historyService.detail, interfaceId, id)
             if (data) {
                 yield put({
@@ -137,7 +144,6 @@ export default {
                     }
                 })
             }
-            console.log(333333, data)
         },
         *listPreview({ payload: { id, index } }, { call, put }) {
             let preview

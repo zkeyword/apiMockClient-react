@@ -95,10 +95,20 @@ class InterfaceList extends React.Component {
     }
 
     history = (item, i) => {
-        console.log(item)
-        console.log(999, this.props)
+        if (this.props.interfaces.historyListShow) {
+            this.props.dispatch({
+                type: 'interfaces/historyListShowhide'
+            })
+        } else {
+            this.props.dispatch({
+                type: 'interfaces/historyListShow'
+            })
+        }
         this.props.dispatch({
-            type: 'interfaces/historyListShow'
+            type: 'interfaces/historyList',
+            payload: {
+                id: item.id
+            }
         })
     }
 
@@ -206,7 +216,6 @@ class InterfaceList extends React.Component {
     }
 
     historyDetail = (item) => {
-        console.log(item)
         this.props.dispatch({
             type: 'interfaces/historyDetail',
             payload: {
@@ -271,7 +280,6 @@ class InterfaceList extends React.Component {
             },
             form: { getFieldDecorator }
         } = this.props
-        console.log(777, historyList)
         let options = {
             indentUnit: 4,
             tabSize: 4,
@@ -315,15 +323,6 @@ class InterfaceList extends React.Component {
                             )
                         })
                     }
-                    {/* <div className='twolevel'>
-                        {
-                            historyList && historyList.map((item, index) => {
-                                return (
-                                    <p key={index}>{item.content}</p>
-                                )
-                            })
-                        }
-                    </div> */}
                 </div>
                 <div className='container'>
                     <div className='bottonWrap'>
