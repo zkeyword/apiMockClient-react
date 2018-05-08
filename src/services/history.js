@@ -5,6 +5,7 @@ export function list(interfaceId) {
 }
 
 export function add(data) {
+    console.log(666, data)
     return request(`/v0.1/api/history/${data.interfaceId}`, {
         method: 'POST',
         data: data

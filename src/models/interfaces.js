@@ -122,6 +122,14 @@ export default {
                 }
             })
         },
+        *historyListClear(_, { call, put }) {
+            yield put({
+                type: 'save',
+                payload: {
+                    historyList: []
+                }
+            })
+        },
         *historyListShowhide(_, { call, put }) {
             yield put({
                 type: 'save',

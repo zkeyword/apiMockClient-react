@@ -43,8 +43,6 @@ class InterfaceList extends React.Component {
         value: '',
         visible: false,
         projectId: this.props.id,
-        // saveid: 0,
-        // i: 0,
         status: true,
         radio: 0,
         item: {},
@@ -59,6 +57,9 @@ class InterfaceList extends React.Component {
                     id: nextProps.projectid
                 }
             })
+            // this.props.dispatch({
+            //     type: 'interfaces/historyListClear'
+            // })
         }
     }
 
@@ -93,21 +94,55 @@ class InterfaceList extends React.Component {
     }
 
     history = (item, i) => {
-        if (this.props.interfaces.historyListShow) {
+        // this.props.dispatch({
+        //     type: 'interfaces/historyListClear'
+        // })
+        // if (!this.props.interfaces.historyListShow) {
+        //     this.props.dispatch({
+        //         type: 'interfaces/historyListShow'
+        //     })
+        // } else {
+        //     this.props.dispatch({
+        //         type: 'interfaces/historyListShowhide'
+        //     })
+        // }
+        this.props.dispatch({
+            type: 'interfaces/historyListShow'
+        })
+        if (i !== Number(this.props.i)) {
+            // this.props.dispatch({
+            //     type: 'interfaces/historyListClear'
+            // })
             this.props.dispatch({
-                type: 'interfaces/historyListShowhide'
+                type: 'interfaces/historyList',
+                payload: {
+                    id: item.id
+                }
             })
-        } else {
+        }
+        if (i === 0) {
+            this.props.dispatch({
+                type: 'interfaces/historyList',
+                payload: {
+                    id: item.id
+                }
+            })
+        }
+        // this.props.dispatch({
+        //     type: 'interfaces/historyList',
+        //     payload: {
+        //         id: item.id
+        //     }
+        // })
+        if (!this.props.interfaces.historyListShow) {
             this.props.dispatch({
                 type: 'interfaces/historyListShow'
             })
+        } else {
+            this.props.dispatch({
+                type: 'interfaces/historyListShowhide'
+            })
         }
-        this.props.dispatch({
-            type: 'interfaces/historyList',
-            payload: {
-                id: item.id
-            }
-        })
     }
 
     radioChange = (e) => {
@@ -186,6 +221,20 @@ class InterfaceList extends React.Component {
     }
 
     change = (i, index, item) => {
+        // this.props.dispatch({
+        //     type: 'interfaces/historyListClear'
+        // })
+        this.props.dispatch({
+            type: 'interfaces/historyList',
+            payload: {
+                id: item.id
+            }
+        })
+        if (this.props.interfaces.historyListShow) {
+            this.props.dispatch({
+                type: 'interfaces/historyListShowhide'
+            })
+        }
         this.setState({
             saveid: item.id,
             status: false
@@ -225,7 +274,6 @@ class InterfaceList extends React.Component {
             historyDetail: i
 
         })
-        console.log(777, this.state.historyDetail)
     }
 
     save = () => {
@@ -238,14 +286,26 @@ class InterfaceList extends React.Component {
                 index: this.state.i
             }
         })
-        this.props.dispatch({
-            type: 'interfaces/historyPost',
-            payload: {
-                interfaceId: this.props.projectid,
-                userId: storage.get('userId'),
-                content: this.state.value
-            }
-        })
+        if (!this.props.projectid) {
+            this.props.dispatch({
+                type: 'interfaces/historyPost',
+                payload: {
+                    interfaceId: this.props.interfaces.list[0].id,
+                    userId: storage.get('userId'),
+                    content: this.state.value
+                }
+            })
+        } else {
+            this.props.dispatch({
+                type: 'interfaces/historyPost',
+                payload: {
+                    interfaceId: this.props.projectid,
+                    userId: storage.get('userId'),
+                    content: this.state.value
+                }
+            })
+        }
+
         this.setState({
             i: this.state.i
         })
@@ -283,7 +343,6 @@ class InterfaceList extends React.Component {
             },
             form: { getFieldDecorator }
         } = this.props
-        console.log(88, this.state.historyDetail)
         let options = {
             indentUnit: 4,
             tabSize: 4,
@@ -303,7 +362,7 @@ class InterfaceList extends React.Component {
                             let url = `/interfaces/detail/${this.props.id}/${i}/${item.id}`
                             return (
                                 <Link to={url} key={i}>
-                                    <div className={i === this.props.interfaces.currer && historyListShow && historyList.length >= 1 ? 'list currer show' : 'list'} onClick={this.change.bind(null, this.props.interfaces.currer, i, item)}>
+                                    <div className={i === this.props.interfaces.currer ? 'list currer' : 'list'} onClick={this.change.bind(null, this.props.interfaces.currer, i, item)}>
                                         <span className='name'>{item.name}</span>
                                         <div className='btn_wrap'>
                                             <Icon type='setting' className='btn' onClick={() => this.showModal(item)} title='设置' />
