@@ -10,6 +10,7 @@ import { execCommand } from './mark.js'
 import 'codemirror/mode/markdown/markdown'
 import { Link } from 'dva/router'
 import storage from '../../utils/storage'
+import moment from 'moment'
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
 const { TextArea } = Input
@@ -212,7 +213,7 @@ class InterfaceList extends React.Component {
         })
     }
 
-    historyDetail = (item) => {
+    historyDetail = (item, i) => {
         this.props.dispatch({
             type: 'interfaces/historyDetail',
             payload: {
@@ -220,6 +221,11 @@ class InterfaceList extends React.Component {
                 interfaceId: this.props.projectid
             }
         })
+        this.setState({
+            historyDetail: i
+
+        })
+        console.log(777, this.state.historyDetail)
     }
 
     save = () => {
@@ -277,6 +283,7 @@ class InterfaceList extends React.Component {
             },
             form: { getFieldDecorator }
         } = this.props
+        console.log(88, this.state.historyDetail)
         let options = {
             indentUnit: 4,
             tabSize: 4,
@@ -289,28 +296,30 @@ class InterfaceList extends React.Component {
                 <div className='lt-left'>
                     <div className='header'>
                         <span className='name'>接口类型名</span>
-                        <Icon className='btn add' onClick={this.showModal} type='plus' />
+                        <Icon className='btn add' onClick={this.showModal} type='plus' title='添加' />
                     </div>
                     {
                         list && list.map((item, i) => {
                             let url = `/interfaces/detail/${this.props.id}/${i}/${item.id}`
                             return (
                                 <Link to={url} key={i}>
-                                    <div className={i === this.props.interfaces.currer && historyListShow ? 'list currer show' : 'list'} onClick={this.change.bind(null, this.props.interfaces.currer, i, item)}>
+                                    <div className={i === this.props.interfaces.currer && historyListShow && historyList.length >= 1 ? 'list currer show' : 'list'} onClick={this.change.bind(null, this.props.interfaces.currer, i, item)}>
                                         <span className='name'>{item.name}</span>
                                         <div className='btn_wrap'>
-                                            <Icon type='setting' className='btn' onClick={() => this.showModal(item)} />
+                                            <Icon type='setting' className='btn' onClick={() => this.showModal(item)} title='设置' />
                                             <Popconfirm title='Are you sure？' okText='Yes' cancelText='No' onConfirm={this.remove.bind(null, item, i)}>
-                                                <Icon type='delete' className='btn' />
+                                                <Icon type='delete' className='btn' title='删除' />
                                             </Popconfirm>
-                                            <Icon type='exception' className='btn' onClick={() => this.history(item, i)} />
+                                            <Icon type='exception' className='btn' onClick={() => this.history(item, i)} title='历史记录' />
                                         </div>
                                     </div>
                                     <div className='twolevel'>
                                         {
                                             historyListShow && historyList && historyList.map((item, index) => {
                                                 return (
-                                                    <p key={item.id + Math.random()} onClick={() => this.historyDetail(item)} >{item.content}</p>
+                                                    <p className={index === this.state.historyDetail ? 'currer' : ''} key={item.id + Math.random()} onClick={() => this.historyDetail(item, index)} >
+                                                        {moment(item.updatedAt).format('YYYY-MM-DD HH:mm:ss')}
+                                                    </p>
                                                 )
                                             })
                                         }

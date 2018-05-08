@@ -225,7 +225,9 @@ export default {
                     initStatus: 'init',
                     content: '',
                     template: {},
-                    index: ''
+                    index: '',
+                    historyList: [],
+                    historyListShow: false
                 }
             })
         },
