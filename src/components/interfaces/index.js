@@ -18,6 +18,11 @@ const { TextArea } = Input
 class InterfaceList extends React.Component {
     constructor(props) {
         super(props)
+        if (this.props.interfaces.historyListShow) {
+            this.props.dispatch({
+                type: 'interfaces/historyListShow'
+            })
+        }
         this.props.dispatch({
             type: 'interfaces/reset'
         })
@@ -57,6 +62,8 @@ class InterfaceList extends React.Component {
                     id: nextProps.projectid
                 }
             })
+
+            console.log(222, nextProps.interfaces.historyListShow)
             // this.props.dispatch({
             //     type: 'interfaces/historyListClear'
             // })
@@ -120,14 +127,14 @@ class InterfaceList extends React.Component {
                 }
             })
         }
-        if (i === 0) {
-            this.props.dispatch({
-                type: 'interfaces/historyList',
-                payload: {
-                    id: item.id
-                }
-            })
-        }
+        // if (i === 0) {
+        this.props.dispatch({
+            type: 'interfaces/historyList',
+            payload: {
+                id: item.id
+            }
+        })
+        // }
         // this.props.dispatch({
         //     type: 'interfaces/historyList',
         //     payload: {
@@ -350,6 +357,7 @@ class InterfaceList extends React.Component {
             mode: 'markdown',
             theme: 'material'
         }
+        console.log(historyListShow)
         return (
             <div className='page-device'>
                 <div className='lt-left'>
@@ -369,7 +377,9 @@ class InterfaceList extends React.Component {
                                             <Popconfirm title='Are you sure？' okText='Yes' cancelText='No' onConfirm={this.remove.bind(null, item, i)}>
                                                 <Icon type='delete' className='btn' title='删除' />
                                             </Popconfirm>
+                                            {/* <Link to={url} key={i}> */}
                                             <Icon type='exception' className='btn' onClick={() => this.history(item, i)} title='历史记录' />
+                                            {/* </Link> */}
                                         </div>
                                     </div>
                                     <div className='twolevel'>

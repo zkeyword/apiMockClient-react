@@ -234,8 +234,8 @@ export default {
                     content: '',
                     template: {},
                     index: '',
-                    historyList: [],
-                    historyListShow: false
+                    historyList: []
+                    // historyListShow: false
                 }
             })
         },
