@@ -23,11 +23,16 @@
         width: 260px
         min-width 260px
         overflow-y: auto
+        font-size: 0
+
+        a
+            font-size:0
 
         .header
             padding: 15px 10px
             border-bottom: 1px solid #ddd
             clear: both
+            font-size: 13px
 
             .name
                 float: left
@@ -44,6 +49,7 @@
             border-bottom: 1px solid #ddd
             clear: both
             cursor: pointer
+            font-size: 13px
 
             &.currer
                 background: rgba(#000, 0.1)
@@ -70,7 +76,7 @@
             &+.twolevel           
                 padding: 0 30px
                 // border-bottom: 1px solid #ddd
-                display: block      
+                display: inline-block      
 
                 p
                     width: 152px
@@ -86,7 +92,8 @@
                         color: red   
 
         .twolevel 
-            display: none                 
+            display: none  
+            text-decoration:none               
 
 
     .container 
