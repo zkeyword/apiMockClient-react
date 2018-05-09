@@ -51,7 +51,8 @@ class InterfaceList extends React.Component {
         status: true,
         radio: 0,
         item: {},
-        timer: null
+        timer: null,
+        historyIndex: null
     }
 
     componentWillReceiveProps = (nextProps) => {
@@ -62,11 +63,6 @@ class InterfaceList extends React.Component {
                     id: nextProps.projectid
                 }
             })
-
-            console.log(222, nextProps.interfaces.historyListShow)
-            // this.props.dispatch({
-            //     type: 'interfaces/historyListClear'
-            // })
         }
     }
 
@@ -101,25 +97,20 @@ class InterfaceList extends React.Component {
     }
 
     history = (item, i) => {
-        // this.props.dispatch({
-        //     type: 'interfaces/historyListClear'
-        // })
-        // if (!this.props.interfaces.historyListShow) {
-        //     this.props.dispatch({
-        //         type: 'interfaces/historyListShow'
-        //     })
-        // } else {
-        //     this.props.dispatch({
-        //         type: 'interfaces/historyListShowhide'
-        //     })
-        // }
-        this.props.dispatch({
-            type: 'interfaces/historyListShow'
+        this.setState({
+            historyIndex: i
         })
+        if (i === this.state.historyIndex) {
+            this.props.dispatch({
+                type: 'interfaces/historyListShowhide'
+            })
+        } else {
+            this.props.dispatch({
+                type: 'interfaces/historyListShow'
+            })
+        }
+
         if (i !== Number(this.props.i)) {
-            // this.props.dispatch({
-            //     type: 'interfaces/historyListClear'
-            // })
             this.props.dispatch({
                 type: 'interfaces/historyList',
                 payload: {
@@ -127,29 +118,12 @@ class InterfaceList extends React.Component {
                 }
             })
         }
-        // if (i === 0) {
         this.props.dispatch({
             type: 'interfaces/historyList',
             payload: {
                 id: item.id
             }
         })
-        // }
-        // this.props.dispatch({
-        //     type: 'interfaces/historyList',
-        //     payload: {
-        //         id: item.id
-        //     }
-        // })
-        if (!this.props.interfaces.historyListShow) {
-            this.props.dispatch({
-                type: 'interfaces/historyListShow'
-            })
-        } else {
-            this.props.dispatch({
-                type: 'interfaces/historyListShowhide'
-            })
-        }
     }
 
     radioChange = (e) => {
@@ -237,11 +211,11 @@ class InterfaceList extends React.Component {
                 id: item.id
             }
         })
-        if (this.props.interfaces.historyListShow) {
-            this.props.dispatch({
-                type: 'interfaces/historyListShowhide'
-            })
-        }
+        // if (this.props.interfaces.historyListShow) {
+        //     this.props.dispatch({
+        //         type: 'interfaces/historyListShowhide'
+        //     })
+        // }
         this.setState({
             saveid: item.id,
             status: false
@@ -377,9 +351,7 @@ class InterfaceList extends React.Component {
                                             <Popconfirm title='Are you sure？' okText='Yes' cancelText='No' onConfirm={this.remove.bind(null, item, i)}>
                                                 <Icon type='delete' className='btn' title='删除' />
                                             </Popconfirm>
-                                            {/* <Link to={url} key={i}> */}
                                             <Icon type='exception' className='btn' onClick={() => this.history(item, i)} title='历史记录' />
-                                            {/* </Link> */}
                                         </div>
                                     </div>
                                     <div className='twolevel'>

@@ -131,6 +131,7 @@ export default {
             })
         },
         *historyListShowhide(_, { call, put }) {
+            console.log(1)
             yield put({
                 type: 'save',
                 payload: {
