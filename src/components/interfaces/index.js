@@ -202,20 +202,12 @@ class InterfaceList extends React.Component {
     }
 
     change = (i, index, item) => {
-        // this.props.dispatch({
-        //     type: 'interfaces/historyListClear'
-        // })
         this.props.dispatch({
             type: 'interfaces/historyList',
             payload: {
                 id: item.id
             }
         })
-        // if (this.props.interfaces.historyListShow) {
-        //     this.props.dispatch({
-        //         type: 'interfaces/historyListShowhide'
-        //     })
-        // }
         this.setState({
             saveid: item.id,
             status: false
@@ -261,7 +253,8 @@ class InterfaceList extends React.Component {
         this.props.dispatch({
             type: 'interfaces/modify',
             payload: {
-                id: this.state.status ? this.props.interfaces.list[0].id : this.state.saveid,
+                // id: this.state.status ? this.props.interfaces.list[0].id : this.state.saveid,
+                id: this.props.projectid ? this.props.projectid : this.props.interfaces.list[0].id,
                 projectId: this.props.id,
                 content: this.state.value,
                 index: this.state.i
@@ -331,7 +324,6 @@ class InterfaceList extends React.Component {
             mode: 'markdown',
             theme: 'material'
         }
-        console.log(historyListShow)
         return (
             <div className='page-device'>
                 <div className='lt-left'>
