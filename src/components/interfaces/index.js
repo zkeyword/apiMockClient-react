@@ -18,11 +18,19 @@ const { TextArea } = Input
 class InterfaceList extends React.Component {
     constructor(props) {
         super(props)
-        if (this.props.interfaces.historyListShow) {
-            this.props.dispatch({
-                type: 'interfaces/historyListShow'
-            })
-        }
+        console.log(33333, this.props)
+        this.props.dispatch({
+            type: 'interfaces/historyList',
+            payload: {
+                id: this.props.id
+            }
+        })
+        this.props.dispatch({
+            type: 'interfaces/historyList',
+            payload: {
+                id: Number(this.props.projectid)
+            }
+        })
         this.props.dispatch({
             type: 'interfaces/reset'
         })
@@ -52,7 +60,8 @@ class InterfaceList extends React.Component {
         radio: 0,
         item: {},
         timer: null,
-        historyIndex: null
+        historyIndex: null,
+        showList: false
     }
 
     componentWillReceiveProps = (nextProps) => {
@@ -96,32 +105,84 @@ class InterfaceList extends React.Component {
         }
     }
 
-    history = (item, i) => {
-        this.setState({
-            historyIndex: i
+    change = (i, index, item) => {
+        this.props.dispatch({
+            type: 'interfaces/historyListShow',
+            payload: {
+                value: this.props.interfaces.historyListShow
+            }
         })
-        if (i === this.state.historyIndex) {
-            this.props.dispatch({
-                type: 'interfaces/historyListShowhide'
-            })
-        } else {
-            this.props.dispatch({
-                type: 'interfaces/historyListShow'
-            })
-        }
-
-        if (i !== Number(this.props.i)) {
-            this.props.dispatch({
-                type: 'interfaces/historyList',
-                payload: {
-                    id: item.id
-                }
-            })
-        }
         this.props.dispatch({
             type: 'interfaces/historyList',
             payload: {
                 id: item.id
+            }
+        })
+        this.setState({
+            saveid: item.id,
+            status: false,
+            historyIndex: i
+        })
+        this.props.dispatch({
+            type: 'interfaces/curstate',
+            payload: {
+                i: index,
+                itemid: item.id
+            }
+        })
+        this.props.dispatch({
+            type: 'interfaces/listPreview',
+            payload: {
+                id: item.id,
+                index: i
+            }
+        })
+        this.props.dispatch({
+            type: 'interfaces/content',
+            payload: {
+                id: item.id,
+                index: i
+            }
+        })
+    }
+
+    // history = (item, i) => {
+    //     this.setState({
+    //         historyIndex: i
+    //     })
+    //     this.props.dispatch({
+    //         type: 'interfaces/historyListShow'
+    //     })
+    //     if (i !== Number(this.props.i)) {
+    //         this.props.dispatch({
+    //             type: 'interfaces/historyList',
+    //             payload: {
+    //                 id: item.id
+    //             }
+    //         })
+    //     }
+    //     this.props.dispatch({
+    //         type: 'interfaces/historyList',
+    //         payload: {
+    //             id: item.id
+    //         }
+    //     })
+    // }
+
+    history = () => {
+        if (!this.props.projectid) {
+            this.props.dispatch({
+                type: 'interfaces/historyList',
+                payload: {
+                    // id: this.state.status ? this.props.interfaces.list[0].id : this.state.saveid,
+                    id: this.props.interfaces.list[0].id
+                }
+            })
+        }
+        this.props.dispatch({
+            type: 'interfaces/historyListShow',
+            payload: {
+                value: !this.props.interfaces.historyListShow
             }
         })
     }
@@ -199,40 +260,6 @@ class InterfaceList extends React.Component {
             }
         })
         this.props.form.resetFields()
-    }
-
-    change = (i, index, item) => {
-        this.props.dispatch({
-            type: 'interfaces/historyList',
-            payload: {
-                id: item.id
-            }
-        })
-        this.setState({
-            saveid: item.id,
-            status: false
-        })
-        this.props.dispatch({
-            type: 'interfaces/curstate',
-            payload: {
-                i: index,
-                itemid: item.id
-            }
-        })
-        this.props.dispatch({
-            type: 'interfaces/listPreview',
-            payload: {
-                id: item.id,
-                index: i
-            }
-        })
-        this.props.dispatch({
-            type: 'interfaces/content',
-            payload: {
-                id: item.id,
-                index: i
-            }
-        })
     }
 
     historyDetail = (item, i) => {
@@ -331,38 +358,44 @@ class InterfaceList extends React.Component {
                         <span className='name'>接口类型名</span>
                         <Icon className='btn add' onClick={this.showModal} type='plus' title='添加' />
                     </div>
-                    {
-                        list && list.map((item, i) => {
-                            let url = `/interfaces/detail/${this.props.id}/${i}/${item.id}`
-                            return (
-                                <Link to={url} key={i}>
-                                    <div className={i === this.props.interfaces.currer ? 'list currer' : 'list'} onClick={this.change.bind(null, this.props.interfaces.currer, i, item)}>
-                                        <span className='name'>{item.name}</span>
-                                        <div className='btn_wrap'>
-                                            <Icon type='setting' className='btn' onClick={() => this.showModal(item)} title='设置' />
-                                            <Popconfirm title='Are you sure？' okText='Yes' cancelText='No' onConfirm={this.remove.bind(null, item, i)}>
-                                                <Icon type='delete' className='btn' title='删除' />
-                                            </Popconfirm>
-                                            <Icon type='exception' className='btn' onClick={() => this.history(item, i)} title='历史记录' />
+                    <div className={historyListShow ? 'nav_open' : 'interface_nav'}>
+                        {
+                            list && list.map((item, i) => {
+                                let url = `/interfaces/detail/${this.props.id}/${i}/${item.id}`
+                                return (
+                                    <Link to={url} key={i}>
+                                        <div className={i === this.props.interfaces.currer ? 'list currer' : 'list'} onClick={this.change.bind(null, this.props.interfaces.currer, i, item)}>
+                                            <span className='name'>{item.name}</span>
+                                            <div className='btn_wrap'>
+                                                <Icon type='setting' className='btn' onClick={() => this.showModal(item)} title='设置' />
+                                                <Popconfirm title='Are you sure？' okText='Yes' cancelText='No' onConfirm={this.remove.bind(null, item, i)}>
+                                                    <Icon type='delete' className='btn' title='删除' />
+                                                </Popconfirm>
+                                                {/* <Icon type='exception' className='btn' onClick={() => this.history(item, i)} title='历史记录' /> */}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className='twolevel'>
-                                        {
-                                            historyListShow && historyList && historyList.map((item, index) => {
-                                                return (
-                                                    <p className={index === this.state.historyDetail ? 'currer' : ''} key={item.id + Math.random()} onClick={() => this.historyDetail(item, index)} >
-                                                        {moment(item.updatedAt).format('YYYY-MM-DD HH:mm:ss')}
-                                                    </p>
-                                                )
-                                            })
-                                        }
-                                    </div>
-                                </Link>
+                                    </Link>
 
-                            )
-                        })
-                    }
+                                )
+                            })
+                        }
+                    </div>
+                    <div className={historyListShow ? 'lt-history heightnull' : 'lt-history '}>
+                        <p className='name' onClick={() => this.history()}>历史记录</p>
+                        <div className='twolevel'>
+                            {
+                                historyListShow && historyList && historyList.map((item, index) => {
+                                    return (
+                                        <p className={index === this.state.historyDetail ? 'currer' : ''} key={item.id + Math.random()} onClick={() => this.historyDetail(item, index)} >
+                                            {item.updatedAt ? moment(item.updatedAt).format('YYYY-MM-DD HH:mm:ss') : item.history}
+                                        </p>
+                                    )
+                                })
+                            }
+                        </div>
+                    </div>
                 </div>
+
                 <div className='container'>
                     <div className='bottonWrap'>
                         <Button type='primary' className='submit' onClick={this.save.bind(null, this)}>

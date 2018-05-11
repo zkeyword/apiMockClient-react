@@ -22,11 +22,19 @@
     .lt-left
         width: 260px
         min-width 260px
-        overflow-y: auto
+        // overflow-y: auto
         font-size: 0
 
-        a
-            font-size:0
+        .nav_open
+            height: 66%
+            overflow-y: auto
+
+        .interface_nav
+            overflow-y: auto
+            height: 88.5%
+
+            a
+                font-size:0
 
         .header
             padding: 15px 10px
@@ -67,33 +75,67 @@
                 float right     
 
                 .btn
-                    // float: left
                     margin: 5px 0 0 5px
 
                     
-        .currer  
+        // .currer  
 
-            &+.twolevel           
-                padding: 0 30px
-                // border-bottom: 1px solid #ddd
-                display: inline-block      
+        //     &+.twolevel           
+        //         padding: 0 30px
+        //         // border-bottom: 1px solid #ddd
+        //         display: inline-block      
 
-                p
-                    width: 152px
-                    height 25px
-                    font-size: 12px
-                    overflow hidden
-                    text-decoration:none
+        //         p
+        //             width: 152px
+        //             height 25px
+        //             font-size: 12px
+        //             overflow hidden
+        //             text-decoration:none
 
-                    &:hover
-                        color: red
+        //             &:hover
+        //                 color: red
 
-                    &.currer
-                        color: red   
+        //             &.currer
+        //                 color: red   
 
-        .twolevel 
-            display: none  
-            text-decoration:none               
+        // .twolevel 
+        //     display: none  
+        //     text-decoration:none  
+    .heightnull
+        height:27%         
+
+    .lt-history                  
+        width: 260px
+        font-size: 14px
+
+        .twolevel
+            height:calc( 100% - 51px )
+            overflow-y: auto
+            padding: 0 0 0 16px
+
+            
+            p
+                width: 152px
+                height 25px
+                font-size: 12px
+                overflow hidden
+                text-decoration:none
+                cursor: pointer
+
+                &:hover
+                    color: red
+
+                &.currer
+                    color: red   
+
+
+        .name
+            font-weight: bold
+            padding: 15px 10px
+            border: 1px solid #ddd
+            clear: both
+            font-size: 13px
+            width: 100%
 
 
     .container 

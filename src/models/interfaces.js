@@ -105,20 +105,28 @@ export default {
         },
         *historyList({ payload: { id } }, { call, put }) {
             const data = yield call(historyService.list, id)
-            if (data) {
+            if (data && data.data.length > 0) {
                 yield put({
                     type: 'save',
                     payload: {
                         historyList: data.data
                     }
                 })
+            } else {
+                let noneData = [{ history: '没有历史记录' }]
+                yield put({
+                    type: 'save',
+                    payload: {
+                        historyList: noneData
+                    }
+                })
             }
         },
-        *historyListShow(_, { call, put }) {
+        *historyListShow({ payload: { value } }, { call, put }) {
             yield put({
                 type: 'save',
                 payload: {
-                    historyListShow: true
+                    historyListShow: value
                 }
             })
         },
@@ -131,7 +139,6 @@ export default {
             })
         },
         *historyListShowhide(_, { call, put }) {
-            console.log(1)
             yield put({
                 type: 'save',
                 payload: {
@@ -236,8 +243,8 @@ export default {
                     template: {},
                     index: '',
                     historyList: [],
-                    currer: 0
-                    // historyListShow: false
+                    currer: 0,
+                    historyListShow: false
                 }
             })
         },
