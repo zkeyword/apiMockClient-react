@@ -18,7 +18,6 @@ const { TextArea } = Input
 class InterfaceList extends React.Component {
     constructor(props) {
         super(props)
-        console.log(33333, this.props)
         this.props.dispatch({
             type: 'interfaces/historyList',
             payload: {
