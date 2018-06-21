@@ -98,7 +98,7 @@ export default {
                     type: 'save',
                     payload: {
                         initStatus: 'kong',
-                        list: data
+                        list: []
                     }
                 })
             }
